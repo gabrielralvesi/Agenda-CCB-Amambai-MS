@@ -1055,6 +1055,9 @@ if(weekChip){
             var mins=minutesFromHHMM(t);
             if(mins!==null){
               var a = it.querySelector("a.link");
+            var rule = (it.getAttribute("data-rule") || "").trim();
+if(rule && !ruleMatches(rule, now)) continue;
+              
               events.push({
                 type:"Culto ou Reunião",
                 mins:mins,
