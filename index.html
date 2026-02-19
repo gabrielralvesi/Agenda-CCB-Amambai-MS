@@ -949,64 +949,34 @@ function ruleMatches(rule, nowDate){
   return true;
 }
    
-      function applyRuleVisibility(){
-        var now = new Date();
-        var events = document.querySelectorAll(".event");
-        for(var i=0;i<events.length;i++){
-          var ev = events[i];
-          var rule = ev.getAttribute("data-rule") || "all";
-          var ok = ruleMatches(rule, now);
-          ev.style.display = ok ? "" : "none";
-        }
-      }
+      function dateForDowFromNow(targetDow, baseDate){
+  // devolve a próxima ocorrência do dia da semana do card (inclui hoje se bater)
+  var d = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+  var diff = targetDow - d.getDay();
+  if(diff < 0) diff += 7;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
 
-      window.applyAllFilters = function(){
-        applyRuleVisibility();
+function applyRuleVisibility(){
+  var now = new Date();
+  var events = document.querySelectorAll(".event");
 
-        var q = trim((byId("q") && byId("q").value) ? byId("q").value : "").toLowerCase();
-        var onlyToday = getOnlyToday();
-        var today = new Date().getDay();
+  for(var i=0;i<events.length;i++){
+    var ev = events[i];
+    var rule = (ev.getAttribute("data-rule") || "all").trim();
 
-        var cards = document.querySelectorAll(".daycard");
-        for(var i=0;i<cards.length;i++){
-          var card = cards[i];
-          var day = parseInt(card.getAttribute("data-day"),10);
-          var hay = (card.getAttribute("data-search") || text(card)).toLowerCase();
+    // pega o dia do card (0=domingo ... 6=sábado)
+    var card = ev.closest(".daycard");
+    var dow = card ? parseInt(card.getAttribute("data-day"),10) : now.getDay();
 
-          // Se o card tiver eventos com display none, ainda pode ficar vazio — vamos esconder se ficou sem itens visíveis
-          var show = true;
-          if(q && hay.indexOf(q) === -1) show = false;
-          if(onlyToday && day !== today) show = false;
+    // calcula a data real do próximo "dow" para testar nth corretamente
+    var refDate = dateForDowFromNow(dow, now);
 
-          // esconde card sem itens visíveis (após regra nth)
-          if(show){
-            var visibleItems = card.querySelectorAll(".event");
-            var anyVisible = false;
-            for(var k=0;k<visibleItems.length;k++){
-              if(visibleItems[k].style.display !== "none") { anyVisible = true; break; }
-            }
-            if(!anyVisible) show = false;
-          }
-
-          card.style.display = show ? "" : "none";
-        }
-
-        var festaCard = byId("festasCard");
-        var festaTrs = document.querySelectorAll("#festasTable tbody tr");
-        var anyF=false;
-        for(var k2=0;k2<festaTrs.length;k2++){
-          var tr=festaTrs[k2];
-          var fhay=(tr.getAttribute("data-search")||text(tr)).toLowerCase();
-          var showF=true;
-          if(q && fhay.indexOf(q)===-1) showF=false;
-          tr.style.display = showF ? "" : "none";
-          if(showF) anyF=true;
-        }
-        if(festaCard){
-          if(q && !anyF) festaCard.style.display="none";
-          else festaCard.style.display="";
-        }
-      };
+    var ok = ruleMatches(rule, refDate);
+    ev.style.display = ok ? "" : "none";
+  }
+}
 
       function updateHighlights(){
         applyRuleVisibility();
