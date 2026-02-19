@@ -948,20 +948,7 @@ function ruleMatches(rule, nowDate){
   }
   return true;
 }
-      function updateHighlights()
-
-        // nth:2,4 etc.
-        if(rule.indexOf("nth:") === 0){
-          var nth = weekOfMonth(nowDate);
-          var list = rule.replace("nth:","").split(",");
-          for(var i=0;i<list.length;i++){
-            if(parseInt(trim(list[i]),10) === nth) return true;
-          }
-          return false;
-        }
-        return true;
-      }
-
+   
       function applyRuleVisibility(){
         var now = new Date();
         var events = document.querySelectorAll(".event");
