@@ -971,7 +971,7 @@ function applyRuleVisibility(){
     var dow = card ? parseInt(card.getAttribute("data-day"),10) : now.getDay();
 
     // calcula a data real do próximo "dow" para testar nth corretamente
-    var refDate = dateForDowFromNow(dow, now);
+    var refDate = now;
 
     var ok = ruleMatches(rule, refDate);
     ev.style.display = ok ? "" : "none";
