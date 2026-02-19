@@ -918,6 +918,8 @@
 
       // ===== Regras (1º/2º/3º/4º do mês) =====
       function weekOfMonth(date){
+        // semana do mês do MESMO dia da semana (ex.: 3º domingo)
+        // conta quantas vezes esse dia da semana já ocorreu no mês até a data
         function ordinalPt(n, gender){ // gender: "f" ou "m"
   if(gender === "m") return n + "º";
   return n + "ª";
@@ -928,10 +930,6 @@ var dow = now.getDay(); // 0..6
 if(weekChip){
   // Ex.: "Semana: 3ª (Quinta-Feira)"
   weekChip.textContent = "Semana: " + ordinalPt(nthToday, "f") + " (" + weekdayName[dow] + ")";
-}
-}
-        // semana do mês do MESMO dia da semana (ex.: 3º domingo)
-        // conta quantas vezes esse dia da semana já ocorreu no mês até a data
         var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         var targetDow = d.getDay();
         var count = 0;
