@@ -917,29 +917,19 @@
       window.toggleOnlyToday = function(){ setOnlyToday(!getOnlyToday()); applyAllFilters(); };
 
       // ===== Regras (1º/2º/3º/4º do mês) =====
-      function weekOfMonth(date){
-        // semana do mês do MESMO dia da semana (ex.: 3º domingo)
-        // conta quantas vezes esse dia da semana já ocorreu no mês até a data
-        function ordinalPt(n, gender){ // gender: "f" ou "m"
+     function weekOfMonth(date){
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  var targetDow = d.getDay();
+  var count = 0;
+  for(var day=1; day<=d.getDate(); day++){
+    var tmp = new Date(d.getFullYear(), d.getMonth(), day);
+    if(tmp.getDay() === targetDow) count++;
+  }
+  return count; // 1..5
+      }function ordinalPt(n, gender){ // "f" ou "m"
   if(gender === "m") return n + "º";
   return n + "ª";
-          // contador de semana do mês (para o dia de hoje)
-var weekChip = byId("weekChip");
-var nthToday = weekOfMonth(now); // 1..5
-var dow = now.getDay(); // 0..6
-if(weekChip){
-  // Ex.: "Semana: 3ª (Quinta-Feira)"
-  weekChip.textContent = "Semana: " + ordinalPt(nthToday, "f") + " (" + weekdayName[dow] + ")";
-        var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        var targetDow = d.getDay();
-        var count = 0;
-        for(var day=1; day<=d.getDate(); day++){
-          var tmp = new Date(d.getFullYear(), d.getMonth(), day);
-          if(tmp.getDay() === targetDow) count++;
-        }
-        return count; // 1..5
-      }
-
+}
       function ruleMatches(rule, nowDate){
         rule = (rule || "all").toLowerCase();
         if(rule === "all") return true;
