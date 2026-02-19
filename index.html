@@ -1019,7 +1019,12 @@
 
         var clock = byId("clockChip");
         if(clock) clock.textContent = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
-
+var weekChip = byId("weekChip");
+var nthToday = weekOfMonth(now); // 1..5
+var dow = now.getDay(); // 0..6
+if(weekChip){
+  weekChip.textContent = "Semana: " + ordinalPt(nthToday, "f") + " (" + weekdayName[dow] + ")";
+}
         // reset
         var cards = document.querySelectorAll(".daycard");
         for(var i=0;i<cards.length;i++) cards[i].classList.remove("today");
