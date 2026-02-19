@@ -929,10 +929,24 @@
       }function ordinalPt(n, gender){ // "f" ou "m"
   if(gender === "m") return n + "º";
   return n + "ª";
+}function ruleMatches(rule, nowDate){
+    rule = (rule || "all").toLowerCase();
+
+    if(rule === "all") return true;
+
+    // regra nth: (1º, 2º, 3º, 4º da semana do mês)
+    if(rule.indexOf("nth:") === 0){
+        var nth = weekOfMonth(nowDate);
+        var list = rule.replace("nth:","").split(",");
+        for(var i=0;i<list.length;i++){
+            if(parseInt(list[i],10) === nth) return true;
+        }
+        return false;
+    }
+
+    return true;
 }
-      function ruleMatches(rule, nowDate){
-        rule = (rule || "all").toLowerCase();
-        if(rule === "all") return true;
+      function updateHighlights()
 
         // nth:2,4 etc.
         if(rule.indexOf("nth:") === 0){
