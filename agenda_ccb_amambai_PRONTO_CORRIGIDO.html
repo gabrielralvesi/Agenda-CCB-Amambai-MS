@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Agenda CCB — Amambai</title>
+  
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#ffffff; --card:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0;
+      --accent:#0f172a; --accent2:#0ea5e9; --ok:#16a34a;
+      --shadow: 0 10px 22px rgba(2,6,23,.06);
+      --shadow2: 0 22px 54px rgba(2,6,23,.10);
+      --r:18px;
+    }
+    [data-theme="dark"]{
+      --bg:#0b1220; --card:#0b152a; --ink:#e5e7eb; --muted:#94a3b8; --line:#1f2a44;
+      --accent:#e5e7eb; --accent2:#38bdf8; --ok:#22c55e;
+      --shadow: 0 14px 28px rgba(0,0,0,.28);
+      --shadow2: 0 22px 54px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(56,189,248,0.14), rgba(0,0,0,0) 55%),
+        radial-gradient(900px 600px at 110% 0%, rgba(148,163,184,0.10), rgba(0,0,0,0) 50%),
+        radial-gradient(900px 650px at 50% 120%, rgba(56,189,248,0.08), rgba(0,0,0,0) 55%),
+        linear-gradient(135deg, #0b1220 0%, #0f172a 55%, #0b1220 100%);
+      background-attachment: fixed;
+      color: var(--ink);
+    }
+    .wrap{max-width:1040px;margin:0 auto;padding:16px 14px 90px}
+    .header{
+      border:1px solid rgba(56,189,248,0.22);
+      border-radius: calc(var(--r) + 10px);
+      background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(11,18,32,0.86));
+      box-shadow: 0 18px 46px rgba(0,0,0,0.34);
+      padding: 14px;
+    }
+    [data-theme="light"] body{
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(14,165,233,0.16), rgba(0,0,0,0) 55%),
+        radial-gradient(900px 600px at 110% 0%, rgba(15,23,42,0.06), rgba(0,0,0,0) 50%),
+        linear-gradient(135deg, #f8fafc 0%, #ffffff 60%, #f1f5f9 100%);
+    }
+    [data-theme="light"] .header{
+      background: linear-gradient(180deg, rgba(248,250,252,.96), rgba(255,255,255,.88));
+      box-shadow: var(--shadow2);
+      border:1px solid var(--line);
+    }
+
+    .topo{
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto 12px auto;
+      padding: 14px 14px 12px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.22);
+      background: rgba(15,23,42,0.55);
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    [data-theme="light"] .topo{
+      background: rgba(255,255,255,0.78);
+      border:1px solid var(--line);
+    }
+
+    .logoMark{
+      width: 68px; height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(56,189,248,0.25);
+      background: #fff;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    }
+    .logoMark svg{width:60px;height:34px}
+    .titulo h1{margin:0;font-size:18px;font-weight:950;color:var(--accent);letter-spacing:.2px}
+    .subtitulo{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.35}
+
+    .toprow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .titles p{margin:0;font-size:12px;line-height:1.35;color:var(--muted)}
+    .actions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .btn{
+      appearance:none;border:1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      color: var(--accent);
+      font-weight:950;font-size:12px;padding:9px 12px;border-radius:12px;cursor:pointer;
+    }
+    [data-theme="dark"] .btn{background: rgba(11,18,32,.70);}
+    .btn.primary{border-color: rgba(56,189,248,.50);}
+    .pill{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;color:var(--muted);
+      display:flex;gap:8px;align-items:center;
+      background:rgba(255,255,255,.62)
+    }
+    [data-theme="dark"] .pill{background:rgba(11,18,32,.62)}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--accent2);box-shadow:0 0 0 4px rgba(56,189,248,.14);}
+
+    .banner{
+      margin-top:12px;border:1px solid rgba(56,189,248,.40);
+      border-radius: var(--r);background: rgba(56,189,248,.10);
+      padding:12px 14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    }
+    .banner .big{font-weight:950;font-size:13px}
+    .banner .small{font-size:12px;color:var(--muted);line-height:1.35}
+    .banner .right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .pchip{
+      font-size:12px;font-weight:950;padding:7px 10px;border-radius:999px;
+      border:1px solid rgba(56,189,248,.24);
+      background: rgba(56,189,248,.12);color: var(--accent);white-space:nowrap;
+      text-decoration:none;
+    }
+    .pchip.ok{border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.14);}
+    .pchip.dim{border-color: rgba(148,163,184,.22); background: rgba(148,163,184,.12); opacity:.9;}
+
+    .navCities{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .cityBtn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      padding:10px 12px;
+      border-radius:14px;
+      font-weight:950;
+      font-size:13px;
+      color:var(--accent);
+      text-decoration:none;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+    [data-theme="dark"] .cityBtn{background: rgba(11,18,32,.70);}
+    .cityBtn[aria-current="page"]{
+      border-color: rgba(56,189,248,.60);
+      box-shadow: 0 12px 28px rgba(56,189,248,.12);
+    }
+    .cityDot{
+      width:10px;height:10px;border-radius:999px;background:var(--accent2);
+      box-shadow:0 0 0 4px rgba(56,189,248,.10);
+    }
+
+    .nav{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .nav a{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      padding:10px 12px;border-radius:12px;
+      font-weight:950;font-size:13px;color:var(--accent);text-decoration:none;
+    }
+    [data-theme="dark"] .nav a{background: rgba(11,18,32,.70);}
+    .nav a[aria-current="true"]{border-color: rgba(56,189,248,.60);}
+
+    .controls{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .search{
+      flex:1 1 280px;
+      display:flex;gap:10px;align-items:center;
+      border:1px solid var(--line);border-radius:14px;
+      padding:10px 12px;background: rgba(255,255,255,.72);
+    }
+    [data-theme="dark"] .search{background: rgba(11,18,32,.70);}
+    .search input{border:0;outline:none;background:transparent;color:var(--ink);font-size:13px;width:100%}
+    .helper{font-size:12px;color:var(--muted)}
+    .switch{
+      display:flex;gap:10px;align-items:center;border:1px solid var(--line);
+      border-radius:14px;padding:10px 12px;background: rgba(255,255,255,.72);
+      cursor:pointer;user-select:none;
+    }
+    [data-theme="dark"] .switch{background: rgba(11,18,32,.70);}
+    .toggle{width:40px;height:22px;border-radius:999px;border:1px solid var(--line);background:rgba(148,163,184,.22);position:relative}
+    .knob{width:18px;height:18px;border-radius:999px;background:var(--accent2);position:absolute;top:1px;left:1px;transition:left .15s ease}
+    .switch.on .knob{left:19px}
+    .switch span{font-weight:950;font-size:12px;color:var(--accent);}
+
+    .section{margin-top:18px}
+    .section h3{margin:0 0 10px;font-size:14px;font-weight:950;color:var(--accent)}
+
+    .daycard{
+      border:1px solid rgba(148,163,184,0.22);
+      border-radius: var(--r);
+      background: rgba(15,23,42,0.42);
+      box-shadow: var(--shadow);
+      overflow:hidden;margin:12px 0;
+    }
+    [data-theme="light"] .daycard{background: var(--card); border:1px solid var(--line)}
+    .daycard.today{
+      border-color: rgba(56,189,248,.78);
+      box-shadow: 0 18px 46px rgba(56,189,248,.14);
+    }
+    .dayhead{
+      padding:12px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+    .dayname{font-weight:950;font-size:14px;color:var(--accent);}
+    .badge{
+      font-size:11px;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.62);
+    }
+    [data-theme="dark"] .badge{background:rgba(11,18,32,.62);}
+    .badge.today{border-color: rgba(56,189,248,.55); color: var(--accent); background: rgba(56,189,248,.14);}
+
+    .items{padding:10px 14px 14px;display:flex;flex-direction:column;gap:10px}
+    .item{
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 14px;
+      background: rgba(2,6,23,0.18);
+      padding:10px 12px;
+    }
+    [data-theme="light"] .item{background: rgba(248,250,252,.55); border:1px solid var(--line)}
+    .item.next{border-color: rgba(56,189,248,.78); box-shadow: 0 14px 28px rgba(56,189,248,.12);}
+    .item.past{opacity:.68}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
+    .title{font-weight:950;font-size:13px;line-height:1.25}
+    .place{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.35}
+    .meta{margin-top:8px;font-size:12px}
+    .link{color:var(--accent2);font-weight:950;text-decoration:none}
+    .link:hover{text-decoration:underline}
+    .time{
+      font-weight:950;font-size:12px;color: var(--accent);
+      padding:7px 10px;border-radius:999px;border:1px solid rgba(56,189,248,.24);
+      background: rgba(56,189,248,.12);white-space:nowrap;
+    }
+    .tag{
+      display:inline-block;font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.64);color: var(--muted);margin-left:6px;
+    }
+    [data-theme="dark"] .tag{background: rgba(11,18,32,.62);}
+
+    .tablecard{border:1px solid var(--line);border-radius: var(--r);background: var(--card);box-shadow: var(--shadow);overflow:hidden;}
+    [data-theme="dark"] .tablecard{background: rgba(15,23,42,0.42); border:1px solid rgba(148,163,184,0.22)}
+    .tablehead{padding:14px;border-bottom:1px solid var(--line);}
+    .tablehead .t{font-weight:950;font-size:14px;color:var(--accent);}
+    .tablehead .s{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
+    .tablewrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{text-align:left;color:var(--muted);background:rgba(15,23,42,.75);}
+    [data-theme="light"] th{background:rgba(248,250,252,.75);}
+    tr:last-child td{border-bottom:0}
+    .emph{font-weight:950}
+
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background: rgba(2,6,23,.92);color:#fff;
+      padding:10px 12px;border-radius:12px;display:none;
+      box-shadow: 0 10px 22px rgba(0,0,0,.22);
+      font-size:12px;max-width:92vw;text-align:center;z-index:50;
+    }
+    [data-theme="dark"] .toast{background: rgba(229,231,235,.92); color:#0b1220;}
+
+    @media print{
+      body{background:#fff !important;color:#000 !important}
+      .actions,.nav,.controls,.banner,.navCities{display:none !important}
+      .wrap{max-width:100%;padding:0}
+      .header{box-shadow:none;border:0;border-radius:0;background:#fff !important}
+      .topo{box-shadow:none;border:0;border-radius:0;background:#fff !important}
+      .daycard,.tablecard{box-shadow:none}
+      .daycard{page-break-inside:avoid}
+      .item{background:#fff !important}
+      .tag{border:1px solid #ddd}
+      a{color:#000 !important;text-decoration:none}
+    }
+  
+    /* Botão flutuante "HOJE" */
+    .fabToday{
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      z-index: 60;
+      border: 1px solid rgba(56,189,248,.55);
+      background: rgba(56,189,248,.16);
+      color: var(--accent);
+      font-weight: 950;
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(56,189,248,.14);
+      backdrop-filter: blur(10px);
+    }
+    .fabToday:active{ transform: translateY(1px); }
+
+    /* Evento "AGORA" */
+    .item.now{
+      border-color: rgba(34,197,94,.70) !important;
+      box-shadow: 0 14px 28px rgba(34,197,94,.12);
+    }
+    .tag.nowtag{
+      border-color: rgba(34,197,94,.38);
+      background: rgba(34,197,94,.14);
+      color: var(--accent);
+      margin-left: 8px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="topo" role="banner">
+      <div class="logoMark" aria-label="Logo CCB">
+        <svg viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CCB">
+          <rect x="0" y="0" width="240" height="140" rx="18" fill="#ffffff"/>
+          <path d="M120 18c27 0 50 17 58 40-9-6-20-10-33-10-18 0-34 8-44 20-10-12-26-20-44-20-13 0-24 4-33 10 8-23 31-40 58-40z" fill="#0f172a" opacity="0.92"/>
+          <path d="M47 78c10-10 24-16 40-16 14 0 26 5 35 13 9-8 21-13 35-13 16 0 30 6 40 16-14 26-39 44-75 44S61 104 47 78z" fill="#0ea5e9" opacity="0.92"/>
+          <text x="120" y="96" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#0f172a">CCB</text>
+        </svg>
+      </div>
+      <div class="titulo">
+        <h1>Agenda CCB — Amambai</h1>
+        <p class="subtitulo">Cultos, Reuniões e Festas Espirituais • com destaque do dia e do próximo evento</p>
+      </div>
+    </header>
+
+    <div class="header">
+      <div class="toprow">
+        <div class="titles">
+          <p><strong>Amambai — MS</strong> • Abra no Safari/Chrome para melhor compatibilidade.</p>
+        </div>
+
+        <div class="actions">
+          <div class="pill"><span class="dot"></span><span id="modeTxt">Modo escuro</span></div>
+          <button class="btn" type="button" onclick="printPage()">Imprimir</button>
+          <button class="btn" type="button" onclick="toggleTheme()">Modo claro/escuro</button>
+          <button class="btn primary" type="button" onclick="shareOrCopy()">Compartilhar</button>
+        </div>
+      </div>
+
+      <div class="banner" id="banner">
+        <div>
+          <div class="big" id="bannerBig">HOJE</div>
+          <div class="small" id="bannerSmall">Carregando…</div>
+        </div>
+        <div class="right">
+          <span class="pchip dim" id="clockChip">--:--</span>
+          <span class="pchip dim" id="weekChip">Semana: —</span>
+          <span class="pchip ok" id="countChip">Falta: —</span>
+          <a class="pchip" id="mapsChip" href="#" target="_blank" rel="noopener">Abrir no Maps</a>
+        </div>
+      </div>
+
+      <div class="navCities" aria-label="Cidades">
+        <a class="cityBtn" href="index.html" aria-current="page"><span class="cityDot"></span>Amambai</a>
+        <a class="cityBtn" href="coronel-sapucaia.html"><span class="cityDot"></span>Coronel Sapucaia</a>
+        <a class="cityBtn" href="aral-moreira.html"><span class="cityDot"></span>Aral Moreira</a>
+      </div>
+
+      <nav class="nav" aria-label="Seções">
+        <a href="#cultos" aria-current="true">Cultos e Reuniões</a>
+        <a href="#festas">Festas Espirituais</a>
+      </nav>
+
+      <div class="controls">
+        <div class="search">
+          <input id="q" type="search" placeholder="Buscar: recitativos, jovens, vila glória, 19:30..." oninput="applyAllFilters()" />
+        </div>
+        <div class="switch" id="onlyTodaySwitch" onclick="toggleOnlyToday()">
+          <div class="toggle"><div class="knob"></div></div>
+          <span>Mostrar somente o dia de hoje</span>
+        </div>
+        <div class="helper">Se abrir pelo WhatsApp e algo falhar, toque “Abrir no navegador”.</div>
+      </div>
+    </div>
+
+    <div class="section" id="cultos">
+      <h3>Cultos e Reuniões</h3>
+
+      <!-- Segunda -->
+      <article class="daycard filterable" data-day="1" data-search="segunda-feira culto com recitativos vila limeira 19:30">
+        <header class="dayhead">
+          <div class="dayname">Segunda-Feira</div>
+          <span class="badge" id="badge-1">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Vila Limeira" data-title="Culto com Recitativos"
+               data-search="segunda-feira culto com recitativos vila limeira 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Recitativos</div>
+                <div class="place">Vila Limeira</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/YusVrwZBzGDUVTDDA?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Terça -->
+      <article class="daycard filterable" data-day="2" data-search="terça-feira culto oficial vila glória 19:30">
+        <header class="dayhead">
+          <div class="dayname">Terça-Feira</div>
+          <span class="badge" id="badge-2">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Vila Glória" data-title="Culto Oficial"
+               data-search="terça-feira culto oficial vila glória 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Vila Glória</div>
+                <div class="meta">
+                  <a class="link" href="https://www.google.com/maps/search/?api=1&query=Vila%20Gl%C3%B3ria%2C%20Amambai%20MS" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Quarta -->
+      <article class="daycard filterable" data-day="3" data-search="quarta-feira culto oficial central amambai 19:30">
+        <header class="dayhead">
+          <div class="dayname">Quarta-Feira</div>
+          <span class="badge" id="badge-3">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Central Amambai" data-title="Culto Oficial"
+               data-search="quarta-feira culto oficial central amambai 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Central Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/Epb62Fj31kdGPSA38?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Quinta -->
+      <article class="daycard filterable" data-day="4" data-search="quinta-feira culto oficial vila limeira 19:30 culto oficial aldeia amambai sertãozinho 19:30 culto com recitativos aldeia amambai sertãozinho 19:30 3º quinta do mês culto com ensaio vila limeira 19:30 2º quinta do mês">
+        <header class="dayhead">
+          <div class="dayname">Quinta-Feira</div>
+          <span class="badge" id="badge-4">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Vila Limeira" data-title="Culto Oficial"
+               data-search="quinta-feira culto oficial vila limeira 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Vila Limeira</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/YusVrwZBzGDUVTDDA?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="nth:2"
+               data-place="Vila Limeira" data-title="Culto com Ensaio"
+               data-search="quinta-feira culto com ensaio vila limeira 19:30 2º quinta do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Ensaio <span class="tag">2º quinta do mês</span></div>
+                <div class="place">Vila Limeira</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/YusVrwZBzGDUVTDDA?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Aldeia Amambai — Sertãozinho" data-title="Culto Oficial"
+               data-search="quinta-feira culto oficial aldeia amambai sertãozinho 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Aldeia Amambai — Sertãozinho</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/TxG7va8TKWiLDt549?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="nth:3"
+               data-place="Aldeia Amambai — Sertãozinho" data-title="Culto com Recitativos"
+               data-search="quinta-feira culto com recitativos aldeia amambai sertãozinho 19:30 3º quinta do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Recitativos <span class="tag">3º quinta do mês</span></div>
+                <div class="place">Aldeia Amambai — Sertãozinho</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/TxG7va8TKWiLDt549?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sexta -->
+      <article class="daycard filterable" data-day="5" data-search="sexta-feira ensaio local central amambai 19:30 1º sexta do mês ensaio local vila glória 19:30 3º sexta do mês ensaio local vila cristina 19:30 4º sexta do mês">
+        <header class="dayhead">
+          <div class="dayname">Sexta-Feira</div>
+          <span class="badge" id="badge-5">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="19:30" data-rule="nth:1"
+               data-place="Central Amambai" data-title="Ensaio Local"
+               data-search="sexta-feira ensaio local central amambai 19:30 1º sexta do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Ensaio Local <span class="tag">1º sexta do mês</span></div>
+                <div class="place">Central Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/Epb62Fj31kdGPSA38?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="nth:3"
+               data-place="Vila Glória" data-title="Ensaio Local"
+               data-search="sexta-feira ensaio local vila glória 19:30 3º sexta do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Ensaio Local <span class="tag">3º sexta do mês</span></div>
+                <div class="place">Vila Glória</div>
+                <div class="meta">
+                  <a class="link" href="https://www.google.com/maps/search/?api=1&query=Vila%20Gl%C3%B3ria%2C%20Amambai%20MS" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="nth:4"
+               data-place="Vila Cristina" data-title="Ensaio Local"
+               data-search="sexta-feira ensaio local vila cristina 19:30 4º sexta do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Ensaio Local <span class="tag">4º sexta do mês</span></div>
+                <div class="place">Vila Cristina</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/JwEQhcWKc7B3tKoa8?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sábado -->
+      <article class="daycard filterable" data-day="6" data-search="sábado reunião de evangelização presídio de amambai 09:00 reunião de evangelização lar do idoso 15:00 2º sábado do mês 4º sábado do mês culto oficial aldeia limão verde 16:00 culto com recitativos aldeia amambai invernada i 18:30 2º sábado do mês culto oficial central amambai 19:30">
+        <header class="dayhead">
+          <div class="dayname">Sábado</div>
+          <span class="badge" id="badge-6">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="09:00" data-rule="all"
+               data-place="Presídio de Amambai" data-title="Reunião de Evangelização"
+               data-search="sábado reunião de evangelização presídio de amambai 09:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Reunião de Evangelização</div>
+                <div class="place">Presídio de Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://www.google.com/maps/search/?api=1&query=Pres%C3%ADdio%20de%20Amambai%2C%20Amambai%20MS" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">09:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="15:00" data-rule="nth:2,4"
+               data-place="Lar do Idoso" data-title="Reunião de Evangelização"
+               data-search="sábado reunião de evangelização lar do idoso 15:00 2º sábado do mês 4º sábado do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Reunião de Evangelização <span class="tag">2º sábado do mês</span><span class="tag">4º sábado do mês</span></div>
+                <div class="place">Lar do Idoso</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/suCfJ3F4L6ziW6Np9?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">15:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="16:00" data-rule="all"
+               data-place="Aldeia Limão Verde" data-title="Culto Oficial"
+               data-search="sábado culto oficial aldeia limão verde 16:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Aldeia Limão Verde</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/uFACLakrJXSjUJLh6?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">16:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="18:30" data-rule="nth:2"
+               data-place="Aldeia Amambai — Invernada I" data-title="Culto com Recitativos"
+               data-search="sábado culto com recitativos aldeia amambai invernada i 18:30 2º sábado do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Recitativos <span class="tag">2º sábado do mês</span></div>
+                <div class="place">Aldeia Amambai — Invernada I</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/m799Lv53BTgSxTVG7?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">18:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:30" data-rule="all"
+               data-place="Central Amambai" data-title="Culto Oficial"
+               data-search="sábado culto oficial central amambai 19:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Central Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/Epb62Fj31kdGPSA38?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:30</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Domingo -->
+      <article class="daycard filterable" data-day="0" data-search="domingo reunião de jovens e menores central amambai 09:30 reunião de jovens e menores vila cristina 09:30 culto oficial aldeia amambai central 15:00 culto com recitativo aldeia amambai central 15:00 1º domingo do mês 3º domingo do mês culto com recitativos vila glória 19:00 culto oficial central amambai 19:00 culto oficial vila cristina 19:00 culto com ensaio aldeia amambai central 15:00 4º domingo do mês">
+        <header class="dayhead">
+          <div class="dayname">Domingo</div>
+          <span class="badge" id="badge-0">Agenda</span>
+        </header>
+        <div class="items">
+          <div class="item event" data-time="09:30" data-rule="all"
+               data-place="Central Amambai" data-title="Reunião de Jovens e Menores"
+               data-search="domingo reunião de jovens e menores central amambai 09:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Reunião de Jovens e Menores</div>
+                <div class="place">Central Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/Epb62Fj31kdGPSA38?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">09:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="09:30" data-rule="all"
+               data-place="Vila Cristina" data-title="Reunião de Jovens e Menores"
+               data-search="domingo reunião de jovens e menores vila cristina 09:30">
+            <div class="row">
+              <div class="main">
+                <div class="title">Reunião de Jovens e Menores</div>
+                <div class="place">Vila Cristina</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/JwEQhcWKc7B3tKoa8?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">09:30</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="15:00" data-rule="all"
+               data-place="Aldeia Amambai Central" data-title="Culto Oficial"
+               data-search="domingo culto oficial aldeia amambai central 15:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Aldeia Amambai Central</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/u2zTX6x2Pi6UmhJ66?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">15:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="15:00" data-rule="nth:1,3"
+               data-place="Aldeia Amambai Central" data-title="Culto com Recitativo"
+               data-search="domingo culto com recitativo aldeia amambai central 15:00 1º domingo do mês 3º domingo do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Recitativo <span class="tag">1º domingo do mês</span><span class="tag">3º domingo do mês</span></div>
+                <div class="place">Aldeia Amambai Central</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/u2zTX6x2Pi6UmhJ66?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">15:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:00" data-rule="all"
+               data-place="Vila Glória" data-title="Culto com Recitativos"
+               data-search="domingo culto com recitativos vila glória 19:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Recitativos</div>
+                <div class="place">Vila Glória</div>
+                <div class="meta">
+                  <a class="link" href="https://www.google.com/maps/search/?api=1&query=Vila%20Gl%C3%B3ria%2C%20Amambai%20MS" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:00" data-rule="all"
+               data-place="Central Amambai" data-title="Culto Oficial"
+               data-search="domingo culto oficial central amambai 19:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Central Amambai</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/Epb62Fj31kdGPSA38?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="19:00" data-rule="all"
+               data-place="Vila Cristina" data-title="Culto Oficial"
+               data-search="domingo culto oficial vila cristina 19:00">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto Oficial</div>
+                <div class="place">Vila Cristina</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/JwEQhcWKc7B3tKoa8?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">19:00</div>
+            </div>
+          </div>
+
+          <div class="item event" data-time="15:00" data-rule="nth:4"
+               data-place="Aldeia Amambai Central" data-title="Culto com Ensaio"
+               data-search="domingo culto com ensaio aldeia amambai central 15:00 4º domingo do mês">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Ensaio <span class="tag">4º domingo do mês</span></div>
+                <div class="place">Aldeia Amambai Central</div>
+                <div class="meta">
+                  <a class="link" href="https://maps.app.goo.gl/u2zTX6x2Pi6UmhJ66?g_st=ic" target="_blank" rel="noopener">Abrir rota no Maps</a>
+                </div>
+              </div>
+              <div class="time">15:00</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="section" id="festas">
+      <h3>Festas Espirituais</h3>
+      <div class="tablecard filterable" id="festasCard">
+        <div class="tablehead">
+          <div class="t">Festas do bimestre</div>
+          <div class="s">Se houver festa hoje, ela entra no cálculo do “próximo evento”.</div>
+        </div>
+        <div class="tablewrap">
+          <table id="festasTable">
+            <thead>
+              <tr>
+                <th style="min-width:180px;">Bimestre</th>
+                <th style="min-width:120px;">Data</th>
+                <th style="min-width:90px;">Hora</th>
+                <th style="min-width:240px;">Festa</th>
+                <th style="min-width:220px;">Congregação</th>
+                <th style="min-width:220px;">Irmão que atender</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="festa" data-date="2026-02-21" data-time="19:30"
+                  data-search="janeiro e fevereiro 21/02/2026 19:30 busca dos dons central amambai irmão moisés crepaldi">
+                <td class="emph">Janeiro e Fevereiro</td>
+                <td>21/02/2026</td>
+                <td>19:30</td>
+                <td>Busca dos Dons</td>
+                <td>Central Amambai</td>
+                <td>Irmão Moisés Crepaldi</td>
+              </tr>
+              <tr class="festa" data-date="2026-02-26" data-time="19:30"
+                  data-search="janeiro e fevereiro 26/02/2026 19:30 culto para mocidade aldeia amambai sertãozinho irmão joão butarelli">
+                <td class="emph">Janeiro e Fevereiro</td>
+                <td>26/02/2026</td>
+                <td>19:30</td>
+                <td>Culto para Mocidade</td>
+                <td>Aldeia Amambai — Sertãozinho</td>
+                <td>Irmão João Butarelli</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <button class="fabToday" type="button" onclick="goToToday()">HOJE</button>
+
+  <script>
+    (function(){
+      var THEME_KEY = "ccb_theme";
+      var ONLY_TODAY_KEY = "ccb_only_today";
+
+      function byId(id){ return document.getElementById(id); }
+      function text(el){ return (el && (el.innerText || el.textContent)) ? (el.innerText || el.textContent) : ""; }
+      function trim(s){ return (s||"").replace(/^\s+|\s+$/g,""); }
+      function pad2(n){ n=String(n); return (n.length<2)?("0"+n):n; }
+
+      function minutesFromHHMM(hhmm){
+        if(!hhmm) return null;
+        var m = /^(\d{1,2}):(\d{2})$/.exec(hhmm);
+        if(!m) return null;
+        return parseInt(m[1],10)*60 + parseInt(m[2],10);
+      }
+
+      function toast(msg){
+        var t = byId("toast");
+        if(!t) return;
+        t.textContent = msg;
+        t.style.display = "block";
+        if(window.__t){ clearTimeout(window.__t); }
+        window.__t = setTimeout(function(){ t.style.display="none"; }, 2200);
+      }
+
+      function formatCountdown(mins){
+        if(mins < 0) mins = 0;
+        var h = Math.floor(mins/60);
+        var m = mins % 60;
+        if(h <= 0) return m + " min";
+        return h + "h " + pad2(m) + "min";
+      }
+
+      var weekdayName = ["Domingo","Segunda-Feira","Terça-Feira","Quarta-Feira","Quinta-Feira","Sexta-Feira","Sábado"];
+
+      function safeStorageGet(key, fallback){
+        try{ return localStorage.getItem(key) || fallback; }catch(e){ return fallback; }
+      }
+      function safeStorageSet(key, value){
+        try{ localStorage.setItem(key, value); }catch(e){}
+      }
+
+      window.toggleTheme = function(){
+        var cur = document.documentElement.getAttribute("data-theme") || "dark";
+        var next = (cur === "dark") ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        safeStorageSet(THEME_KEY, next);
+        var mt = byId("modeTxt");
+        if(mt) mt.textContent = (next === "dark") ? "Modo escuro" : "Modo claro";
+        toast(next === "dark" ? "Modo escuro ativado" : "Modo claro ativado");
+        applyAllFilters();
+      };
+
+      function initTheme(){
+        var saved = safeStorageGet(THEME_KEY, "dark");
+        if(saved !== "dark" && saved !== "light") saved = "dark";
+        document.documentElement.setAttribute("data-theme", saved);
+        var mt = byId("modeTxt");
+        if(mt) mt.textContent = (saved === "dark") ? "Modo escuro" : "Modo claro";
+      }
+
+      window.printPage = function(){
+        try{ window.print(); }
+        catch(e){ toast("Impressão não disponível aqui. Abra no Safari/Chrome."); }
+      };
+
+      window.shareOrCopy = function(){
+        var url = (location && location.href) ? location.href : "";
+        var title = document.title || "Agenda CCB";
+        var msg = "Agenda: " + title;
+
+        try{
+          if(navigator && navigator.share){
+            navigator.share({ title: title, text: msg, url: url }).catch(function(){});
+            return;
+          }
+        }catch(e){}
+
+        var toCopy = url ? url : msg;
+        try{
+          if(navigator && navigator.clipboard && navigator.clipboard.writeText){
+            navigator.clipboard.writeText(toCopy).then(function(){
+              toast(url ? "Link copiado ✅" : "Texto copiado ✅");
+            }).catch(function(){
+              toast("Não consegui copiar. Copie manualmente o link do navegador.");
+            });
+          } else {
+            toast("Copie o link do navegador (barra de endereço).");
+          }
+        }catch(e){
+          toast("Copie o link do navegador (barra de endereço).");
+        }
+      };
+
+      function setOnlyToday(on){
+        var sw = byId("onlyTodaySwitch");
+        if(sw){ if(on) sw.classList.add("on"); else sw.classList.remove("on"); }
+        safeStorageSet(ONLY_TODAY_KEY, on ? "1" : "0");
+      }
+      function getOnlyToday(){ return safeStorageGet(ONLY_TODAY_KEY, "0") === "1"; }
+      window.toggleOnlyToday = function(){ setOnlyToday(!getOnlyToday()); applyAllFilters(); };
+
+      // Ir para o card do dia de hoje (scroll suave)
+      function scrollToTodayCard(){
+        var d = new Date().getDay();
+        var card = document.querySelector('.daycard[data-day="' + d + '"]');
+        if(card && card.scrollIntoView){
+          card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+      window.goToToday = function(){
+        // se o modo "somente hoje" estiver desligado, mantém como está; apenas navega
+        scrollToTodayCard();
+        toast("Indo para HOJE ✅");
+      };
+
+
+      // ===== Regras (1º/2º/3º/4º do mês) =====
+      function weekOfMonth(date){
+        var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        var targetDow = d.getDay();
+        var count = 0;
+        for(var day=1; day<=d.getDate(); day++){
+          var tmp = new Date(d.getFullYear(), d.getMonth(), day);
+          if(tmp.getDay() === targetDow) count++;
+        }
+        return count; // 1..5
+      }
+
+      function ordinalPt(n, gender){
+        if(gender === "m") return n + "º";
+        return n + "ª";
+      }
+
+      function ruleMatches(rule, nowDate){
+        rule = (rule || "all").toLowerCase();
+        if(rule === "all") return true;
+
+        if(rule.indexOf("nth:") === 0){
+          var nth = weekOfMonth(nowDate);
+          var list = rule.replace("nth:","").split(",");
+          for(var i=0;i<list.length;i++){
+            if(parseInt(trim(list[i]),10) === nth) return true;
+          }
+          return false;
+        }
+        return true;
+      }
+
+      // Mostra sempre os eventos na lista, mas no DIA DE HOJE filtra pelo nth (para aparecer no "culto de hoje")
+      function applyRuleVisibility(nowOverride){
+        var now = nowOverride || new Date();
+        var todayDow = now.getDay();
+
+        // Fora do dia de hoje: mantém tudo visível (para a agenda completa).
+        var cards = document.querySelectorAll(".daycard");
+        for(var c=0;c<cards.length;c++){
+          var card = cards[c];
+          var day = parseInt(card.getAttribute("data-day"),10);
+          var focus = (day === todayDow);
+          var evs = card.querySelectorAll(".event");
+
+          // 1) Mostra tudo nos outros dias
+          if(!focus){
+            for(var i=0;i<evs.length;i++){
+              evs[i].style.display = "";
+            }
+            continue;
+          }
+
+          // 2) No dia de hoje: aplica regra nth
+          for(var j=0;j<evs.length;j++){
+            var ev = evs[j];
+            var rule = ev.getAttribute("data-rule") || "all";
+            var ok = ruleMatches(rule, now);
+            ev.style.display = ok ? "" : "none";
+          }
+
+          // 3) No dia de hoje: se existir evento "especial" (nth) no mesmo horário+local,
+          // esconde o evento "all" correspondente (ex: 3ª quinta → mostra Recitativos, esconde Culto Oficial).
+          var specialKeys = {};
+          for(var k=0;k<evs.length;k++){
+            var ev2 = evs[k];
+            if(ev2.style.display === "none") continue;
+            var rule2 = (ev2.getAttribute("data-rule") || "all").toLowerCase();
+            if(rule2 !== "all"){
+              var key = (ev2.getAttribute("data-time")||"") + "||" + (ev2.getAttribute("data-place")||"") ;
+              specialKeys[key] = true;
+            }
+          }
+          for(var k2=0;k2<evs.length;k2++){
+            var ev3 = evs[k2];
+            if(ev3.style.display === "none") continue;
+            var rule3 = (ev3.getAttribute("data-rule") || "all").toLowerCase();
+            if(rule3 === "all"){
+              var key3 = (ev3.getAttribute("data-time")||"") + "||" + (ev3.getAttribute("data-place")||"");
+              if(specialKeys[key3]) ev3.style.display = "none";
+            }
+          }
+        }
+      }
+
+      window.applyAllFilters = function(){
+        applyRuleVisibility();
+
+        var q = trim((byId("q") && byId("q").value) ? byId("q").value : "").toLowerCase();
+        var onlyToday = getOnlyToday();
+        var today = new Date().getDay();
+
+        var cards = document.querySelectorAll(".daycard");
+        for(var i=0;i<cards.length;i++){
+          var card = cards[i];
+          var day = parseInt(card.getAttribute("data-day"),10);
+          var hay = (card.getAttribute("data-search") || text(card)).toLowerCase();
+
+          var show = true;
+          if(q && hay.indexOf(q) === -1) show = false;
+          if(onlyToday && day !== today) show = false;
+
+          if(show){
+            var visibleItems = card.querySelectorAll(".event");
+            var anyVisible = false;
+            for(var k=0;k<visibleItems.length;k++){
+              if(visibleItems[k].style.display !== "none") { anyVisible = true; break; }
+            }
+            if(!anyVisible) show = false;
+          }
+
+          card.style.display = show ? "" : "none";
+        }
+
+        var festaCard = byId("festasCard");
+        var festaTrs = document.querySelectorAll("#festasTable tbody tr");
+        var anyF=false;
+        for(var k2=0;k2<festaTrs.length;k2++){
+          var tr=festaTrs[k2];
+          var fhay=(tr.getAttribute("data-search")||text(tr)).toLowerCase();
+          var showF=true;
+          if(q && fhay.indexOf(q)===-1) showF=false;
+          tr.style.display = showF ? "" : "none";
+          if(showF) anyF=true;
+        }
+        if(festaCard){
+          if(q && !anyF) festaCard.style.display="none";
+          else festaCard.style.display="";
+        }
+      };
+
+      function updateHighlights(){
+        applyRuleVisibility();
+
+        var now = new Date();
+        var day = now.getDay();
+        var nowMin = now.getHours()*60 + now.getMinutes();
+        var dd = pad2(now.getDate());
+        var mm = pad2(now.getMonth()+1);
+        var yyyy = now.getFullYear();
+        var todayISO = yyyy + "-" + mm + "-" + dd;
+        var todayDMY = dd + "/" + mm + "/" + yyyy;
+
+        var clock = byId("clockChip");
+        if(clock) clock.textContent = pad2(now.getHours()) + ":" + pad2(now.getMinutes());
+
+        var weekChip = byId("weekChip");
+        var nthToday = weekOfMonth(now);
+        if(weekChip){
+          weekChip.textContent = "Semana: " + ordinalPt(nthToday, "f") + " (" + weekdayName[day] + ")";
+        }
+
+        // reset destaque
+        var cards = document.querySelectorAll(".daycard");
+        for(var i=0;i<cards.length;i++) cards[i].classList.remove("today");
+        for(var b=0;b<7;b++){
+          var bd=byId("badge-"+b);
+          if(bd){ bd.classList.remove("today"); bd.textContent="Agenda"; }
+        }
+        var items = document.querySelectorAll(".event");
+        for(var j=0;j<items.length;j++){
+          items[j].classList.remove("next");
+          items[j].classList.remove("past");
+        }
+
+        var todayCard = document.querySelector('.daycard[data-day="' + day + '"]');
+        if(todayCard) todayCard.classList.add("today");
+        var badge = byId("badge-"+day);
+        if(badge){ badge.classList.add("today"); badge.textContent="Hoje"; }
+
+        var events = [];
+        if(todayCard){
+          var its = todayCard.querySelectorAll(".event");
+          for(var k=0;k<its.length;k++){
+            var it=its[k];
+            if(it.style.display === "none") continue;
+
+            var t=it.getAttribute("data-time")||"";
+            var mins=minutesFromHHMM(t);
+            if(mins!==null){
+              var a = it.querySelector("a.link");
+              events.push({
+                type:"Culto ou Reunião",
+                mins:mins,
+                timeText:t,
+                title:it.getAttribute("data-title")||trim(text(it.querySelector(".title"))),
+                place:it.getAttribute("data-place")||trim(text(it.querySelector(".place"))),
+                maps: a ? a.href : "#",
+                ref:it
+              });
+            }
+          }
+        }
+
+        // festas do dia
+        var trs = document.querySelectorAll("#festasTable tbody tr.festa");
+        for(var f=0;f<trs.length;f++){
+          var tr=trs[f];
+          var d=trim(tr.getAttribute("data-date")||"");
+          var t2=trim(tr.getAttribute("data-time")||"");
+          if(d && d===todayISO){
+            var mins2 = minutesFromHHMM(t2);
+            if(mins2===null) mins2=0;
+            var tds = tr.querySelectorAll("td");
+            var place = trim(text(tds[4]));
+            var maps = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(place + ", Amambai MS");
+            events.push({
+              type:"Festa Espiritual",
+              mins:mins2,
+              timeText:t2||"—",
+              title:trim(text(tds[3])),
+              place:place,
+              maps:maps,
+              ref:null
+            });
+          }
+        }
+
+
+        // marca evento "AGORA" (janela de 45 min após o horário)
+        var nowEv = null;
+        for(var e0=0;e0<events.length;e0++){
+          if(events[e0].mins <= nowMin && nowMin < (events[e0].mins + 45)){
+            nowEv = events[e0];
+          }
+        }
+        // limpa marcações anteriores e tags "AGORA"
+        for(var z=0; z<events.length; z++){
+          if(events[z].ref){
+            events[z].ref.classList.remove("now");
+            var tnode = events[z].ref.querySelector(".title");
+            if(tnode){
+              var existing = tnode.querySelector(".nowtag");
+              if(existing) existing.remove();
+            }
+          }
+        }
+        if(nowEv && nowEv.ref){
+          nowEv.ref.classList.add("now");
+          var tt = nowEv.ref.querySelector(".title");
+          if(tt){
+            var s = document.createElement("span");
+            s.className = "tag nowtag";
+            s.textContent = "AGORA";
+            tt.appendChild(s);
+          }
+        }
+
+
+        events.sort(function(a,b){ return a.mins-b.mins; });
+
+        var nextEv=null;
+        for(var e=0;e<events.length;e++){
+          if(events[e].mins>=nowMin){ nextEv=events[e]; break; }
+        }
+
+        for(var c=0;c<events.length;c++){
+          if(events[c].ref){
+            if(events[c].mins < nowMin) events[c].ref.classList.add("past");
+            else if(nextEv && events[c].mins === nextEv.mins) events[c].ref.classList.add("next");
+          }
+        }
+
+        var big = byId("bannerBig");
+        var small = byId("bannerSmall");
+        var count = byId("countChip");
+        var mapsChip = byId("mapsChip");
+
+        if(big) big.textContent = "HOJE — " + weekdayName[day] + " (" + todayDMY + ")";
+
+        if(!events.length){
+          if(small) small.textContent = "Nenhum evento cadastrado para hoje (ou não há evento nesta semana do mês).";
+          if(count) count.textContent = "Falta: —";
+          if(mapsChip) mapsChip.style.display="none";
+          return;
+        }
+
+        // Mostra TODOS os eventos de hoje no banner (assim a 3ª quinta aparece quando for a 3ª quinta)
+        var lines = [];
+        for(var i2=0;i2<events.length;i2++){
+          lines.push(events[i2].timeText + " — " + events[i2].title + " (" + events[i2].place + ")");
+        }
+        if(small) small.innerHTML = "Hoje: <br>" + lines.join("<br>");
+
+
+        if(nowEv){
+          if(small) small.textContent = "Agora: " + nowEv.timeText + " — " + nowEv.title + " (" + nowEv.place + ")";
+          if(mapsChip){
+            mapsChip.style.display="inline-flex";
+            mapsChip.href = nowEv.maps || "#";
+            mapsChip.textContent="Abrir no Maps";
+          }
+          if(count) count.textContent = "Falta: " + formatCountdown((nowEv.mins + 45) - nowMin) + " (fim da janela)";
+          return;
+        }
+
+        if(nextEv){
+          var left = nextEv.mins - nowMin;
+          if(count) count.textContent = "Falta: " + formatCountdown(left);
+          if(mapsChip){
+            mapsChip.style.display="inline-flex";
+            mapsChip.href = nextEv.maps || "#";
+            mapsChip.textContent="Abrir no Maps";
+          }
+        } else {
+          if(count) count.textContent = "Falta: 0 min";
+          if(mapsChip) mapsChip.style.display="none";
+        }
+      }
+
+      function init(){
+        initTheme();
+        setOnlyToday(getOnlyToday());
+        updateHighlights();
+        applyAllFilters();
+        // rola automaticamente para o dia de hoje
+        setTimeout(scrollToTodayCard, 150);
+        setInterval(function(){ updateHighlights(); applyAllFilters(); }, 60000);
+      }
+      init();
+    })();
+  </script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
