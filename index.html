@@ -175,7 +175,7 @@
     .switch.on .knob{left:19px}
     .switch span{font-weight:950;font-size:12px;color:var(--accent);}
     
-    /* Botão admin */
+    /* Botão admin - só aparece quando logado */
     .admin-btn{
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white !important;
@@ -265,7 +265,7 @@
     tr:last-child td{border-bottom:0}
     .emph{font-weight:950}
     
-    /* Ações da tabela */
+    /* Ações da tabela - só aparecem para admin */
     .action-btn{
       background: none;
       border: 1px solid var(--line);
@@ -347,6 +347,62 @@
       backdrop-filter: blur(10px);
     }
     
+    /* Login modal */
+    .login-modal{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .login-box{
+      background: var(--card);
+      border: 2px solid var(--accent);
+      border-radius: var(--r);
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    .login-box h2{
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .login-box input{
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.1);
+      color: var(--ink);
+      font-size: 16px;
+    }
+    .login-box button{
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 950;
+      cursor: pointer;
+    }
+    .login-box .admin-info{
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
     /* Impressão */
     @media print{
       body{background:#fff !important;color:#000 !important}
@@ -383,7 +439,8 @@
         <div class="actions">
           <div class="pill"><span class="dot"></span><span id="modeTxt">Modo escuro</span></div>
           <button class="btn" type="button" onclick="toggleTheme()">🌓 Tema</button>
-          <button class="btn admin-btn" type="button" onclick="mostrarModalFesta()">➕ Adicionar Festa</button>
+          <button class="btn" id="adminLoginBtn" type="button" onclick="mostrarLogin()">🔐 Admin</button>
+          <button class="btn admin-btn" id="adminLogoutBtn" type="button" onclick="logoutAdmin()" style="display: none;">🚪 Sair</button>
         </div>
       </div>
 
@@ -504,7 +561,7 @@
             </div>
           </div>
 
-          <!-- 2ª quinta do mês -->
+          <!-- 2ª quinta do mês - Culto com Ensaio na Vila Limeira às 19:30 -->
           <div class="item event" data-time="19:30" data-rule="nth:2" data-place="Vila Limeira" data-title="Culto com Ensaio">
             <div class="row">
               <div class="main">
@@ -546,7 +603,7 @@
           <span class="badge" id="badge-5">Agenda</span>
         </header>
         <div class="items">
-          <!-- 1ª sexta do mês -->
+          <!-- 1ª sexta do mês - Ensaio Local na Central Amambai às 19:30 -->
           <div class="item event" data-time="19:30" data-rule="nth:1" data-place="Central Amambai" data-title="Ensaio Local">
             <div class="row">
               <div class="main">
@@ -557,7 +614,7 @@
             </div>
           </div>
 
-          <!-- 3ª sexta do mês -->
+          <!-- 3ª sexta do mês - Ensaio Local na Vila Cristina às 19:30 -->
           <div class="item event" data-time="19:30" data-rule="nth:3" data-place="Vila Cristina" data-title="Ensaio Local">
             <div class="row">
               <div class="main">
@@ -568,7 +625,7 @@
             </div>
           </div>
 
-          <!-- 4ª sexta do mês -->
+          <!-- 4ª sexta do mês - Ensaio Local na Vila Glória às 19:30 -->
           <div class="item event" data-time="19:30" data-rule="nth:4" data-place="Vila Glória" data-title="Ensaio Local">
             <div class="row">
               <div class="main">
@@ -621,7 +678,7 @@
             </div>
           </div>
 
-          <!-- 2ª sábado -->
+          <!-- 2ª sábado - Culto com Recitativos na Aldeia Invernada I às 18:30 -->
           <div class="item event" data-time="18:30" data-rule="nth:2" data-place="Aldeia Amambai — Invernada I" data-title="Culto com Recitativos">
             <div class="row">
               <div class="main">
@@ -674,7 +731,7 @@
             </div>
           </div>
 
-          <!-- Todas as semanas -->
+          <!-- Todas as semanas - Culto Oficial na Aldeia Central -->
           <div class="item event" data-time="15:00" data-rule="all" data-place="Aldeia Amambai Central" data-title="Culto Oficial">
             <div class="row">
               <div class="main">
@@ -685,11 +742,22 @@
             </div>
           </div>
 
-          <!-- 1ª e 3ª domingo -->
+          <!-- 1º e 3º domingo - Culto com Recitativo na Aldeia Central às 15:00 -->
           <div class="item event" data-time="15:00" data-rule="nth:1,3" data-place="Aldeia Amambai Central" data-title="Culto com Recitativo">
             <div class="row">
               <div class="main">
                 <div class="title">Culto com Recitativo <span class="tag">1º e 3º domingo</span></div>
+                <div class="place">Aldeia Amambai Central</div>
+              </div>
+              <div class="time">15:00</div>
+            </div>
+          </div>
+
+          <!-- 4º domingo - Culto com Ensaio na Aldeia Central às 15:00 -->
+          <div class="item event" data-time="15:00" data-rule="nth:4" data-place="Aldeia Amambai Central" data-title="Culto com Ensaio">
+            <div class="row">
+              <div class="main">
+                <div class="title">Culto com Ensaio <span class="tag">4º domingo</span></div>
                 <div class="place">Aldeia Amambai Central</div>
               </div>
               <div class="time">15:00</div>
@@ -732,16 +800,16 @@
       </article>
     </div>
 
-    <!-- Seção Festas Espirituais com CRUD -->
+    <!-- Seção Festas Espirituais -->
     <div class="section" id="festas">
       <h3>Festas Espirituais</h3>
       <div class="tablecard" id="festasCard">
         <div class="tablehead">
           <div>
             <div class="t">Festas da Região</div>
-            <div class="s">Clique em editar para alterar ou excluir</div>
+            <div class="s" id="festasSubtitle">Próximas festas programadas</div>
           </div>
-          <button class="btn success" onclick="mostrarModalFesta()">➕ Nova Festa</button>
+          <button class="btn success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display: none;">➕ Nova Festa</button>
         </div>
         <div class="tablewrap">
           <table id="festasTable">
@@ -752,7 +820,7 @@
                 <th>Festa</th>
                 <th>Congregação</th>
                 <th>Irmão que atende</th>
-                <th>Ações</th>
+                <th id="acoesHeader" style="display: none;">Ações</th>
               </tr>
             </thead>
             <tbody id="festas-tbody">
@@ -769,6 +837,19 @@
   
   <!-- Botão HOJE -->
   <button class="fabToday" onclick="irParaHoje()">HOJE</button>
+
+  <!-- Modal de Login -->
+  <div id="loginModal" class="login-modal" style="display: none;">
+    <div class="login-box">
+      <h2>🔐 Acesso Admin</h2>
+      <input type="password" id="adminSenha" placeholder="Digite a senha" onkeypress="if(event.key==='Enter') fazerLogin()">
+      <button onclick="fazerLogin()">Entrar</button>
+      <button onclick="fecharLogin()" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">Cancelar</button>
+      <div class="admin-info">
+        <small>Apenas para administradores da agenda</small>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal para adicionar/editar festa -->
   <div id="festaModal" class="modal" style="display: none;">
@@ -808,10 +889,51 @@
   </div>
 
   <script>
+    // ===== CONFIGURAÇÕES =====
+    const ADMIN_SENHA = "ccb2025"; // Mude para a senha que você quiser
+    
     // ===== VARIÁVEIS GLOBAIS =====
     let festas = [];
     let festaEditandoId = null;
     const STORAGE_KEY = 'ccb_festas';
+    let isAdmin = false;
+    
+    // ===== FUNÇÕES DE LOGIN =====
+    function mostrarLogin() {
+      document.getElementById('loginModal').style.display = 'flex';
+      document.getElementById('adminSenha').value = '';
+      document.getElementById('adminSenha').focus();
+    }
+    
+    function fecharLogin() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+    
+    function fazerLogin() {
+      const senha = document.getElementById('adminSenha').value;
+      if (senha === ADMIN_SENHA) {
+        isAdmin = true;
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('adminLoginBtn').style.display = 'none';
+        document.getElementById('adminLogoutBtn').style.display = 'inline-block';
+        document.getElementById('novaFestaBtn').style.display = 'inline-block';
+        document.getElementById('acoesHeader').style.display = 'table-cell';
+        mostrarToast('✅ Modo admin ativado');
+        renderizarFestas(); // Re-renderizar para mostrar botões de ação
+      } else {
+        alert('Senha incorreta!');
+      }
+    }
+    
+    function logoutAdmin() {
+      isAdmin = false;
+      document.getElementById('adminLoginBtn').style.display = 'inline-block';
+      document.getElementById('adminLogoutBtn').style.display = 'none';
+      document.getElementById('novaFestaBtn').style.display = 'none';
+      document.getElementById('acoesHeader').style.display = 'none';
+      mostrarToast('🔓 Modo admin desativado');
+      renderizarFestas(); // Re-renderizar sem botões de ação
+    }
     
     // ===== FUNÇÕES DE INICIALIZAÇÃO =====
     function carregarFestas() {
@@ -834,7 +956,7 @@
             id: '2', 
             tipo: 'santa-ceia',
             titulo: 'Santa Ceia',
-            data: '2026-02-15', 
+            data: '2026-03-15', 
             hora: '19:30', 
             local: 'Central Amambai', 
             irmao: 'Moisés Crepaldi' 
@@ -843,10 +965,19 @@
             id: '3', 
             tipo: 'batismo',
             titulo: 'Batismo',
-            data: '2026-02-22', 
+            data: '2026-03-22', 
             hora: '15:00', 
             local: 'Vila Limeira', 
             irmao: 'Antonio Silva' 
+          },
+          { 
+            id: '4', 
+            tipo: 'ensaio-regional',
+            titulo: 'Ensaio Regional',
+            data: '2026-04-10', 
+            hora: '19:30', 
+            local: 'Central Amambai', 
+            irmao: 'José Oliveira' 
           }
         ];
         salvarFestas();
@@ -873,8 +1004,8 @@
       if (festasFuturas.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" style="text-align: center; padding: 30px;">
-              Nenhuma festa programada. Clique em "Nova Festa" para adicionar.
+            <td colspan="${isAdmin ? '6' : '5'}" style="text-align: center; padding: 30px;">
+              Nenhuma festa programada no momento.
             </td>
           </tr>
         `;
@@ -896,6 +1027,14 @@
           default: icone = '⭐';
         }
         
+        // Só mostra botões de ação se for admin
+        const acoes = isAdmin ? `
+          <td>
+            <button class="action-btn edit" onclick="editarFesta('${f.id}')">✏️ Editar</button>
+            <button class="action-btn delete" onclick="excluirFesta('${f.id}')">🗑️ Excluir</button>
+          </td>
+        ` : '';
+        
         return `
           <tr data-id="${f.id}">
             <td class="emph">${dataFormatada}</td>
@@ -903,10 +1042,7 @@
             <td>${icone} ${f.titulo}</td>
             <td>${f.local}</td>
             <td>Ir. ${f.irmao}</td>
-            <td>
-              <button class="action-btn edit" onclick="editarFesta('${f.id}')">✏️ Editar</button>
-              <button class="action-btn delete" onclick="excluirFesta('${f.id}')">🗑️ Excluir</button>
-            </td>
+            ${acoes}
           </tr>
         `;
       }).join('');
@@ -914,6 +1050,11 @@
     
     // ===== FUNÇÕES DO MODAL =====
     function mostrarModalFesta(festa = null) {
+      if (!isAdmin) {
+        mostrarToast('🔐 Apenas administradores podem adicionar festas');
+        return;
+      }
+      
       const modal = document.getElementById('festaModal');
       const modalTitulo = document.getElementById('modalTitulo');
       
@@ -955,6 +1096,8 @@
     }
     
     function salvarFesta() {
+      if (!isAdmin) return;
+      
       const tipo = document.getElementById('festaTipo').value;
       let titulo = document.getElementById('festaTitulo').value;
       const data = document.getElementById('festaData').value;
@@ -1014,11 +1157,13 @@
     }
     
     function editarFesta(id) {
+      if (!isAdmin) return;
       const festa = festas.find(f => f.id === id);
       if (festa) mostrarModalFesta(festa);
     }
     
     function excluirFesta(id) {
+      if (!isAdmin) return;
       if (confirm('Tem certeza que deseja excluir esta festa?')) {
         festas = festas.filter(f => f.id !== id);
         salvarFestas();
@@ -1092,7 +1237,7 @@
         card.style.display = mostrar ? '' : 'none';
       });
       
-      // Filtrar eventos dentro dos cards
+      // Filtrar eventos dentro dos cards baseado na semana do mês
       document.querySelectorAll('.event').forEach(evento => {
         const rule = evento.dataset.rule || 'all';
         if (rule !== 'all') {
@@ -1103,6 +1248,8 @@
           } else {
             evento.style.display = '';
           }
+        } else {
+          evento.style.display = '';
         }
       });
       
@@ -1125,7 +1272,7 @@
       document.getElementById('bannerBig').textContent = 
         `HOJE — ${getNomeDia(dia)} (${formatarData()})`;
       
-      // Buscar eventos de hoje
+      // Buscar eventos de hoje que estão visíveis
       const eventosHoje = Array.from(document.querySelectorAll(`.daycard[data-day="${dia}"] .event`))
         .filter(e => e.style.display !== 'none');
       
