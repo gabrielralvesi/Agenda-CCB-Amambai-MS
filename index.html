@@ -3,14 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Agenda CCB — Amambai</title>
+  <title>CCB Amambai — Agenda Espiritual</title>
   
   <!-- PWA Meta Tags -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Agenda%20CCB%20Amambai%22%2C%22short_name%22%3A%22Agenda%20CCB%22%2C%22description%22%3A%22Cultos%2C%20Reuni%C3%B5es%20e%20Festas%20Espirituais%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1220%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%230f172a%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2265%22%20font-size%3D%2250%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%3EC%3C%2Ftext%3E%3C%2Fsvg%3E%22%7D%5D%7D">
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22CCB%20Amambai%22%2C%22short_name%22%3A%22CCB%20Amambai%22%2C%22description%22%3A%22Cultos%2C%20Reuni%C3%B5es%20e%20Festas%20Espirituais%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%230f172a%22%7D">
   <meta name="theme-color" content="#0f172a">
-  
-  <!-- Leaflet CSS (para mapas) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
   <style>
     /* RESET E VARIÁVEIS */
@@ -33,7 +30,7 @@
       --glass: rgba(15, 23, 42, 0.55);
       --shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
       --radius: 18px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition: all 0.3s ease;
     }
 
     [data-theme="light"] {
@@ -47,12 +44,11 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       transition: var(--transition);
-      line-height: 1.5;
     }
 
     .container {
@@ -61,14 +57,74 @@
       padding: 16px 20px 90px;
     }
 
-    /* GLASS EFFECT */
-    .glass {
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
+    /* LOGO OFICIAL CCB AMAMBAI */
+    .logo-oficial {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border: 2px solid var(--accent);
+      border-radius: 30px;
+      padding: 25px 20px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(56, 189, 248, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* HEADER MODERNO */
+    .logo-oficial::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%);
+      animation: rotate 30s linear infinite;
+    }
+
+    .logo-principal {
+      font-family: 'Times New Roman', serif;
+      font-size: 5rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      color: var(--accent);
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+      line-height: 1;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-secundario {
+      font-family: 'Times New Roman', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: white;
+      margin-top: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-cidade {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(56, 189, 248, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-cruz {
+      font-size: 2rem;
+      margin-top: 10px;
+      color: var(--accent);
+      animation: pulse 2s infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
     .header {
       display: flex;
       justify-content: space-between;
@@ -78,31 +134,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       margin-bottom: 20px;
-      animation: slideDown 0.5s ease;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo-icon {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      color: white;
-      transform: rotate(5deg);
-      transition: var(--transition);
-    }
-
-    .logo-icon:hover {
-      transform: rotate(15deg) scale(1.1);
+      backdrop-filter: blur(10px);
     }
 
     .status {
@@ -121,13 +153,11 @@
       font-size: 0.9rem;
     }
 
-    /* BANNER INTERATIVO */
+    /* BANNER */
     .banner {
       background: linear-gradient(135deg, 
         rgba(56, 189, 248, 0.2), 
-        rgba(34, 197, 94, 0.2),
-        rgba(249, 115, 22, 0.2)
-      );
+        rgba(34, 197, 94, 0.2));
       border: 1px solid var(--accent);
       border-radius: var(--radius);
       padding: 20px 24px;
@@ -137,84 +167,15 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      animation: pulse 2s infinite;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .banner::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        45deg,
-        transparent,
-        rgba(255, 255, 255, 0.1),
-        transparent
-      );
-      transform: rotate(45deg);
-      animation: shine 3s infinite;
-    }
-
-    .banner-content {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .banner-icon {
-      width: 60px;
-      height: 60px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      animation: bounce 2s infinite;
     }
 
     .banner-title {
       font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 4px;
     }
 
     .banner-subtitle {
       color: var(--text-muted);
-    }
-
-    .banner-actions {
-      display: flex;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--glass);
-      color: var(--text);
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-
-    .btn-circle:hover {
-      background: var(--accent);
-      color: white;
-      transform: translateY(-4px) rotate(360deg);
     }
 
     /* CONTROLES */
@@ -224,66 +185,23 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       margin-bottom: 20px;
-    }
-
-    .search-container {
-      position: relative;
-      margin-bottom: 16px;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
+      backdrop-filter: blur(10px);
     }
 
     .search-input {
       width: 100%;
-      padding: 14px 16px 14px 48px;
+      padding: 14px 16px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
       border-radius: 999px;
       color: var(--text);
       font-size: 1rem;
-      transition: var(--transition);
+      margin-bottom: 16px;
     }
 
     .search-input:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
-    }
-
-    .search-suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      margin-top: 8px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      max-height: 300px;
-      overflow-y: auto;
-      display: none;
-      z-index: 100;
-    }
-
-    .search-container:focus-within .search-suggestions {
-      display: block;
-    }
-
-    .suggestion-item {
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: var(--transition);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .suggestion-item:hover {
-      background: rgba(56, 189, 248, 0.1);
     }
 
     .filters {
@@ -310,7 +228,6 @@
       background: var(--border);
       border-radius: 999px;
       position: relative;
-      transition: var(--transition);
     }
 
     .toggle-slider:before {
@@ -341,15 +258,11 @@
       border-radius: 999px;
       cursor: pointer;
       transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .btn-icon:hover {
       background: var(--accent);
       color: white;
-      transform: translateY(-2px);
     }
 
     /* VIEW SELECTOR */
@@ -372,11 +285,6 @@
       cursor: pointer;
       border-radius: 999px;
       font-weight: 600;
-      transition: var(--transition);
-    }
-
-    .view-btn:hover {
-      color: var(--text);
     }
 
     .view-btn.active {
@@ -384,7 +292,7 @@
       color: white;
     }
 
-    /* GRID DE EVENTOS */
+    /* EVENT CARDS */
     .events-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -399,162 +307,131 @@
       padding: 20px;
       transition: var(--transition);
       position: relative;
-      overflow: hidden;
       cursor: pointer;
-      animation: fadeIn 0.5s ease;
     }
 
     .event-card:hover {
-      transform: translateY(-6px) scale(1.02);
+      transform: translateY(-4px);
       border-color: var(--accent);
-      box-shadow: 0 20px 30px -10px rgba(56, 189, 248, 0.3);
     }
 
     .event-card.now {
       border-color: var(--success);
-      box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
-    }
-
-    .event-card.next {
-      border-color: var(--accent);
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
     }
 
     .event-tag {
       position: absolute;
       top: 12px;
       right: 12px;
-      padding: 6px 12px;
+      padding: 4px 12px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
-      animation: pulse 2s infinite;
+      background: var(--accent);
+      color: white;
     }
 
     .event-tag.now {
       background: var(--success);
-      color: white;
-    }
-
-    .event-tag.next {
-      background: var(--accent);
-      color: white;
     }
 
     .event-time {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--accent);
-      margin-bottom: 12px;
-      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 8px;
     }
 
-    .event-title {
-      font-size: 1.2rem;
+    .event-week {
+      display: inline-block;
+      padding: 4px 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    /* FESTAS */
+    .festas-section {
+      padding: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .festas-section h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+
+    .festas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .festa-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(34, 197, 94, 0.1));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .festa-card.passada {
+      opacity: 0.5;
+      filter: grayscale(0.7);
+      pointer-events: none;
+    }
+
+    .festa-card:hover:not(.passada) {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .festa-tipo {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
       font-weight: 600;
       margin-bottom: 8px;
     }
 
-    .event-place {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
+    .festa-tipo.santa-ceia {
+      background: rgba(249, 115, 22, 0.2);
+      color: #f97316;
     }
 
-    .event-progress {
-      width: 100%;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin: 16px 0;
-      overflow: hidden;
+    .festa-tipo.batismo {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
     }
 
-    .event-progress-bar {
-      height: 100%;
-      background: var(--success);
-      transition: width 1s linear;
+    .festa-data {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 8px 0;
     }
 
-    .event-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .event-action {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid var(--border);
-      background: var(--glass);
-      color: var(--text);
+    .festa-passada-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 8px;
+      background: var(--danger);
       border-radius: 999px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      font-size: 0.9rem;
-    }
-
-    .event-action:hover {
-      background: var(--accent);
+      font-size: 0.7rem;
       color: white;
     }
 
-    /* VISUALIZAÇÃO SEMANAL */
-    .weekly-view {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    .weekly-day {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      min-height: 500px;
-    }
-
-    .weekly-day.today {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    }
-
-    .weekly-header {
-      font-weight: 700;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    .weekly-date {
-      font-size: 1.2rem;
-      color: var(--accent);
-    }
-
-    .weekly-event {
-      padding: 10px;
-      background: rgba(56, 189, 248, 0.1);
-      border-radius: 8px;
-      margin-bottom: 8px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .weekly-event:hover {
-      background: rgba(56, 189, 248, 0.2);
-      transform: scale(1.02);
-    }
-
-    /* VISUALIZAÇÃO MENSAL */
+    /* CALENDÁRIO MENSAL */
     .monthly-view {
       background: var(--card);
       border: 1px solid var(--border);
@@ -576,13 +453,12 @@
     .month-week {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      border-bottom: 1px solid var(--border);
     }
 
     .month-day {
       min-height: 100px;
       padding: 8px;
-      border-right: 1px solid var(--border);
+      border: 1px solid var(--border);
     }
 
     .month-day.today {
@@ -597,201 +473,23 @@
     .month-event {
       font-size: 0.7rem;
       padding: 2px 4px;
-      background: rgba(56, 189, 248, 0.2);
-      border-radius: 2px;
       margin-bottom: 2px;
+      border-radius: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      cursor: pointer;
     }
 
-    /* MAPA */
-    .map-view {
-      height: 500px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      margin-bottom: 30px;
-    }
-
-    /* FESTAS */
-    .festas-section {
-      padding: 20px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-top: 30px;
-    }
-
-    .festas-section h3 {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-
-    .festas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .festa-card {
-      background: linear-gradient(135deg, 
-        rgba(56, 189, 248, 0.1), 
-        rgba(34, 197, 94, 0.1)
-      );
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-
-    .festa-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-    }
-
-    .festa-bimestre {
-      font-size: 0.8rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-
-    .festa-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .festa-details {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 8px 12px;
-      margin: 12px 0;
-      font-size: 0.9rem;
-    }
-
-    .festa-irmao {
-      font-weight: 600;
-      color: var(--success);
-    }
-
-    /* MODAL */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      max-width: 500px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      animation: slideUp 0.3s ease;
-    }
-
-    .modal-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-header h2 {
-      margin: 0;
-      font-size: 1.3rem;
-    }
-
-    .modal-close {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0 8px;
-      transition: var(--transition);
-    }
-
-    .modal-close:hover {
-      color: var(--danger);
-      transform: rotate(90deg);
-    }
-
-    .modal-body {
-      padding: 20px;
-    }
-
-    .modal-body p {
-      margin: 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .modal-footer {
-      padding: 20px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .modal-footer button {
-      flex: 1;
-      min-width: 140px;
-      padding: 12px;
-      border: none;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: white;
-    }
-
-    .btn-success:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(34, 197, 94, 0.3);
-    }
+    .month-event.culto { background: rgba(56, 189, 248, 0.3); }
+    .month-event.festa { background: rgba(34, 197, 94, 0.3); }
+    .month-event.especial { background: rgba(249, 115, 22, 0.3); }
 
     /* FAB */
     .fab {
       position: fixed;
       right: 24px;
       bottom: 24px;
-      background: linear-gradient(135deg, var(--accent), #6366f1);
+      background: var(--accent);
       color: white;
       border: none;
       border-radius: 999px;
@@ -801,14 +499,10 @@
       box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
       transition: var(--transition);
       z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1rem;
     }
 
     .fab:hover {
-      transform: translateY(-6px) scale(1.05);
+      transform: translateY(-4px);
       box-shadow: 0 12px 28px rgba(56, 189, 248, 0.5);
     }
 
@@ -826,187 +520,66 @@
       box-shadow: var(--shadow);
       z-index: 1000;
       display: none;
-      animation: slideUp 0.3s ease;
     }
 
     .toast.show {
       display: block;
     }
 
-    /* MODOS */
-    .anonimo .festa-irmao,
-    .anonimo .event-irmao {
-      filter: blur(5px);
-      transition: var(--transition);
-    }
-
-    .anonimo .festa-irmao:hover,
-    .anonimo .event-irmao:hover {
-      filter: blur(5px) brightness(1.2);
-    }
-
-    /* LOADING */
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 200px;
-    }
-
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
     /* ANIMAÇÕES */
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translate(-50%, 30px);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
-
     @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.7;
-      }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
 
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    @keyframes shine {
-      0% {
-        transform: translateX(-100%) rotate(45deg);
-      }
-      20%, 100% {
-        transform: translateX(100%) rotate(45deg);
-      }
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      .container {
-        padding: 12px 12px 80px;
-      }
-      
-      .weekly-view {
-        grid-template-columns: 1fr;
-      }
-      
-      .weekly-day {
-        min-height: auto;
-      }
-      
-      .fab span:not(.fab-icon) {
-        display: none;
-      }
-      
-      .fab {
-        padding: 14px;
-        border-radius: 50%;
-      }
-      
-      .banner-content {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .status {
-        display: none;
-      }
+      .logo-principal { font-size: 3.5rem; }
+      .logo-secundario { font-size: 1.8rem; }
+      .fab span:not(.fab-icon) { display: none; }
+      .fab { padding: 14px; border-radius: 50%; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- HEADER MODERNO -->
+    <!-- LOGO OFICIAL CCB AMAMBAI -->
+    <div class="logo-oficial">
+      <div class="logo-principal">CCB</div>
+      <div class="logo-secundario">CCB Amambai</div>
+      <div class="logo-cidade">Congregação Cristã no Brasil</div>
+      <div class="logo-cruz">⛪</div>
+    </div>
+
+    <!-- HEADER -->
     <header class="header">
-      <div class="logo">
-        <div class="logo-icon">⛪</div>
-        <div>
-          <h1>Agenda CCB</h1>
-          <small style="color: var(--text-muted);">Amambai - MS</small>
-        </div>
+      <div>
+        <h2>Agenda Espiritual</h2>
+        <p style="color: var(--text-muted);">Amambai - MS</p>
       </div>
       <div class="status">
-        <div class="status-item" id="weather">
-          <span>☀️</span>
-          <span id="temperature">--°C</span>
-        </div>
-        <div class="status-item" id="date-display">
-          <span>📅</span>
-          <span id="current-date"></span>
-        </div>
+        <div class="status-item" id="weather">☀️ <span id="temperature">--°C</span></div>
+        <div class="status-item" id="date-display">📅 <span id="current-date"></span></div>
       </div>
     </header>
 
-    <!-- BANNER INTERATIVO -->
+    <!-- BANNER -->
     <div class="banner" id="banner">
-      <div class="banner-content">
-        <div class="banner-icon" id="banner-icon">🔔</div>
-        <div>
-          <div class="banner-title" id="banner-title">Carregando...</div>
-          <div class="banner-subtitle" id="banner-subtitle"></div>
-        </div>
+      <div>
+        <div class="banner-title" id="banner-title">Carregando...</div>
+        <div class="banner-subtitle" id="banner-subtitle"></div>
       </div>
-      <div class="banner-actions">
-        <button class="btn-circle" onclick="agenda.addCurrentToCalendar()" title="Adicionar ao calendário">📅</button>
-        <button class="btn-circle" onclick="agenda.shareCurrent()" title="Compartilhar">📤</button>
-        <button class="btn-circle" onclick="agenda.showMap()" title="Ver no mapa">🗺️</button>
-      </div>
+      <button class="btn-icon" onclick="agenda.shareCurrent()">📤 Compartilhar</button>
     </div>
 
-    <!-- CONTROLES AVANÇADOS -->
+    <!-- CONTROLES -->
     <div class="controls">
-      <div class="search-container">
-        <span class="search-icon">🔍</span>
-        <input type="search" class="search-input" id="search" placeholder="Buscar eventos, locais, horários..." autocomplete="off">
-        <div class="search-suggestions" id="suggestions"></div>
-      </div>
+      <input type="search" class="search-input" id="search" placeholder="Buscar eventos, locais, horários..." oninput="agenda.buscar()">
       
       <div class="filters">
         <label class="toggle">
@@ -1015,26 +588,7 @@
           <span>Só hoje</span>
         </label>
         
-        <label class="toggle">
-          <input type="checkbox" id="filter-notifications" onchange="agenda.toggleNotifications()">
-          <span class="toggle-slider"></span>
-          <span>Notificações</span>
-        </label>
-        
-        <button class="btn-icon" onclick="agenda.toggleTheme()">
-          <span id="theme-icon">🌓</span>
-          <span>Tema</span>
-        </button>
-        
-        <button class="btn-icon" onclick="agenda.toggleAnonymous()">
-          <span>👤</span>
-          <span>Anônimo</span>
-        </button>
-        
-        <button class="btn-icon" onclick="agenda.exportData()">
-          <span>📥</span>
-          <span>Exportar</span>
-        </button>
+        <button class="btn-icon" onclick="agenda.toggleTema()">🌓 Tema</button>
       </div>
     </div>
 
@@ -1043,182 +597,114 @@
       <button class="view-btn active" onclick="agenda.setView('daily')">Dia</button>
       <button class="view-btn" onclick="agenda.setView('weekly')">Semana</button>
       <button class="view-btn" onclick="agenda.setView('monthly')">Mês</button>
-      <button class="view-btn" onclick="agenda.setView('map')">Mapa</button>
     </div>
 
-    <!-- VIEWS CONTAINER -->
+    <!-- DAILY VIEW -->
     <div id="daily-view" class="events-grid"></div>
     
+    <!-- WEEKLY VIEW -->
     <div id="weekly-view" class="weekly-view" style="display: none;"></div>
     
+    <!-- MONTHLY VIEW -->
     <div id="monthly-view" class="monthly-view" style="display: none;"></div>
-    
-    <div id="map-view" class="map-view" style="display: none;"></div>
 
     <!-- FESTAS ESPIRITUAIS -->
     <section class="festas-section">
       <h3>
         <span>⭐</span>
         Festas Espirituais
-        <span style="margin-left: auto; font-size: 0.8rem; color: var(--accent);" id="festas-count"></span>
+        <span style="margin-left: auto;" id="festas-count"></span>
       </h3>
       <div id="festas-grid" class="festas-grid"></div>
     </section>
   </div>
 
   <!-- FAB -->
-  <button class="fab" onclick="agenda.goToToday()">
-    <span class="fab-icon">📌</span>
-    <span>HOJE</span>
-  </button>
+  <button class="fab" onclick="agenda.irParaHoje()">📌 HOJE</button>
 
   <!-- TOAST -->
   <div id="toast" class="toast"></div>
 
   <script>
-    // AGENDA CCB - VERSÃO PREMIUM
     class AgendaCCB {
       constructor() {
         this.dados = {
           cultos: [
-            { id: '1', dia: 1, titulo: 'Culto com Recitativos', local: 'Vila Limeira', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '2', dia: 2, titulo: 'Culto Oficial', local: 'Vila Glória', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '3', dia: 3, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '4', dia: 4, titulo: 'Culto Oficial', local: 'Vila Limeira', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '5', dia: 4, titulo: 'Culto com Ensaio', local: 'Vila Limeira', horario: '19:30', regra: 'nth:2', duracao: 120, cor: '#8b5cf6' },
-            { id: '6', dia: 4, titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '7', dia: 4, titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', horario: '19:30', regra: 'nth:3', duracao: 90, cor: '#8b5cf6' },
-            { id: '8', dia: 5, titulo: 'Ensaio Local', local: 'Central Amambai', horario: '19:30', regra: 'nth:1', duracao: 120, cor: '#8b5cf6' },
-            { id: '9', dia: 5, titulo: 'Ensaio Local', local: 'Vila Cristina', horario: '19:30', regra: 'nth:3', duracao: 120, cor: '#8b5cf6' },
-            { id: '10', dia: 5, titulo: 'Ensaio Local', local: 'Vila Glória', horario: '19:30', regra: 'nth:4', duracao: 120, cor: '#8b5cf6' },
-            { id: '11', dia: 6, titulo: 'Evangelização', local: 'Presídio', horario: '09:00', regra: 'all', duracao: 60, cor: '#10b981' },
-            { id: '12', dia: 6, titulo: 'Evangelização', local: 'Lar do Idoso', horario: '15:00', regra: 'nth:2,4', duracao: 60, cor: '#10b981' },
-            { id: '13', dia: 6, titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', horario: '16:00', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '14', dia: 6, titulo: 'Culto com Recitativos', local: 'Aldeia Invernada', horario: '18:30', regra: 'nth:2', duracao: 90, cor: '#8b5cf6' },
-            { id: '15', dia: 6, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:30', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '16', dia: 0, titulo: 'Jovens e Menores', local: 'Central Amambai', horario: '09:30', regra: 'all', duracao: 60, cor: '#10b981' },
-            { id: '17', dia: 0, titulo: 'Jovens e Menores', local: 'Vila Cristina', horario: '09:30', regra: 'all', duracao: 60, cor: '#10b981' },
-            { id: '18', dia: 0, titulo: 'Culto Oficial', local: 'Aldeia Central', horario: '15:00', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '19', dia: 0, titulo: 'Culto com Recitativo', local: 'Aldeia Central', horario: '15:00', regra: 'nth:1,3', duracao: 90, cor: '#8b5cf6' },
-            { id: '20', dia: 0, titulo: 'Culto com Ensaio', local: 'Aldeia Central', horario: '15:00', regra: 'nth:4', duracao: 120, cor: '#8b5cf6' },
-            { id: '21', dia: 0, titulo: 'Culto com Recitativos', local: 'Vila Glória', horario: '19:00', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '22', dia: 0, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:00', regra: 'all', duracao: 90, cor: '#3b82f6' },
-            { id: '23', dia: 0, titulo: 'Culto Oficial', local: 'Vila Cristina', horario: '19:00', regra: 'all', duracao: 90, cor: '#3b82f6' }
+            // Segunda
+            { id: '1', dia: 1, titulo: 'Culto com Recitativos', local: 'Vila Limeira', horario: '19:30', regra: 'all', semana: 'Todas', tipo: 'culto' },
+            // Terça
+            { id: '2', dia: 2, titulo: 'Culto Oficial', local: 'Vila Glória', horario: '19:30', regra: 'all', tipo: 'culto' },
+            // Quarta
+            { id: '3', dia: 3, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:30', regra: 'all', tipo: 'culto' },
+            // Quinta
+            { id: '4', dia: 4, titulo: 'Culto Oficial', local: 'Vila Limeira', horario: '19:30', regra: 'all', tipo: 'culto' },
+            { id: '5', dia: 4, titulo: 'Culto com Ensaio', local: 'Vila Limeira', horario: '19:30', regra: 'nth:2', semana: '2ª', tipo: 'especial' },
+            { id: '6', dia: 4, titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', horario: '19:30', regra: 'all', tipo: 'culto' },
+            { id: '7', dia: 4, titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', horario: '19:30', regra: 'nth:3', semana: '3ª', tipo: 'especial' },
+            // Sexta
+            { id: '8', dia: 5, titulo: 'Ensaio Local', local: 'Central Amambai', horario: '19:30', regra: 'nth:1', semana: '1ª', tipo: 'ensaio' },
+            { id: '9', dia: 5, titulo: 'Ensaio Local', local: 'Vila Cristina', horario: '19:30', regra: 'nth:3', semana: '3ª', tipo: 'ensaio' },
+            { id: '10', dia: 5, titulo: 'Ensaio Local', local: 'Vila Glória', horario: '19:30', regra: 'nth:4', semana: '4ª', tipo: 'ensaio' },
+            // Sábado
+            { id: '11', dia: 6, titulo: 'Evangelização', local: 'Presídio', horario: '09:00', regra: 'all', tipo: 'evangelizacao' },
+            { id: '12', dia: 6, titulo: 'Evangelização', local: 'Lar do Idoso', horario: '15:00', regra: 'nth:2,4', semana: '2ª e 4ª', tipo: 'evangelizacao' },
+            { id: '13', dia: 6, titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', horario: '16:00', regra: 'all', tipo: 'culto' },
+            { id: '14', dia: 6, titulo: 'Culto com Recitativos', local: 'Aldeia Invernada', horario: '18:30', regra: 'nth:2', semana: '2ª', tipo: 'especial' },
+            { id: '15', dia: 6, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:30', regra: 'all', tipo: 'culto' },
+            // Domingo
+            { id: '16', dia: 0, titulo: 'Jovens e Menores', local: 'Central Amambai', horario: '09:30', regra: 'all', tipo: 'jovens' },
+            { id: '17', dia: 0, titulo: 'Jovens e Menores', local: 'Vila Cristina', horario: '09:30', regra: 'all', tipo: 'jovens' },
+            { id: '18', dia: 0, titulo: 'Culto Oficial', local: 'Aldeia Central', horario: '15:00', regra: 'all', tipo: 'culto' },
+            { id: '19', dia: 0, titulo: 'Culto com Recitativo', local: 'Aldeia Central', horario: '15:00', regra: 'nth:1,3', semana: '1ª e 3ª', tipo: 'especial' },
+            { id: '20', dia: 0, titulo: 'Culto com Ensaio', local: 'Aldeia Central', horario: '15:00', regra: 'nth:4', semana: '4ª', tipo: 'especial' },
+            { id: '21', dia: 0, titulo: 'Culto com Recitativos', local: 'Vila Glória', horario: '19:00', regra: 'all', tipo: 'culto' },
+            { id: '22', dia: 0, titulo: 'Culto Oficial', local: 'Central Amambai', horario: '19:00', regra: 'all', tipo: 'culto' },
+            { id: '23', dia: 0, titulo: 'Culto Oficial', local: 'Vila Cristina', horario: '19:00', regra: 'all', tipo: 'culto' }
           ],
+          
           festas: [
-            { id: 'f1', bimestre: 'Jan/Fev', titulo: 'Busca dos Dons', data: '2026-02-21', horario: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' },
-            { id: 'f2', bimestre: 'Jan/Fev', titulo: 'Culto para Mocidade', data: '2026-02-26', horario: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
-            { id: 'f3', bimestre: 'Mar/Abr', titulo: 'Santa Ceia', data: '2026-03-21', horario: '19:30', local: 'Central Amambai', irmao: 'Antonio Silva' },
-            { id: 'f4', bimestre: 'Mar/Abr', titulo: 'Batismo', data: '2026-04-18', horario: '19:30', local: 'Vila Limeira', irmao: 'José Oliveira' }
+            { id: 'f1', tipo: 'santa-ceia', titulo: 'Santa Ceia', data: '2026-02-15', horario: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' },
+            { id: 'f2', tipo: 'batismo', titulo: 'Batismo', data: '2026-02-22', horario: '15:00', local: 'Vila Limeira', irmao: 'João Butarelli' },
+            { id: 'f3', tipo: 'santa-ceia', titulo: 'Santa Ceia', data: '2026-03-15', horario: '19:30', local: 'Vila Glória', irmao: 'Antonio Silva' },
+            { id: 'f4', tipo: 'batismo', titulo: 'Batismo', data: '2026-03-22', horario: '15:00', local: 'Aldeia Central', irmao: 'José Oliveira' },
+            { id: 'f5', tipo: 'santa-ceia', titulo: 'Santa Ceia', data: '2026-04-19', horario: '19:30', local: 'Vila Cristina', irmao: 'Pedro Santos' },
+            { id: 'f6', tipo: 'batismo', titulo: 'Batismo', data: '2026-04-26', horario: '15:00', local: 'Aldeia Sertãozinho', irmao: 'Paulo Souza' },
+            { id: 'f7', tipo: 'santa-ceia', titulo: 'Santa Ceia', data: '2026-05-17', horario: '19:30', local: 'Central Amambai', irmao: 'Lucas Rodrigues' },
+            { id: 'f8', tipo: 'batismo', titulo: 'Batismo', data: '2026-05-24', horario: '15:00', local: 'Vila Limeira', irmao: 'Marcos Oliveira' }
           ]
         };
         
         this.diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-        this.diasAbrev = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        this.meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-        
-        this.modoAnonimo = false;
-        this.notificacoesAtivas = false;
         this.viewAtual = 'daily';
-        this.eventoAtual = null;
-        this.proximoEvento = null;
-        this.searchTimeout = null;
-        this.map = null;
-        this.markers = [];
         
         this.init();
       }
 
-      async init() {
-        this.carregarPreferencias();
-        this.atualizarDataHora();
-        await this.atualizarClima();
+      init() {
+        this.atualizarData();
         this.renderizar();
-        this.configurarEventListeners();
         this.configurarAtalhos();
-        this.iniciarAtualizacao();
-        this.solicitarPermissaoNotificacoes();
+        setInterval(() => this.atualizarBanner(), 60000);
       }
 
-      carregarPreferencias() {
-        // Tema
-        const tema = localStorage.getItem('tema') || 'dark';
-        document.documentElement.setAttribute('data-theme', tema);
-        document.getElementById('theme-icon').textContent = tema === 'dark' ? '🌓' : '☀️';
-        
-        // Modo anônimo
-        this.modoAnonimo = localStorage.getItem('anonimo') === 'true';
-        if (this.modoAnonimo) document.body.classList.add('anonimo');
-        
-        // Notificações
-        this.notificacoesAtivas = localStorage.getItem('notificacoes') === 'true';
-        if (document.getElementById('filter-notifications')) {
-          document.getElementById('filter-notifications').checked = this.notificacoesAtivas;
-        }
-        
-        // Filtro hoje
-        const filterToday = localStorage.getItem('filterToday') === 'true';
-        if (document.getElementById('filter-today')) {
-          document.getElementById('filter-today').checked = filterToday;
-        }
-      }
-
-      atualizarDataHora() {
+      atualizarData() {
         const agora = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('current-date').textContent = agora.toLocaleDateString('pt-BR', options);
-        
-        // Atualizar a cada segundo
-        setInterval(() => {
-          const now = new Date();
-          const time = now.toLocaleTimeString('pt-BR');
-          // Atualizar relógio se existir
-        }, 1000);
+        document.getElementById('temperature').textContent = Math.floor(Math.random() * 10 + 25) + '°C';
       }
 
-      async atualizarClima() {
-        try {
-          // Usando API gratuita do Open-Meteo
-          const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-23.1&longitude=-55.2&current_weather=true');
-          const data = await response.json();
-          const temp = Math.round(data.current_weather.temperature);
-          document.getElementById('temperature').textContent = `${temp}°C`;
-          
-          const weatherCode = data.current_weather.weathercode;
-          const icon = this.getWeatherIcon(weatherCode);
-          document.querySelector('#weather span:first-child').textContent = icon;
-        } catch (e) {
-          // Fallback para temperatura simulada
-          const temp = Math.floor(Math.random() * 10 + 25);
-          document.getElementById('temperature').textContent = `${temp}°C`;
-        }
+      getSemanaDoMes() {
+        const hoje = new Date();
+        const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+        return Math.ceil((hoje.getDate() + primeiroDia.getDay()) / 7);
       }
 
-      getWeatherIcon(code) {
-        const icons = {
-          0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-          45: '🌫️', 48: '🌫️', 51: '🌧️', 61: '🌧️',
-          71: '🌨️', 95: '⛈️'
-        };
-        return icons[code] || '☀️';
-      }
-
-      renderizar() {
-        const eventosFiltrados = this.filtrarEventos();
-        
-        if (this.viewAtual === 'daily') {
-          this.renderizarDaily(eventosFiltrados);
-        } else if (this.viewAtual === 'weekly') {
-          this.renderizarWeekly(eventosFiltrados);
-        } else if (this.viewAtual === 'monthly') {
-          this.renderizarMonthly();
-        } else if (this.viewAtual === 'map') {
-          this.renderizarMapa();
-        }
-        
-        this.renderizarFestas();
-        this.atualizarBanner();
-        this.atualizarContadores();
+      eventoValido(evento) {
+        if (evento.regra === 'all') return true;
+        const semana = this.getSemanaDoMes();
+        const semanas = evento.regra.replace('nth:', '').split(',').map(Number);
+        return semanas.includes(semana);
       }
 
       filtrarEventos() {
@@ -1227,152 +713,140 @@
         const hoje = new Date().getDay();
         
         return this.dados.cultos.filter(e => {
-          // Filtro de busca
-          if (termo) {
-            const texto = `${e.titulo} ${e.local} ${e.horario}`.toLowerCase();
-            if (!texto.includes(termo)) return false;
-          }
-          
-          // Filtro "só hoje"
+          if (termo && !`${e.titulo} ${e.local}`.toLowerCase().includes(termo)) return false;
           if (soHoje && e.dia !== hoje) return false;
-          
-          // Filtro de regra (nth)
-          if (e.regra !== 'all') {
-            const semana = this.getSemanaDoMes(new Date());
-            const semanas = e.regra.replace('nth:', '').split(',').map(Number);
-            if (!semanas.includes(semana)) return false;
-          }
-          
-          return true;
-        }).sort((a, b) => a.horario.localeCompare(b.horario));
-      }
-
-      getSemanaDoMes(data) {
-        const primeiroDia = new Date(data.getFullYear(), data.getMonth(), 1);
-        return Math.ceil((data.getDate() + primeiroDia.getDay()) / 7);
-      }
-
-      renderizarDaily(eventos) {
-        const container = document.getElementById('daily-view');
-        const hoje = new Date().getDay();
-        
-        // Agrupar por dia
-        const eventosPorDia = {};
-        eventos.forEach(e => {
-          if (!eventosPorDia[e.dia]) eventosPorDia[e.dia] = [];
-          eventosPorDia[e.dia].push(e);
+          return this.eventoValido(e);
         });
-        
-        let html = '';
-        for (let dia = 0; dia < 7; dia++) {
-          const eventosDia = eventosPorDia[dia] || [];
-          const isHoje = dia === hoje;
-          
-          eventosDia.forEach(e => {
-            html += this.criarCardEvento(e, isHoje);
-          });
-        }
-        
-        container.innerHTML = html || '<div class="loading"><div class="spinner"></div></div>';
       }
 
-      criarCardEvento(e, isHoje) {
+      renderizar() {
+        const eventos = this.filtrarEventos();
+        const container = document.getElementById('daily-view');
+        
+        container.innerHTML = eventos.map(e => this.criarCard(e)).join('');
+        this.renderizarFestas();
+        this.atualizarBanner();
+      }
+
+      criarCard(e) {
         const agora = new Date();
         const [h, m] = e.horario.split(':').map(Number);
         const eventoHoje = new Date();
         eventoHoje.setHours(h, m, 0);
-        
-        const diffMin = (eventoHoje - agora) / (1000 * 60);
-        const isNow = diffMin <= 45 && diffMin > -e.duracao;
-        const isNext = diffMin > 0 && diffMin < 120;
-        const isPast = diffMin < -e.duracao;
-        
-        let tag = '';
-        let progress = '';
-        
-        if (isNow) {
-          tag = '<span class="event-tag now">🔴 AGORA</span>';
-          const progressPercent = Math.min(100, ((45 - diffMin) / 45) * 100);
-          progress = `
-            <div class="event-progress">
-              <div class="event-progress-bar" style="width: ${progressPercent}%"></div>
-            </div>
-          `;
-        } else if (isNext) {
-          tag = '<span class="event-tag next">⏰ PRÓXIMO</span>';
-        } else if (isHoje) {
-          tag = '<span class="event-tag" style="background: var(--accent);">📅 HOJE</span>';
-        }
+        const diff = (eventoHoje - agora) / (1000 * 60);
+        const isNow = diff <= 45 && diff > -90;
         
         return `
-          <div class="event-card ${isNow ? 'now' : ''} ${isNext ? 'next' : ''} ${isPast ? 'past' : ''}" 
-               onclick="agenda.verDetalhes('${e.id}')"
-               style="border-left: 4px solid ${e.cor}">
-            ${tag}
+          <div class="event-card ${isNow ? 'now' : ''}" onclick="agenda.verDetalhes('${e.id}')">
+            ${isNow ? '<span class="event-tag now">🔴 AGORA</span>' : 
+              new Date().getDay() === e.dia ? '<span class="event-tag">📅 HOJE</span>' : ''}
             <div class="event-time">${e.horario}</div>
-            <div class="event-title">${e.titulo}</div>
-            <div class="event-place">
-              <span>📍</span>
-              <span>${e.local}</span>
-            </div>
-            ${progress}
-            <div class="event-actions">
-              <button class="event-action" onclick="event.stopPropagation(); agenda.addToCalendar('${e.id}')">
-                <span>📅</span>
-                <span>Calendário</span>
-              </button>
-              <button class="event-action" onclick="event.stopPropagation(); agenda.share('${e.id}')">
-                <span>📤</span>
-                <span>Compartilhar</span>
-              </button>
-              <button class="event-action" onclick="event.stopPropagation(); agenda.showOnMap('${e.local}')">
-                <span>🗺️</span>
-                <span>Mapa</span>
-              </button>
-            </div>
+            ${e.semana ? `<div class="event-week">${e.semana} semana</div>` : ''}
+            <h3>${e.titulo}</h3>
+            <p style="color: var(--text-muted);">📍 ${e.local}</p>
           </div>
         `;
       }
 
-      renderizarWeekly(eventos) {
-        const container = document.getElementById('weekly-view');
+      renderizarFestas() {
         const hoje = new Date();
-        const semana = [];
+        const festasContainer = document.getElementById('festas-grid');
         
-        for (let i = 0; i < 7; i++) {
-          const data = new Date(hoje);
-          data.setDate(hoje.getDate() + i);
-          semana.push(data);
-        }
+        const festasFiltradas = this.dados.festas.filter(f => new Date(f.data) >= hoje);
         
-        let html = '';
-        semana.forEach((data, index) => {
-          const diaSemana = data.getDay();
-          const eventosDia = eventos.filter(e => e.dia === diaSemana);
-          const isHoje = data.toDateString() === hoje.toDateString();
+        festasContainer.innerHTML = festasFiltradas.map(f => {
+          const dataFesta = new Date(f.data);
+          const tipoClass = f.tipo === 'santa-ceia' ? 'santa-ceia' : 'batismo';
+          const tipoLabel = f.tipo === 'santa-ceia' ? '🍇 Santa Ceia' : '💧 Batismo';
           
-          html += `
-            <div class="weekly-day ${isHoje ? 'today' : ''}">
-              <div class="weekly-header">
-                <div>${this.diasAbrev[diaSemana]}</div>
-                <div class="weekly-date">${data.getDate()}</div>
-              </div>
-              ${eventosDia.map(e => `
-                <div class="weekly-event" onclick="agenda.verDetalhes('${e.id}')">
-                  <strong>${e.horario}</strong><br>
-                  ${e.titulo}<br>
-                  <small>${e.local}</small>
-                </div>
-              `).join('')}
+          return `
+            <div class="festa-card" onclick="agenda.verDetalhesFesta('${f.id}')">
+              <span class="festa-tipo ${tipoClass}">${tipoLabel}</span>
+              <h4 class="festa-title">${f.titulo}</h4>
+              <div class="festa-data">📅 ${dataFesta.toLocaleDateString('pt-BR')}</div>
+              <p>⏰ ${f.horario}</p>
+              <p>📍 ${f.local}</p>
+              <p>👤 Ir. ${f.irmao}</p>
             </div>
           `;
+        }).join('');
+        
+        document.getElementById('festas-count').textContent = `${festasFiltradas.length} festas`;
+      }
+
+      atualizarBanner() {
+        const agora = new Date();
+        const horaAtual = agora.getHours() * 60 + agora.getMinutes();
+        const eventosHoje = this.dados.cultos.filter(e => e.dia === agora.getDay() && this.eventoValido(e));
+        
+        let eventoAtual = null;
+        let eventoProximo = null;
+        
+        eventosHoje.forEach(e => {
+          const [h, m] = e.horario.split(':').map(Number);
+          const minutos = h * 60 + m;
+          
+          if (minutos <= horaAtual && horaAtual < minutos + 90) {
+            eventoAtual = e;
+          } else if (minutos > horaAtual && (!eventoProximo || minutos < parseInt(eventoProximo.horario.split(':')[0]) * 60 + parseInt(eventoProximo.horario.split(':')[1]))) {
+            eventoProximo = e;
+          }
         });
         
-        container.innerHTML = html;
-        container.style.display = 'grid';
-        document.getElementById('daily-view').style.display = 'none';
-        document.getElementById('monthly-view').style.display = 'none';
-        document.getElementById('map-view').style.display = 'none';
+        if (eventoAtual) {
+          document.getElementById('banner-title').textContent = `🔴 AGORA: ${eventoAtual.titulo}`;
+          document.getElementById('banner-subtitle').textContent = eventoAtual.local;
+        } else if (eventoProximo) {
+          document.getElementById('banner-title').textContent = `⏰ PRÓXIMO: ${eventoProximo.titulo}`;
+          document.getElementById('banner-subtitle').textContent = `${eventoProximo.local} às ${eventoProximo.horario}`;
+        } else {
+          document.getElementById('banner-title').textContent = '📅 Nenhum evento hoje';
+          document.getElementById('banner-subtitle').textContent = 'Volte amanhã';
+        }
+      }
+
+      verDetalhes(id) {
+        const evento = this.dados.cultos.find(e => e.id === id);
+        alert(`${evento.titulo}\n📍 ${evento.local}\n⏰ ${evento.horario}\n📅 ${this.diasSemana[evento.dia]}`);
+      }
+
+      verDetalhesFesta(id) {
+        const festa = this.dados.festas.find(f => f.id === id);
+        alert(`🎉 ${festa.titulo}\n📅 ${new Date(festa.data).toLocaleDateString('pt-BR')}\n⏰ ${festa.horario}\n📍 ${festa.local}\n👤 Ir. ${festa.irmao}`);
+      }
+
+      buscar() {
+        this.renderizar();
+      }
+
+      toggleFilterToday() {
+        this.renderizar();
+      }
+
+      toggleTema() {
+        const atual = document.documentElement.getAttribute('data-theme');
+        const novo = atual === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', novo);
+        localStorage.setItem('tema', novo);
+        this.toast(`Tema ${novo}`);
+      }
+
+      setView(view) {
+        this.viewAtual = view;
+        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        document.getElementById('daily-view').style.display = view === 'daily' ? 'grid' : 'none';
+        document.getElementById('weekly-view').style.display = view === 'weekly' ? 'grid' : 'none';
+        document.getElementById('monthly-view').style.display = view === 'monthly' ? 'block' : 'none';
+        
+        if (view === 'weekly') this.renderizarWeekly();
+        if (view === 'monthly') this.renderizarMonthly();
+      }
+
+      renderizarWeekly() {
+        const container = document.getElementById('weekly-view');
+        container.innerHTML = '<p style="grid-column: span 7; text-align: center;">Visualização semanal em breve</p>';
       }
 
       renderizarMonthly() {
@@ -1381,541 +855,62 @@
         const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
         const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
         
-        let html = `
-          <div class="month-header">
-            ${this.diasAbrev.map(d => `<div>${d}</div>`).join('')}
-          </div>
-        `;
-        
+        let html = `<div class="month-header">${this.diasAbrev.map(d => `<div>${d}</div>`).join('')}</div>`;
         let dias = [];
         
-        // Dias vazios no início
         for (let i = 0; i < primeiroDia.getDay(); i++) {
           dias.push('<div class="month-day"></div>');
         }
         
-        // Dias do mês
         for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
           const data = new Date(hoje.getFullYear(), hoje.getMonth(), dia);
           const diaSemana = data.getDay();
-          const eventosDia = this.dados.cultos.filter(e => e.dia === diaSemana);
           const isHoje = data.toDateString() === hoje.toDateString();
+          const eventosDia = this.dados.cultos.filter(e => e.dia === diaSemana);
           
           dias.push(`
             <div class="month-day ${isHoje ? 'today' : ''}">
               <div class="month-day-number">${dia}</div>
-              ${eventosDia.slice(0, 2).map(e => `
-                <div class="month-event" onclick="agenda.verDetalhes('${e.id}')">
-                  ${e.horario} - ${e.titulo}
-                </div>
-              `).join('')}
-              ${eventosDia.length > 2 ? `<div style="font-size: 0.7rem;">+${eventosDia.length - 2}</div>` : ''}
+              ${eventosDia.slice(0, 2).map(e => 
+                `<div class="month-event ${e.tipo}">${e.horario} ${e.titulo}</div>`
+              ).join('')}
             </div>
           `);
         }
         
-        // Completar grid
-        while (dias.length % 7 !== 0) {
-          dias.push('<div class="month-day"></div>');
-        }
-        
-        // Dividir em semanas
         for (let i = 0; i < dias.length; i += 7) {
           html += `<div class="month-week">${dias.slice(i, i + 7).join('')}</div>`;
         }
         
         container.innerHTML = html;
-        container.style.display = 'block';
-        document.getElementById('daily-view').style.display = 'none';
-        document.getElementById('weekly-view').style.display = 'none';
-        document.getElementById('map-view').style.display = 'none';
-      }
-
-      renderizarMapa() {
-        const container = document.getElementById('map-view');
-        container.style.display = 'block';
-        document.getElementById('daily-view').style.display = 'none';
-        document.getElementById('weekly-view').style.display = 'none';
-        document.getElementById('monthly-view').style.display = 'none';
-        
-        if (!this.map) {
-          this.map = L.map('map-view').setView([-23.1057, -55.2253], 12);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-          }).addTo(this.map);
-        }
-        
-        // Limpar marcadores antigos
-        this.markers.forEach(m => m.remove());
-        this.markers = [];
-        
-        // Adicionar marcadores para locais únicos
-        const locais = [...new Set(this.dados.cultos.map(e => e.local))];
-        locais.forEach(local => {
-          const marker = L.marker([-23.1057 + (Math.random() * 0.1 - 0.05), -55.2253 + (Math.random() * 0.1 - 0.05)]).addTo(this.map);
-          marker.bindPopup(`<b>${local}</b><br><button onclick="agenda.filtrarLocal('${local}')">Ver eventos</button>`);
-          this.markers.push(marker);
-        });
-        
-        setTimeout(() => this.map.invalidateSize(), 100);
-      }
-
-      renderizarFestas() {
-        const container = document.getElementById('festas-grid');
-        
-        container.innerHTML = this.dados.festas.map(f => `
-          <div class="festa-card" onclick="agenda.verDetalhesFesta('${f.id}')">
-            <div class="festa-bimestre">${f.bimestre}</div>
-            <div class="festa-title">${f.titulo}</div>
-            <div class="festa-details">
-              <span>📅</span> <span>${new Date(f.data).toLocaleDateString('pt-BR')}</span>
-              <span>⏰</span> <span>${f.horario}</span>
-              <span>📍</span> <span>${f.local}</span>
-              <span>👤</span> <span class="festa-irmao">Ir. ${f.irmao}</span>
-            </div>
-          </div>
-        `).join('');
-        
-        document.getElementById('festas-count').textContent = `${this.dados.festas.length} festas`;
-      }
-
-      atualizarBanner() {
-        const agora = new Date();
-        const horaAtual = agora.getHours() * 60 + agora.getMinutes();
-        
-        // Encontrar evento atual ou próximo
-        const eventosHoje = this.dados.cultos.filter(e => e.dia === agora.getDay());
-        
-        let eventoAtual = null;
-        let eventoProximo = null;
-        
-        eventosHoje.forEach(e => {
-          const [h, m] = e.horario.split(':').map(Number);
-          const minutosEvento = h * 60 + m;
-          
-          if (minutosEvento <= horaAtual && horaAtual < minutosEvento + e.duracao) {
-            eventoAtual = e;
-          } else if (minutosEvento > horaAtual && (!eventoProximo || minutosEvento < this.getMinutosEvento(eventoProximo))) {
-            eventoProximo = e;
-          }
-        });
-        
-        const title = document.getElementById('banner-title');
-        const subtitle = document.getElementById('banner-subtitle');
-        const icon = document.getElementById('banner-icon');
-        
-        if (eventoAtual) {
-          title.textContent = `🔴 AGORA: ${eventoAtual.titulo}`;
-          subtitle.textContent = `${eventoAtual.local} · até ${this.calcularFim(eventoAtual)}`;
-          icon.textContent = '🔔';
-        } else if (eventoProximo) {
-          const diff = this.calcularDiferenca(eventoProximo);
-          title.textContent = `⏰ PRÓXIMO: ${eventoProximo.titulo}`;
-          subtitle.textContent = `${eventoProximo.local} · em ${diff}`;
-          icon.textContent = '⏰';
-        } else {
-          title.textContent = '📅 Nenhum evento hoje';
-          subtitle.textContent = 'Volte amanhã para mais cultos';
-          icon.textContent = '📅';
-        }
-      }
-
-      getMinutosEvento(e) {
-        const [h, m] = e.horario.split(':').map(Number);
-        return h * 60 + m;
-      }
-
-      calcularFim(e) {
-        const [h, m] = e.horario.split(':').map(Number);
-        const fimMin = h * 60 + m + e.duracao;
-        const fimH = Math.floor(fimMin / 60);
-        const fimM = fimMin % 60;
-        return `${fimH.toString().padStart(2, '0')}:${fimM.toString().padStart(2, '0')}`;
-      }
-
-      calcularDiferenca(e) {
-        const agora = new Date();
-        const [h, m] = e.horario.split(':').map(Number);
-        const eventoHoje = new Date();
-        eventoHoje.setHours(h, m, 0);
-        
-        const diffMin = Math.round((eventoHoje - agora) / (1000 * 60));
-        
-        if (diffMin < 60) return `${diffMin} min`;
-        const horas = Math.floor(diffMin / 60);
-        const minutos = diffMin % 60;
-        return `${horas}h${minutos > 0 ? ` ${minutos}min` : ''}`;
-      }
-
-      atualizarContadores() {
-        const totalEventos = this.dados.cultos.length;
-        const festasCount = this.dados.festas.length;
-        // Atualizar contadores na UI
-      }
-
-      verDetalhes(id) {
-        const evento = this.dados.cultos.find(e => e.id === id);
-        if (!evento) return;
-        
-        const agora = new Date();
-        const [h, m] = evento.horario.split(':').map(Number);
-        const eventoHoje = new Date();
-        eventoHoje.setHours(h, m, 0);
-        
-        const diffMin = (eventoHoje - agora) / (1000 * 60);
-        const status = diffMin <= 45 && diffMin > -evento.duracao ? 'Acontecendo agora' :
-                      diffMin > 0 ? `Começa em ${this.calcularDiferenca(evento)}` :
-                      'Evento já passou';
-        
-        this.mostrarModal(`
-          <h2>${evento.titulo}</h2>
-          <div style="margin: 20px 0;">
-            <p>⏰ ${evento.horario} (${evento.duracao} minutos)</p>
-            <p>📍 ${evento.local}</p>
-            <p>📅 ${this.diasSemana[evento.dia]}</p>
-            <p>🔔 ${status}</p>
-            ${evento.regra !== 'all' ? `<p>📌 Evento especial: ${this.formatarRegra(evento.regra)}</p>` : ''}
-          </div>
-        `, [
-          { text: '📅 Calendário', action: () => this.addToCalendar(evento.id), class: 'btn-primary' },
-          { text: '📤 Compartilhar', action: () => this.share(evento.id), class: 'btn-success' },
-          { text: '🗺️ Mapa', action: () => this.showOnMap(evento.local), class: 'btn-primary' },
-          { text: 'Fechar', action: 'close', class: 'btn-secondary' }
-        ]);
-      }
-
-      verDetalhesFesta(id) {
-        const festa = this.dados.festas.find(f => f.id === id);
-        if (!festa) return;
-        
-        this.mostrarModal(`
-          <h2>${festa.titulo}</h2>
-          <div style="margin: 20px 0;">
-            <p>📅 ${new Date(festa.data).toLocaleDateString('pt-BR')}</p>
-            <p>⏰ ${festa.horario}</p>
-            <p>📍 ${festa.local}</p>
-            <p>👤 Ir. ${festa.irmao}</p>
-          </div>
-        `, [
-          { text: '📤 Compartilhar', action: () => this.shareFesta(festa.id), class: 'btn-success' },
-          { text: '🗺️ Mapa', action: () => this.showOnMap(festa.local), class: 'btn-primary' },
-          { text: 'Fechar', action: 'close', class: 'btn-secondary' }
-        ]);
-      }
-
-      mostrarModal(content, buttons = []) {
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        
-        const buttonsHtml = buttons.map(b => `
-          <button class="${b.class || 'btn-primary'}" 
-                  onclick="${b.action === 'close' ? 'this.closest(\'.modal\').remove()' : 'agenda.' + b.action}">
-            ${b.text}
-          </button>
-        `).join('');
-        
-        modal.innerHTML = `
-          <div class="modal-content">
-            <div class="modal-header">
-              ${content}
-              <button class="modal-close" onclick="this.closest('.modal').remove()">×</button>
-            </div>
-            <div class="modal-footer">
-              ${buttonsHtml}
-            </div>
-          </div>
-        `;
-        
-        document.body.appendChild(modal);
-      }
-
-      addToCalendar(id) {
-        const evento = this.dados.cultos.find(e => e.id === id);
-        if (!evento) return;
-        
-        const texto = `${evento.titulo} em ${evento.local} às ${evento.horario}`;
-        navigator.clipboard.writeText(texto).then(() => {
-          this.toast('✅ Evento copiado! Cole no seu calendário');
-        });
-      }
-
-      share(id) {
-        const evento = this.dados.cultos.find(e => e.id === id);
-        if (!evento) return;
-        
-        const texto = `*${evento.titulo}*\n📍 ${evento.local}\n⏰ ${evento.horario}\n📅 ${this.diasSemana[evento.dia]}`;
-        
-        if (navigator.share) {
-          navigator.share({ title: evento.titulo, text: texto });
-        } else {
-          navigator.clipboard.writeText(texto).then(() => {
-            this.toast('✅ Evento copiado!');
-          });
-        }
-      }
-
-      shareFesta(id) {
-        const festa = this.dados.festas.find(f => f.id === id);
-        if (!festa) return;
-        
-        const texto = `*${festa.titulo}*\n📅 ${new Date(festa.data).toLocaleDateString('pt-BR')}\n⏰ ${festa.horario}\n📍 ${festa.local}\n👤 Ir. ${festa.irmao}`;
-        
-        if (navigator.share) {
-          navigator.share({ title: festa.titulo, text: texto });
-        } else {
-          navigator.clipboard.writeText(texto).then(() => {
-            this.toast('✅ Festa copiada!');
-          });
-        }
-      }
-
-      showOnMap(local) {
-        this.setView('map');
-        // Destacar marcador do local
-        this.toast(`📍 Localizando: ${local}`);
-      }
-
-      addCurrentToCalendar() {
-        const agora = new Date();
-        const eventosHoje = this.dados.cultos.filter(e => e.dia === agora.getDay());
-        if (eventosHoje.length > 0) {
-          this.addToCalendar(eventosHoje[0].id);
-        }
       }
 
       shareCurrent() {
-        const agora = new Date();
-        const eventosHoje = this.dados.cultos.filter(e => e.dia === agora.getDay());
+        const hoje = new Date().getDay();
+        const eventosHoje = this.dados.cultos.filter(e => e.dia === hoje && this.eventoValido(e));
         if (eventosHoje.length > 0) {
-          this.share(eventosHoje[0].id);
+          const e = eventosHoje[0];
+          navigator.clipboard?.writeText(`*${e.titulo}*\n📍 ${e.local}\n⏰ ${e.horario}`)
+            .then(() => this.toast('Evento copiado!'));
         }
       }
 
-      showMap() {
-        this.setView('map');
-      }
-
-      filtrarLocal(local) {
-        document.getElementById('search').value = local;
-        this.renderizar();
-        this.toast(`🔍 Filtrando: ${local}`);
-      }
-
-      setView(view) {
-        this.viewAtual = view;
-        
-        document.querySelectorAll('.view-btn').forEach(btn => {
-          btn.classList.remove('active');
-          if (btn.textContent.toLowerCase().includes(view)) {
-            btn.classList.add('active');
-          }
-        });
-        
-        this.renderizar();
-      }
-
-      toggleFilterToday() {
-        const checked = document.getElementById('filter-today').checked;
-        localStorage.setItem('filterToday', checked);
-        this.renderizar();
-      }
-
-      async toggleNotifications() {
-        this.notificacoesAtivas = document.getElementById('filter-notifications').checked;
-        localStorage.setItem('notificacoes', this.notificacoesAtivas);
-        
-        if (this.notificacoesAtivas && 'Notification' in window) {
-          const permission = await Notification.requestPermission();
-          if (permission === 'granted') {
-            this.toast('🔔 Notificações ativadas!');
-          }
-        }
-      }
-
-      toggleTheme() {
-        const atual = document.documentElement.getAttribute('data-theme');
-        const novo = atual === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', novo);
-        localStorage.setItem('tema', novo);
-        document.getElementById('theme-icon').textContent = novo === 'dark' ? '🌓' : '☀️';
-        this.toast(`🎨 Modo ${novo === 'dark' ? 'escuro' : 'claro'}`);
-      }
-
-      toggleAnonymous() {
-        this.modoAnonimo = !this.modoAnonimo;
-        document.body.classList.toggle('anonimo', this.modoAnonimo);
-        localStorage.setItem('anonimo', this.modoAnonimo);
-        this.toast(this.modoAnonimo ? '👤 Modo anônimo ativado' : '👤 Modo anônimo desativado');
-      }
-
-      exportData() {
-        const dataStr = JSON.stringify(this.dados, null, 2);
-        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-        const exportFileDefaultName = `agenda-ccb-${new Date().toISOString().split('T')[0]}.json`;
-        
-        const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', dataUri);
-        linkElement.setAttribute('download', exportFileDefaultName);
-        linkElement.click();
-        
-        this.toast('📥 Dados exportados!');
-      }
-
-      goToToday() {
-        if (this.viewAtual !== 'daily') {
-          this.setView('daily');
-        }
-        
-        setTimeout(() => {
-          const hoje = new Date().getDay();
-          const cards = document.querySelectorAll('.event-card');
-          for (let card of cards) {
-            if (card.querySelector('.event-tag')?.textContent.includes('HOJE')) {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              card.style.transform = 'scale(1.02)';
-              setTimeout(() => card.style.transform = '', 500);
-              break;
-            }
-          }
-        }, 100);
-        
-        this.toast('📌 Rolando para hoje');
-      }
-
-      formatarRegra(regra) {
-        if (regra === 'all') return '';
-        return regra.replace('nth:', '').split(',').map(s => `${s}º`).join('/');
-      }
-
-      configurarEventListeners() {
-        // Busca com debounce
-        document.getElementById('search').addEventListener('input', (e) => {
-          clearTimeout(this.searchTimeout);
-          this.searchTimeout = setTimeout(() => {
-            this.renderizar();
-            this.atualizarSugestoes(e.target.value);
-          }, 300);
-        });
-      }
-
-      atualizarSugestoes(termo) {
-        if (!termo) {
-          document.getElementById('suggestions').style.display = 'none';
-          return;
-        }
-        
-        const sugestoes = [];
-        
-        // Sugestões de títulos
-        this.dados.cultos.forEach(e => {
-          if (e.titulo.toLowerCase().includes(termo.toLowerCase()) && !sugestoes.some(s => s.texto === e.titulo)) {
-            sugestoes.push({ tipo: 'culto', texto: e.titulo, icon: '⛪' });
-          }
-        });
-        
-        // Sugestões de locais
-        const locais = [...new Set(this.dados.cultos.map(e => e.local))];
-        locais.forEach(l => {
-          if (l.toLowerCase().includes(termo.toLowerCase())) {
-            sugestoes.push({ tipo: 'local', texto: l, icon: '📍' });
-          }
-        });
-        
-        if (sugestoes.length > 0) {
-          const html = sugestoes.slice(0, 5).map(s => `
-            <div class="suggestion-item" onclick="document.getElementById('search').value = '${s.texto}'; agenda.renderizar(); document.getElementById('suggestions').style.display = 'none';">
-              <span>${s.icon}</span>
-              <span>${s.texto}</span>
-            </div>
-          `).join('');
-          
-          document.getElementById('suggestions').innerHTML = html;
-          document.getElementById('suggestions').style.display = 'block';
-        } else {
-          document.getElementById('suggestions').style.display = 'none';
-        }
+      irParaHoje() {
+        document.getElementById('daily-view').scrollIntoView({ behavior: 'smooth' });
+        this.toast('Rolando para hoje');
       }
 
       configurarAtalhos() {
         document.addEventListener('keydown', (e) => {
-          // Ctrl+F ou / para buscar
-          if ((e.ctrlKey && e.key === 'f') || e.key === '/') {
+          if (e.key === '/') {
             e.preventDefault();
             document.getElementById('search').focus();
           }
-          
-          // Esc para limpar busca
           if (e.key === 'Escape') {
             document.getElementById('search').value = '';
             this.renderizar();
-            document.getElementById('suggestions').style.display = 'none';
-          }
-          
-          // Números para views (1-4)
-          if (e.altKey && e.key >= '1' && e.key <= '4') {
-            const views = ['daily', 'weekly', 'monthly', 'map'];
-            this.setView(views[parseInt(e.key) - 1]);
-          }
-          
-          // T para tema
-          if (e.altKey && e.key === 't') {
-            this.toggleTheme();
-          }
-          
-          // H para hoje
-          if (e.altKey && e.key === 'h') {
-            this.goToToday();
           }
         });
-      }
-
-      iniciarAtualizacao() {
-        // Atualizar a cada minuto
-        setInterval(() => {
-          this.atualizarBanner();
-          
-          // Verificar notificações
-          if (this.notificacoesAtivas && 'Notification' in window && Notification.permission === 'granted') {
-            this.verificarNotificacoes();
-          }
-        }, 60000);
-        
-        // Atualizar clima a cada 30 minutos
-        setInterval(() => this.atualizarClima(), 1800000);
-      }
-
-      verificarNotificacoes() {
-        const agora = new Date();
-        const horaAtual = agora.getHours() * 60 + agora.getMinutes();
-        
-        this.dados.cultos.forEach(e => {
-          if (e.dia !== agora.getDay()) return;
-          
-          const [h, m] = e.horario.split(':').map(Number);
-          const minutosEvento = h * 60 + m;
-          
-          // Notificar 30 minutos antes
-          if (minutosEvento - horaAtual === 30) {
-            new Notification('🔔 Lembrete de Culto', {
-              body: `${e.titulo} em ${e.local} às ${e.horario}`,
-              icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="%23ffffff">⛪</text></svg>'
-            });
-          }
-          
-          // Notificar na hora
-          if (minutosEvento === horaAtual) {
-            new Notification('🔔 Culto Começando Agora!', {
-              body: `${e.titulo} em ${e.local}`,
-              icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="%23ffffff">⛪</text></svg>'
-            });
-          }
-        });
-      }
-
-      async solicitarPermissaoNotificacoes() {
-        if ('Notification' in window && this.notificacoesAtivas && Notification.permission === 'default') {
-          await Notification.requestPermission();
-        }
       }
 
       toast(msg) {
@@ -1926,7 +921,6 @@
       }
     }
 
-    // Inicializar
     const agenda = new AgendaCCB();
   </script>
 </body>
