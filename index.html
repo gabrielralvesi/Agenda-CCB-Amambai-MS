@@ -43,7 +43,7 @@
     .logo svg{ width:60px; height:34px; }
     .actions{ display:flex; gap:8px; flex-wrap:wrap; }
 
-    /* Banner de Notificação (no cabeçalho) - APENAS VISÍVEL QUANDO ADMIN PUBLICA */
+    /* Banner de Notificação (no cabeçalho) - aparece para todos quando admin publica */
     .header-notify{
       margin-top:12px;
       border:1px solid rgba(56,189,248,0.35);
@@ -328,7 +328,7 @@
     <div class="festas-section">
       <div class="festas-header">
         <h3><span>⭐</span>Festas Espirituais</h3>
-        <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova</button>
+        <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova Festa</button>
       </div>
       <div style="overflow-x:auto;">
         <table>
@@ -398,10 +398,12 @@
     </div>
   </div>
 
-  <!-- Modal Festa -->
+  <!-- Modal Festa (Admin) -->
   <div id="festaModal" class="modal" style="display:none">
     <div class="modal-content">
       <h3 id="modalTitle">Nova Festa</h3>
+      
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Tipo de Festa</label>
       <select id="festaTipo">
         <option value="culto-mocidade">Culto Mocidade</option>
         <option value="reuniao-mocidade">Reunião Mocidade</option>
@@ -410,11 +412,22 @@
         <option value="ensaio-regional">Ensaio Regional</option>
         <option value="outro">Outro</option>
       </select>
-      <input type="text" id="festaTitulo" placeholder="Título (se outro)">
+
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Título (se outro)</label>
+      <input type="text" id="festaTitulo" placeholder="Ex.: Culto de Oração">
+
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Data</label>
       <input type="date" id="festaData">
+
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Hora</label>
       <input type="time" id="festaHora" value="19:30">
-      <input type="text" id="festaLocal" placeholder="Local">
-      <input type="text" id="festaIrmao" placeholder="Pregador">
+
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Local</label>
+      <input type="text" id="festaLocal" placeholder="Ex.: Central Amambai">
+
+      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Pregador</label>
+      <input type="text" id="festaIrmao" placeholder="Ex.: José Oliveira">
+
       <div class="modal-actions">
         <button class="btn" onclick="fecharModal('festa')">Cancelar</button>
         <button class="btn btn-success" onclick="salvarFesta()">Salvar</button>
@@ -610,7 +623,7 @@
       toast('🧹 Aviso removido');
     }
 
-    // ===== FUNÇÕES EXISTENTES =====
+    // ===== FUNÇÕES DOS CULTOS =====
     function getSemana(){
       const hoje = new Date();
       const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
@@ -681,12 +694,19 @@
       atualizarBanner();
     }
 
+    // ===== FUNÇÕES DAS FESTAS (CORRIGIDAS) =====
     function carregarFestas(){
       const saved = localStorage.getItem(FESTAS_KEY);
-      festas = saved ? JSON.parse(saved) : [
-        { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
-        { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
-      ];
+      if (saved) {
+        festas = JSON.parse(saved);
+      } else {
+        festas = [
+          { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
+          { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' },
+          { id: 3, titulo: 'Batismo', data: '2026-03-22', hora: '15:00', local: 'Vila Limeira', irmao: 'Antonio Silva' }
+        ];
+        localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+      }
       renderizarFestas();
     }
 
@@ -694,21 +714,172 @@
       const hoje = new Date().toISOString().split('T')[0];
       const futuras = festas.filter(f => f.data >= hoje).sort((a,b) => a.data.localeCompare(b.data));
 
-      document.getElementById('festas-list').innerHTML = futuras.map(f => `
-        <tr>
-          <td>${new Date(f.data).toLocaleDateString()}</td>
-          <td>${f.hora}</td>
-          <td>${f.titulo}</td>
-          <td>${f.local}</td>
-          <td>Ir. ${f.irmao}</td>
-          ${isAdmin ? `<td>
-            <button class="action-btn" onclick="editarFesta(${f.id})">✏️</button>
-            <button class="action-btn" onclick="excluirFesta(${f.id})">🗑️</button>
-          </td>` : ''}
-        </tr>
-      `).join('');
+      let html = '';
+      futuras.forEach(f => {
+        const dataObj = new Date(f.data + 'T12:00:00');
+        const dataFormatada = dataObj.toLocaleDateString('pt-BR');
+        
+        html += `
+          <tr data-id="${f.id}">
+            <td>${dataFormatada}</td>
+            <td>${f.hora}</td>
+            <td>${f.titulo}</td>
+            <td>${f.local}</td>
+            <td>Ir. ${f.irmao}</td>
+            ${isAdmin ? `
+              <td>
+                <button class="action-btn" onclick="editarFesta('${f.id}')">✏️ Editar</button>
+                <button class="action-btn" onclick="excluirFesta('${f.id}')">🗑️ Excluir</button>
+              </td>
+            ` : ''}
+          </tr>
+        `;
+      });
+
+      if (futuras.length === 0) {
+        document.getElementById('festas-list').innerHTML = `
+          <tr>
+            <td colspan="${isAdmin ? 6 : 5}" style="text-align:center; padding:30px;">
+              Nenhuma festa programada
+            </td>
+          </tr>
+        `;
+      } else {
+        document.getElementById('festas-list').innerHTML = html;
+      }
     }
 
+    function mostrarModalFesta(){
+      if (!isAdmin) return;
+      
+      document.getElementById('modalTitle').textContent = 'Nova Festa';
+      document.getElementById('festaTipo').value = 'culto-mocidade';
+      document.getElementById('festaTitulo').value = '';
+
+      const hoje = new Date();
+      hoje.setDate(hoje.getDate() + 7);
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+      
+      document.getElementById('festaData').value = `${ano}-${mes}-${dia}`;
+      document.getElementById('festaHora').value = '19:30';
+      document.getElementById('festaLocal').value = '';
+      document.getElementById('festaIrmao').value = '';
+      
+      // Limpar ID de edição
+      window.festaEditandoId = null;
+      
+      document.getElementById('festaModal').style.display = 'flex';
+    }
+
+    function salvarFesta(){
+      if (!isAdmin) return;
+
+      const tipo = document.getElementById('festaTipo').value;
+      let titulo = document.getElementById('festaTitulo').value;
+      const data = document.getElementById('festaData').value;
+      const hora = document.getElementById('festaHora').value;
+      const local = document.getElementById('festaLocal').value;
+      const irmao = document.getElementById('festaIrmao').value;
+
+      // Validações
+      if (!data || !hora || !local || !irmao) {
+        alert('Preencha todos os campos obrigatórios!');
+        return;
+      }
+
+      if (tipo === 'outro' && !titulo) {
+        alert('Digite o título da festa!');
+        return;
+      }
+
+      // Mapear tipo para título
+      const titulos = {
+        'culto-mocidade': 'Culto para Mocidade',
+        'reuniao-mocidade': 'Reunião para Mocidade',
+        'batismo': 'Batismo',
+        'santa-ceia': 'Santa Ceia',
+        'ensaio-regional': 'Ensaio Regional'
+      };
+
+      const tituloFinal = titulos[tipo] || titulo;
+
+      if (window.festaEditandoId) {
+        // Editar existente
+        const index = festas.findIndex(f => f.id == window.festaEditandoId);
+        if (index !== -1) {
+          festas[index] = {
+            id: window.festaEditandoId,
+            titulo: tituloFinal,
+            data,
+            hora,
+            local,
+            irmao
+          };
+          toast('✅ Festa atualizada!');
+        }
+      } else {
+        // Adicionar nova
+        const novaFesta = {
+          id: Date.now(),
+          titulo: tituloFinal,
+          data,
+          hora,
+          local,
+          irmao
+        };
+        festas.push(novaFesta);
+        toast('✅ Festa adicionada!');
+      }
+
+      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+      renderizarFestas();
+      fecharModal('festa');
+    }
+
+    function editarFesta(id){
+      if (!isAdmin) return;
+      
+      const festa = festas.find(f => f.id == id);
+      if (!festa) return;
+
+      document.getElementById('modalTitle').textContent = 'Editar Festa';
+      
+      // Determinar tipo pelo título
+      const titulosMap = {
+        'Culto para Mocidade': 'culto-mocidade',
+        'Reunião para Mocidade': 'reuniao-mocidade',
+        'Batismo': 'batismo',
+        'Santa Ceia': 'santa-ceia',
+        'Ensaio Regional': 'ensaio-regional'
+      };
+      
+      const tipo = titulosMap[festa.titulo] || 'outro';
+      document.getElementById('festaTipo').value = tipo;
+      document.getElementById('festaTitulo').value = tipo === 'outro' ? festa.titulo : '';
+      document.getElementById('festaData').value = festa.data;
+      document.getElementById('festaHora').value = festa.hora;
+      document.getElementById('festaLocal').value = festa.local;
+      document.getElementById('festaIrmao').value = festa.irmao;
+      
+      window.festaEditandoId = id;
+      
+      document.getElementById('festaModal').style.display = 'flex';
+    }
+
+    function excluirFesta(id){
+      if (!isAdmin) return;
+      
+      if (confirm('Tem certeza que deseja excluir esta festa?')) {
+        festas = festas.filter(f => f.id != id);
+        localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+        renderizarFestas();
+        toast('✅ Festa excluída!');
+      }
+    }
+
+    // ===== BANNER =====
     function atualizarBanner(){
       const agora = new Date();
       const dia = agora.getDay();
@@ -744,12 +915,13 @@
         const diff = (h * 60 + m) - horaAtual;
         document.getElementById('nextEvent').textContent = `Falta: ${Math.floor(diff/60)}h${diff%60}min`;
       } else {
-        document.getElementById('nextEvent').textContent = `Falta: --`;
+        document.getElementById('nextEvent').textContent = 'Falta: --';
       }
     }
 
     function atualizarRelogio(){ atualizarBanner(); }
 
+    // ===== FILTROS =====
     function setFilter(tipo){
       filtros.periodo = tipo;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -781,6 +953,7 @@
       if (el) el.scrollIntoView({ behavior:'smooth' });
     }
 
+    // ===== ADMIN =====
     function mostrarLogin(){
       document.getElementById('loginModal').style.display = 'flex';
     }
@@ -818,60 +991,7 @@
       toast('🔓 Modo admin desativado');
     }
 
-    function mostrarModalFesta(){
-      if (!isAdmin) return;
-      document.getElementById('modalTitle').textContent = 'Nova Festa';
-      document.getElementById('festaTipo').value = 'culto-mocidade';
-      document.getElementById('festaTitulo').value = '';
-
-      const hoje = new Date();
-      hoje.setDate(hoje.getDate() + 7);
-      document.getElementById('festaData').value = hoje.toISOString().split('T')[0];
-      document.getElementById('festaHora').value = '19:30';
-      document.getElementById('festaLocal').value = '';
-      document.getElementById('festaIrmao').value = '';
-
-      document.getElementById('festaModal').style.display = 'flex';
-    }
-
-    function salvarFesta(){
-      const tipo = document.getElementById('festaTipo').value;
-      let titulo = document.getElementById('festaTitulo').value;
-      const data = document.getElementById('festaData').value;
-      const hora = document.getElementById('festaHora').value;
-      const local = document.getElementById('festaLocal').value;
-      const irmao = document.getElementById('festaIrmao').value;
-
-      if (!data || !hora || !local || !irmao) { alert('Preencha todos os campos!'); return; }
-      if (tipo === 'outro' && !titulo) { alert('Digite o título da festa!'); return; }
-
-      const titulos = {
-        'culto-mocidade': 'Culto para Mocidade',
-        'reuniao-mocidade': 'Reunião para Mocidade',
-        'batismo': 'Batismo',
-        'santa-ceia': 'Santa Ceia',
-        'ensaio-regional': 'Ensaio Regional'
-      };
-
-      const novaFesta = { id: Date.now(), titulo: titulos[tipo] || titulo, data, hora, local, irmao };
-      festas.push(novaFesta);
-      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
-      renderizarFestas();
-      fecharModal('festa');
-      toast('✅ Festa adicionada');
-    }
-
-    function editarFesta(id){ toast('✏️ Editar festa'); }
-
-    function excluirFesta(id){
-      if (confirm('Excluir festa?')) {
-        festas = festas.filter(f => f.id !== id);
-        localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
-        renderizarFestas();
-        toast('✅ Festa excluída');
-      }
-    }
-
+    // ===== TEMA =====
     function toggleTheme(){
       const atual = document.documentElement.getAttribute('data-theme') || 'dark';
       const novo = atual === 'dark' ? 'light' : 'dark';
@@ -879,6 +999,7 @@
       localStorage.setItem('ccb_theme', novo);
     }
 
+    // ===== TOAST =====
     function toast(msg){
       const t = document.getElementById('toast');
       t.textContent = msg;
