@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agenda CCB — Amambai</title>
   <meta name="theme-color" content="#0f172a">
+  
+  <!-- ONESIGNAL - NOTIFICAÇÕES PROFISSIONAIS -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "bae41e89-0fc8-4e28-a8ba-ca1eea7d4626",
+      });
+    });
+  </script>
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -32,7 +43,7 @@
     .logo svg{ width:60px; height:34px; }
     .actions{ display:flex; gap:8px; flex-wrap:wrap; }
 
-    /* Banner de Notificação (no cabeçalho) */
+    /* Banner de Notificação (no cabeçalho) - APENAS VISÍVEL QUANDO ADMIN PUBLICA */
     .header-notify{
       margin-top:12px;
       border:1px solid rgba(56,189,248,0.35);
@@ -97,93 +108,6 @@
       user-select:none;
     }
     .chip:hover{ background:var(--accent); color:#fff; border-color:var(--accent); }
-
-    /* Seção de Notificações */
-    .notificacao-section{
-      background:var(--glass);
-      border:2px solid var(--success);
-      border-radius:var(--radius);
-      padding:20px;
-      margin-bottom:20px;
-      animation:pulse 2s infinite;
-    }
-    @keyframes pulse{
-      0%{ box-shadow:0 0 0 0 rgba(34,197,94,0.30); }
-      70%{ box-shadow:0 0 0 10px rgba(34,197,94,0); }
-      100%{ box-shadow:0 0 0 0 rgba(34,197,94,0); }
-    }
-    .notificacao-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
-    .notificacao-header h3{ font-size:18px; display:flex; align-items:center; gap:8px; }
-    .notificacao-actions{ display:flex; gap:8px; flex-wrap:wrap; }
-
-    .notificacao-info-box{
-      background:rgba(56,189,248,0.10);
-      border:1px solid var(--accent);
-      border-radius:8px;
-      padding:12px;
-      margin:16px 0;
-      font-size:13px;
-    }
-    .notificacao-info-box ul{ margin-left:20px; margin-top:8px; }
-    .notificacao-info-box code{ background:rgba(0,0,0,0.30); padding:2px 6px; border-radius:4px; }
-
-    .notificacao-lista{
-      max-height:250px; overflow-y:auto; border:1px solid var(--border);
-      border-radius:8px; padding:8px; margin:16px 0;
-    }
-    .notificacao-item{
-      display:flex; align-items:center; gap:12px;
-      padding:12px; border-bottom:1px solid var(--border);
-    }
-    .notificacao-item:last-child{ border-bottom:none; }
-    .notificacao-item input[type="checkbox"]{ width:18px; height:18px; cursor:pointer; }
-    .notificacao-numero{ flex:1; font-family:monospace; }
-    .notificacao-nome{ color:var(--text-light); font-size:12px; min-width:100px; }
-    .btn-remover{ color:var(--danger); cursor:pointer; padding:4px 8px; border-radius:4px; }
-    .btn-remover:hover{ background:var(--danger); color:white; }
-
-    .notificacao-footer{
-      display:flex; justify-content:space-between; align-items:center;
-      margin-top:16px; padding-top:16px; border-top:1px solid var(--border);
-      flex-wrap:wrap; gap:12px;
-    }
-    .notificacao-timer{ display:flex; gap:20px; align-items:center; }
-    .timer-option{ display:flex; align-items:center; gap:5px; cursor:pointer; }
-    .notificacao-stats{ color:var(--text-light); font-size:13px; }
-
-    /* Banner de ativação */
-    .ativar-notificacao{
-      background:linear-gradient(135deg,var(--success),#16a34a);
-      border-radius:var(--radius);
-      padding:20px;
-      margin-bottom:20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:16px;
-      color:white;
-    }
-    .ativar-info{ display:flex; align-items:center; gap:16px; }
-    .ativar-icone{
-      font-size:32px;
-      background:rgba(255,255,255,0.20);
-      width:60px; height:60px;
-      border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .ativar-texto h3{ font-size:18px; margin-bottom:4px; }
-    .ativar-texto p{ font-size:14px; opacity:0.9; }
-    .btn-ativar{
-      background:white; color:var(--success);
-      border:none; padding:12px 24px;
-      border-radius:999px;
-      font-size:16px; font-weight:800;
-      cursor:pointer;
-      display:flex; align-items:center; gap:8px;
-      box-shadow:0 4px 15px rgba(0,0,0,0.20);
-    }
-    .btn-ativar:hover{ transform:scale(1.05); }
 
     /* Banner Hoje */
     .banner{
@@ -314,53 +238,12 @@
       .fab span{ display:none; }
       .fab{ padding:12px; border-radius:50%; }
       .filters{ flex-direction:column; }
-      .ativar-notificacao{ flex-direction:column; text-align:center; }
-      .notificacao-footer{ flex-direction:column; align-items:flex-start; }
-      .notificacao-actions{ justify-content:center; }
       .header-notify{ align-items:flex-start; }
     }
   </style>
-  <!-- PWA (modo APP na Tela de Início) -->
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Agenda CCB">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-
 </head>
 
 <body>
-  <!-- Splash (quando abrir como APP): “wallpaper” com CCB -->
-  <div id="pwaSplash" style="
-    position: fixed; inset: 0; z-index: 5000;
-    display: flex; align-items: center; justify-content: center;
-    background: #0f172a;
-  ">
-    <div style="
-      width: min(420px, 86vw);
-      border: 2px solid rgba(56,189,248,.55);
-      border-radius: 22px;
-      padding: 28px 22px;
-      text-align: center;
-      background: rgba(15,23,42,.55);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.35);
-    ">
-      <div style="
-        width: 86px; height: 86px; margin: 0 auto 16px;
-        border-radius: 22px;
-        background: rgba(56,189,248,.12);
-        border: 1px solid rgba(56,189,248,.35);
-        display:flex; align-items:center; justify-content:center;
-        font-weight: 900; font-size: 40px; color: #fff;
-        letter-spacing: 1px;
-      ">CCB</div>
-      <div style="font-size: 18px; font-weight: 800; color: #e5e7eb;">Agenda CCB</div>
-      <div style="margin-top: 6px; font-size: 13px; color: #94a3b8;">Amambai - MS</div>
-    </div>
-  </div>
-
   <div class="container">
     <!-- Header -->
     <div class="header">
@@ -381,12 +264,12 @@
         <div class="actions">
           <span class="chip" id="themeBtn" onclick="toggleTheme()">🌓 Tema</span>
           <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
-          <span class="chip" id="notifyAdminBtn" onclick="mostrarModalAviso()" style="display:none">📣 Aviso</span>
+          <span class="chip" id="notifyAdminBtn" onclick="mostrarModalAviso()" style="display:none">📣 Enviar Aviso</span>
           <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
         </div>
       </div>
 
-      <!-- Banner de Notificação no cabeçalho (aparece para todos) -->
+      <!-- Banner de Notificação no cabeçalho (aparece para todos quando admin publica) -->
       <div class="header-notify" id="headerNotify" aria-live="polite">
         <div class="left">
           <div class="icon" id="headerNotifyIcon">📣</div>
@@ -397,61 +280,6 @@
           </div>
         </div>
         <button class="close" onclick="fecharBannerAviso()">✕ Fechar</button>
-      </div>
-    </div>
-
-    <!-- Banner de Ativação de Notificações -->
-    <div class="ativar-notificacao" id="ativarBanner" style="display: flex;">
-      <div class="ativar-info">
-        <div class="ativar-icone">🔔</div>
-        <div class="ativar-texto">
-          <h3>Receba lembretes dos cultos!</h3>
-          <p>Ative as notificações e seja avisado antes dos cultos</p>
-        </div>
-      </div>
-      <button class="btn-ativar" onclick="solicitarPermissao()">
-        <span>🔔</span>
-        <span>ATIVAR NOTIFICAÇÕES</span>
-      </button>
-    </div>
-
-    <!-- Seção de Notificações -->
-    <div class="notificacao-section" id="notificacaoSection" style="display: none;">
-      <div class="notificacao-header">
-        <h3><span>📱</span>Lembretes por Notificação</h3>
-        <div class="notificacao-actions">
-          <button class="btn btn-success" onclick="mostrarModalAdicionar()">➕ Adicionar</button>
-          <button class="btn btn-success" onclick="mostrarModalImportar()">📥 Importar</button>
-          <button class="btn btn-warning" onclick="enviarLembretes()">📤 Enviar Agora</button>
-          <button class="btn" onclick="exportarContatos()">💾 Exportar</button>
-        </div>
-      </div>
-
-      <div class="notificacao-info-box">
-        <strong>📌 Instruções para importar:</strong>
-        <ul>
-          <li>Formato: <strong>Número;Nome</strong> (um por linha)</li>
-          <li>Exemplo: <code>67999999999;João Silva</code></li>
-          <li>O nome é opcional: <code>67999999999</code></li>
-          <li>Você pode copiar de uma planilha ou tirar print e digitar</li>
-        </ul>
-      </div>
-
-      <div class="notificacao-lista" id="contatosLista">
-        <div style="text-align: center; padding: 30px; color: var(--text-light);">
-          Nenhum contato cadastrado. Clique em "Importar" para adicionar vários de uma vez.
-        </div>
-      </div>
-
-      <div class="notificacao-footer">
-        <div class="notificacao-timer">
-          <label class="timer-option"><input type="checkbox" id="timer30" checked> ✅ 30min antes</label>
-          <label class="timer-option"><input type="checkbox" id="timer60"> 🕒 1h antes</label>
-        </div>
-        <div class="notificacao-stats">
-          <span id="totalContatos">0</span> contatos cadastrados |
-          <span id="selecionadosContatos">0</span> selecionados
-        </div>
       </div>
     </div>
 
@@ -538,10 +366,10 @@
     </div>
   </div>
 
-  <!-- Modal Aviso (Admin) -->
+  <!-- Modal Aviso (Admin) - CONTROLE TOTAL DAS NOTIFICAÇÕES -->
   <div id="avisoModal" class="modal" style="display:none">
     <div class="modal-content">
-      <h3>📣 Enviar Aviso no Cabeçalho</h3>
+      <h3>📣 Controle de Notificações</h3>
 
       <label style="font-size:12px; color:var(--text-light); font-weight:700;">Tipo do aviso</label>
       <select id="avisoTipo">
@@ -555,43 +383,17 @@
       <input type="text" id="avisoTitulo" placeholder="Ex.: Mudança de horário hoje">
 
       <label style="font-size:12px; color:var(--text-light); font-weight:700;">Mensagem</label>
-      <textarea id="avisoMensagem" placeholder="Digite o aviso que vai aparecer no cabeçalho..."></textarea>
+      <textarea id="avisoMensagem" placeholder="Digite a mensagem que aparecerá para todos..."></textarea>
 
       <label style="display:flex; gap:8px; align-items:center; margin-top:10px; cursor:pointer;">
-        <input type="checkbox" id="avisoNotificarNavegador">
-        <span style="font-size:13px; color:var(--text-light);">Também enviar como notificação do navegador (se ativado)</span>
+        <input type="checkbox" id="avisoNotificarOneSignal" checked>
+        <span style="font-size:13px; color:var(--text-light);">📱 Enviar como notificação push (OneSignal)</span>
       </label>
 
       <div class="modal-actions">
         <button class="btn" onclick="fecharModal('aviso')">Cancelar</button>
-        <button class="btn btn-warning" onclick="limparAviso()">🧹 Limpar aviso</button>
-        <button class="btn btn-success" onclick="salvarAviso()">📣 Publicar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Adicionar Contato -->
-  <div id="contatoModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>➕ Adicionar Contato</h3>
-      <input type="text" id="contatoNome" placeholder="Nome (opcional)">
-      <input type="text" id="contatoNumero" placeholder="WhatsApp (com DDD, ex: 67999999999)">
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('contato')">Cancelar</button>
-        <button class="btn btn-success" onclick="salvarContato()">Adicionar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Importar Contatos -->
-  <div id="importarModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>📥 Importar Contatos</h3>
-      <p style="margin-bottom:10px;">Cole sua lista de contatos (um por linha):</p>
-      <textarea id="importarTexto" placeholder="67999999999;João Silva&#10;67988888888;Maria Oliveira&#10;67977777777"></textarea>
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('importar')">Cancelar</button>
-        <button class="btn btn-success" onclick="importarContatos()">Importar</button>
+        <button class="btn btn-warning" onclick="limparAviso()">🧹 Remover aviso</button>
+        <button class="btn btn-success" onclick="salvarAviso()">📢 Publicar</button>
       </div>
     </div>
   </div>
@@ -663,28 +465,25 @@
     ];
 
     let festas = [];
-    let contatos = [];
     let isAdmin = false;
-    let notificacoesPermitidas = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
 
     const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
     const ADMIN_SENHA = "ccb2025";
     const FESTAS_KEY = 'ccb_festas';
-    const CONTATOS_KEY = 'ccb_contatos';
 
     // Avisos (banner no cabeçalho)
     const AVISO_KEY = 'ccb_aviso_header';
-    const AVISO_HIDE_KEY = 'ccb_aviso_header_hidden'; // para esconder sem apagar (por usuário)
+    const AVISO_HIDE_KEY = 'ccb_aviso_header_hidden';
+
+    // OneSignal
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
 
     function init(){
-      // Tema persistido
       const savedTheme = localStorage.getItem('ccb_theme');
       if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
 
       carregarFestas();
-      carregarContatos();
-      verificarNotificacoes();
       carregarAvisoHeader();
 
       aplicarFiltros();
@@ -715,7 +514,6 @@
       const metaEl = document.getElementById('headerNotifyMeta');
       const iconEl = document.getElementById('headerNotifyIcon');
 
-      // reset classes
       box.classList.remove('info','success','warning','danger');
       const tipo = (aviso.tipo || 'info').toLowerCase();
       if (['success','warning','danger','info'].includes(tipo)) box.classList.add(tipo);
@@ -747,15 +545,13 @@
     }
 
     function fecharBannerAviso(){
-      // Esconde só para este navegador/usuário, sem apagar o aviso global localStorage
       localStorage.setItem(AVISO_HIDE_KEY, '1');
       esconderAvisoUI();
-      toast('🔕 Aviso ocultado');
+      toast('🔕 Aviso fechado');
     }
 
     function mostrarModalAviso(){
       if (!isAdmin) return;
-      // Reset "hide" ao abrir
       localStorage.removeItem(AVISO_HIDE_KEY);
 
       const saved = localStorage.getItem(AVISO_KEY);
@@ -767,7 +563,7 @@
       document.getElementById('avisoTipo').value = aviso.tipo || 'info';
       document.getElementById('avisoTitulo').value = aviso.titulo || '';
       document.getElementById('avisoMensagem').value = aviso.mensagem || '';
-      document.getElementById('avisoNotificarNavegador').checked = false;
+      document.getElementById('avisoNotificarOneSignal').checked = true;
 
       document.getElementById('avisoModal').style.display = 'flex';
     }
@@ -786,31 +582,22 @@
 
       const aviso = { tipo, titulo, mensagem, quando: new Date().toISOString() };
       localStorage.setItem(AVISO_KEY, JSON.stringify(aviso));
-      localStorage.removeItem(AVISO_HIDE_KEY); // reexibir para todos neste device
+      localStorage.removeItem(AVISO_HIDE_KEY);
       exibirAvisoUI(aviso);
-      fecharModal('aviso');
-      toast('📣 Aviso publicado');
-
-      // Opcional: notificação do navegador
-      const querNotificar = document.getElementById('avisoNotificarNavegador').checked;
-      if (querNotificar) {
-        if (!('Notification' in window)) {
-          toast('⚠️ Este navegador não suporta notificações');
-          return;
-        }
-        if (Notification.permission !== 'granted') {
-          toast('🔔 Ative as notificações primeiro');
-          return;
-        }
-        try {
-          new Notification(titulo && titulo.trim() ? titulo.trim() : '📣 Aviso', {
-            body: mensagem,
-            icon: 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%230f172a%27/%3E%3Ctext x=%2750%27 y=%2765%27 font-size=%2750%27 text-anchor=%27middle%27 fill=%27%23ffffff%27%3ECCB%3C/text%3E%3C/svg%3E'
+      
+      // Enviar notificação OneSignal se marcado
+      const enviarOneSignal = document.getElementById('avisoNotificarOneSignal').checked;
+      if (enviarOneSignal) {
+        window.OneSignalDeferred.push(function(OneSignal) {
+          OneSignal.Notifications.createNotification({
+            headings: { en: titulo || 'Aviso', pt: titulo || 'Aviso' },
+            contents: { en: mensagem, pt: mensagem },
           });
-        } catch {
-          // alguns navegadores bloqueiam em background
-        }
+        });
       }
+
+      fecharModal('aviso');
+      toast('📣 Aviso publicado' + (enviarOneSignal ? ' com notificação' : ''));
     }
 
     function limparAviso(){
@@ -821,220 +608,6 @@
       esconderAvisoUI();
       fecharModal('aviso');
       toast('🧹 Aviso removido');
-    }
-
-    // ===== SISTEMA DE NOTIFICAÇÕES =====
-    function verificarNotificacoes(){
-      if (!('Notification' in window)) {
-        document.getElementById('ativarBanner').style.display = 'none';
-        return;
-      }
-      if (Notification.permission === 'granted') {
-        notificacoesPermitidas = true;
-        document.getElementById('ativarBanner').style.display = 'none';
-        document.getElementById('notificacaoSection').style.display = 'block';
-      } else if (Notification.permission === 'denied') {
-        document.getElementById('ativarBanner').style.display = 'none';
-        document.getElementById('notificacaoSection').style.display = 'none';
-      } else {
-        document.getElementById('ativarBanner').style.display = 'flex';
-        document.getElementById('notificacaoSection').style.display = 'none';
-      }
-    }
-
-    function solicitarPermissao(){
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          notificacoesPermitidas = true;
-          document.getElementById('ativarBanner').style.display = 'none';
-          document.getElementById('notificacaoSection').style.display = 'block';
-
-          new Notification('✅ Notificações ativadas!', {
-            body: 'Agora você receberá lembretes dos cultos.',
-            icon: 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%230f172a%27/%3E%3Ctext x=%2750%27 y=%2765%27 font-size=%2750%27 text-anchor=%27middle%27 fill=%27%23ffffff%27%3ECCB%3C/text%3E%3C/svg%3E'
-          });
-
-          toast('✅ Notificações ativadas!');
-        }
-      });
-    }
-
-    function enviarLembretes(){
-      if (!notificacoesPermitidas) {
-        alert('Ative as notificações primeiro!');
-        return;
-      }
-
-      const timer30 = document.getElementById('timer30').checked;
-      const timer60 = document.getElementById('timer60').checked;
-
-      if (!timer30 && !timer60) {
-        alert('Selecione pelo menos um horário de lembrete!');
-        return;
-      }
-
-      const semana = getSemana();
-      const diaHoje = new Date().getDay();
-      const horaAtual = new Date().getHours() * 60 + new Date().getMinutes();
-
-      const cultosHoje = cultos
-        .filter(c => c.dia === diaHoje)
-        .filter(c => {
-          if (c.regra === 'all') return true;
-          const semanas = c.regra.replace('nth:', '').split(',').map(Number);
-          return semanas.includes(semana);
-        });
-
-      if (cultosHoje.length === 0) {
-        toast('📭 Nenhum culto hoje');
-        return;
-      }
-
-      const listaCultos = cultosHoje
-        .map(c => `• ${c.hora} - ${c.titulo} (${c.local})`)
-        .join('\n');
-
-      // Envio "manual": dispara notificações agora
-      cultosHoje.forEach(culto => {
-        const [h, m] = culto.hora.split(':').map(Number);
-        const minutosCulto = h * 60 + m;
-        const diff = Math.max(0, minutosCulto - horaAtual);
-
-        // Se o culto já passou, pula
-        if (minutosCulto <= horaAtual) return;
-
-        // Timer 30/60 são opções, mas no modo "Enviar Agora" a gente manda de qualquer forma
-        // (mantive a lógica simples: manda uma por culto)
-        new Notification(`🔔 ${culto.titulo}`, {
-          body: `Começa em ${diff} minutos!\n📍 ${culto.local}`,
-          icon: 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%230f172a%27/%3E%3Ctext x=%2750%27 y=%2765%27 font-size=%2750%27 text-anchor=%27middle%27 fill=%27%23ffffff%27%3ECCB%3C/text%3E%3C/svg%3E',
-          vibrate: [200, 100, 200]
-        });
-      });
-
-      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
-
-      new Notification('📅 Cultos de Hoje', {
-        body: `${listaCultos}\n\n${versiculo}\n\nDeus abençoe.`,
-        icon: 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%230f172a%27/%3E%3Ctext x=%2750%27 y=%2765%27 font-size=%2750%27 text-anchor=%27middle%27 fill=%27%23ffffff%27%3ECCB%3C/text%3E%3C/svg%3E',
-        vibrate: [200, 100, 200],
-        requireInteraction: true
-      });
-
-      toast('📤 Lembretes enviados!');
-    }
-
-    // ===== CONTATOS =====
-    function carregarContatos(){
-      const saved = localStorage.getItem(CONTATOS_KEY);
-      contatos = saved ? JSON.parse(saved) : [];
-      renderizarContatos();
-    }
-
-    function renderizarContatos(){
-      const lista = document.getElementById('contatosLista');
-      const total = contatos.length;
-      const selecionados = contatos.filter(c => c.selecionado !== false).length;
-
-      document.getElementById('totalContatos').textContent = total;
-      document.getElementById('selecionadosContatos').textContent = selecionados;
-
-      if (total === 0) {
-        lista.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light)">Nenhum contato cadastrado. Clique em "Importar" para adicionar vários de uma vez.</div>';
-      } else {
-        lista.innerHTML = contatos.map((c, index) => `
-          <div class="notificacao-item">
-            <input type="checkbox" ${c.selecionado !== false ? 'checked' : ''} onchange="toggleContato(${index}, this.checked)">
-            <span class="notificacao-numero">${c.numero}</span>
-            <span class="notificacao-nome">${c.nome || 'Sem nome'}</span>
-            <span class="btn-remover" onclick="removerContato(${index})">🗑️</span>
-          </div>
-        `).join('');
-      }
-    }
-
-    function toggleContato(index, checked){
-      contatos[index].selecionado = checked;
-      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
-      renderizarContatos();
-    }
-
-    function removerContato(index){
-      if (confirm('Remover este contato?')) {
-        contatos.splice(index, 1);
-        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
-        renderizarContatos();
-        toast('✅ Contato removido');
-      }
-    }
-
-    function mostrarModalAdicionar(){
-      document.getElementById('contatoNome').value = '';
-      document.getElementById('contatoNumero').value = '';
-      document.getElementById('contatoModal').style.display = 'flex';
-    }
-
-    function mostrarModalImportar(){
-      document.getElementById('importarTexto').value = '';
-      document.getElementById('importarModal').style.display = 'flex';
-    }
-
-    function salvarContato(){
-      const nome = document.getElementById('contatoNome').value;
-      const numero = document.getElementById('contatoNumero').value.replace(/\D/g, '');
-
-      if (numero.length < 10 || numero.length > 11) {
-        alert('Número inválido! Digite com DDD (ex: 67999999999)');
-        return;
-      }
-
-      contatos.push({ numero, nome, selecionado:true });
-      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
-      renderizarContatos();
-      fecharModal('contato');
-      toast('✅ Contato adicionado');
-    }
-
-    function importarContatos(){
-      const texto = document.getElementById('importarTexto').value;
-      const linhas = texto.split('\n').filter(l => l.trim() !== '');
-
-      let importados = 0;
-      let erros = 0;
-
-      linhas.forEach(linha => {
-        let [numero, nome] = linha.split(';').map(s => s.trim());
-        numero = (numero || '').replace(/\D/g, '');
-
-        if (numero.length >= 10 && numero.length <= 11) {
-          contatos.push({ numero, nome: nome || '', selecionado:true });
-          importados++;
-        } else {
-          erros++;
-        }
-      });
-
-      if (importados > 0) {
-        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
-        renderizarContatos();
-        toast(`✅ ${importados} contatos importados${erros > 0 ? `, ${erros} erros ignorados` : ''}`);
-      } else {
-        toast('❌ Nenhum contato válido encontrado');
-      }
-
-      fecharModal('importar');
-    }
-
-    function exportarContatos(){
-      if (contatos.length === 0) { toast('📭 Nenhum contato para exportar'); return; }
-      const texto = contatos.map(c => `${c.numero};${c.nome || ''}`).join('\n');
-      const blob = new Blob([texto], { type:'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `contatos-ccb-${new Date().toISOString().split('T')[0]}.txt`;
-      a.click();
-      toast('💾 Arquivo exportado');
     }
 
     // ===== FUNÇÕES EXISTENTES =====
@@ -1214,10 +787,8 @@
 
     function fecharModal(tipo){
       if (tipo === 'login') document.getElementById('loginModal').style.display = 'none';
-      if (tipo === 'contato') document.getElementById('contatoModal').style.display = 'none';
-      if (tipo === 'importar') document.getElementById('importarModal').style.display = 'none';
-      if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
       if (tipo === 'aviso') document.getElementById('avisoModal').style.display = 'none';
+      if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
     }
 
     function fazerLogin(){
@@ -1316,23 +887,6 @@
     }
 
     init();
-      // ===== PWA (modo APP) =====
-    (function(){
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").catch(()=>{});
-        });
-      }
-      // Esconde o “wallpaper” após carregar
-      window.addEventListener("load", () => {
-        const s = document.getElementById("pwaSplash");
-        if (!s) return;
-        s.style.transition = "opacity .25s ease";
-        s.style.opacity = "0";
-        setTimeout(()=>{ s.remove(); }, 260);
-      });
-    })();
-
-</script>
+  </script>
 </body>
 </html>
