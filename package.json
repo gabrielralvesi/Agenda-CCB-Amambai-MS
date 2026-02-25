@@ -1,0 +1,10 @@
+{
+  "name": "agenda-ccb-onesignal-scheduler",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "luxon": "^3.5.0"
+  }
+}

@@ -1,4 +1,15 @@
 {
   "timezone": "America/Campo_Grande",
-  "cultos": []
+  "defaults": {
+    "url": "https://gabrielralvesi.github.io/Agenda-CCB-Amambai-MS/"
+  },
+  "events": [
+    {
+      "id": "exemplo-1",
+      "title": "Culto com Recitativo",
+      "location": "Vila Limeira",
+      "start": "2026-03-01T19:30:00-04:00",
+      "notes": "Exemplo. Edite no agenda.json."
+    }
+  ]
 }
