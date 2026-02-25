@@ -95,6 +95,9 @@
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .btn:hover {
@@ -108,25 +111,34 @@
       border: none;
     }
 
+    .btn-success:hover {
+      background: #16a34a;
+    }
+
     .btn-warning {
       background: var(--warning);
       color: white;
       border: none;
     }
 
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-      border: none;
+    .btn-warning:hover {
+      background: #ea580c;
     }
 
-    /* Seção de Notificações - IGUAL AO PRINT */
+    /* Seção de Notificações */
     .notificacao-section {
       background: var(--glass);
-      border: 1px solid var(--border);
+      border: 2px solid var(--success);
       border-radius: var(--radius);
       padding: 20px;
       margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.3); }
+      70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
 
     .notificacao-header {
@@ -242,6 +254,7 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      cursor: pointer;
     }
 
     .notificacao-stats {
@@ -566,6 +579,11 @@
       margin: 0 4px;
     }
 
+    .action-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
     /* Modal */
     .modal {
       position: fixed;
@@ -627,6 +645,7 @@
       border-radius: 8px;
       display: none;
       z-index: 1000;
+      font-weight: 600;
     }
 
     /* FAB */
@@ -645,12 +664,17 @@
       z-index: 100;
     }
 
+    .fab:hover {
+      transform: translateY(-4px);
+    }
+
     @media (max-width: 768px) {
       .fab span { display: none; }
       .fab { padding: 12px; border-radius: 50%; }
       .filters { flex-direction: column; }
       .ativar-notificacao { flex-direction: column; text-align: center; }
       .notificacao-footer { flex-direction: column; align-items: flex-start; }
+      .notificacao-actions { justify-content: center; }
     }
   </style>
 </head>
@@ -680,8 +704,8 @@
       </div>
     </div>
 
-    <!-- Banner de Ativação de Notificações (aparece para quem não ativou) -->
-    <div class="ativar-notificacao" id="ativarBanner">
+    <!-- Banner de Ativação de Notificações -->
+    <div class="ativar-notificacao" id="ativarBanner" style="display: flex;">
       <div class="ativar-info">
         <div class="ativar-icone">🔔</div>
         <div class="ativar-texto">
@@ -695,7 +719,7 @@
       </button>
     </div>
 
-    <!-- Seção de Notificações (aparece após ativar) -->
+    <!-- Seção de Notificações -->
     <div class="notificacao-section" id="notificacaoSection" style="display: none;">
       <div class="notificacao-header">
         <h3>
@@ -923,7 +947,7 @@
     let festas = [];
     let contatos = [];
     let isAdmin = false;
-    let notificacoesAtivas = false;
+    let notificacoesPermitidas = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
     
     const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -943,26 +967,32 @@
 
     // ===== SISTEMA DE NOTIFICAÇÕES =====
     function verificarNotificacoes() {
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          notificacoesAtivas = true;
-          document.getElementById('ativarBanner').style.display = 'none';
-          document.getElementById('notificacaoSection').style.display = 'block';
-        } else {
-          document.getElementById('ativarBanner').style.display = 'flex';
-          document.getElementById('notificacaoSection').style.display = 'none';
-        }
+      if (!('Notification' in window)) {
+        document.getElementById('ativarBanner').style.display = 'none';
+        return;
+      }
+      
+      if (Notification.permission === 'granted') {
+        notificacoesPermitidas = true;
+        document.getElementById('ativarBanner').style.display = 'none';
+        document.getElementById('notificacaoSection').style.display = 'block';
+      } else if (Notification.permission === 'denied') {
+        document.getElementById('ativarBanner').style.display = 'none';
+        document.getElementById('notificacaoSection').style.display = 'none';
+      } else {
+        document.getElementById('ativarBanner').style.display = 'flex';
+        document.getElementById('notificacaoSection').style.display = 'none';
       }
     }
 
     function solicitarPermissao() {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
-          notificacoesAtivas = true;
+          notificacoesPermitidas = true;
           document.getElementById('ativarBanner').style.display = 'none';
           document.getElementById('notificacaoSection').style.display = 'block';
           
-          // Notificação de boas-vindas
+          // Notificação de teste
           new Notification('✅ Notificações ativadas!', {
             body: 'Agora você receberá lembretes dos cultos.',
             icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E'
@@ -973,20 +1003,26 @@
       });
     }
 
-    function enviarNotificacao(titulo, mensagem) {
-      if (!notificacoesAtivas) return;
-      
-      new Notification(titulo, {
-        body: mensagem,
-        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-        vibrate: [200, 100, 200]
-      });
-    }
-
+    // Função para enviar notificações (CORRIGIDA)
     function enviarLembretes() {
+      if (!notificacoesPermitidas) {
+        alert('Ative as notificações primeiro!');
+        return;
+      }
+      
+      const timer30 = document.getElementById('timer30').checked;
+      const timer60 = document.getElementById('timer60').checked;
+      
+      if (!timer30 && !timer60) {
+        alert('Selecione pelo menos um horário de lembrete!');
+        return;
+      }
+      
       const semana = getSemana();
       const diaHoje = new Date().getDay();
+      const horaAtual = new Date().getHours() * 60 + new Date().getMinutes();
       
+      // Filtrar cultos de hoje
       const cultosHoje = cultos.filter(c => c.dia === diaHoje).filter(c => {
         if (c.regra === 'all') return true;
         const semanas = c.regra.replace('nth:', '').split(',').map(Number);
@@ -998,10 +1034,36 @@
         return;
       }
       
-      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
-      const lista = cultosHoje.map(c => `• ${c.hora} - ${c.titulo} (${c.local})`).join('\n');
+      // Lista de cultos
+      const listaCultos = cultosHoje.map(c => `• ${c.hora} - ${c.titulo} (${c.local})`).join('\n');
       
-      enviarNotificacao('📅 Cultos de Hoje', `${lista}\n\n${versiculo}\n\nDeus abençoe.`);
+      // Para cada culto, verificar se está próximo
+      cultosHoje.forEach(culto => {
+        const [h, m] = culto.hora.split(':').map(Number);
+        const minutosCulto = h * 60 + m;
+        const diff30 = minutosCulto - horaAtual;
+        const diff60 = minutosCulto - horaAtual;
+        
+        // Se for para enviar agora (teste manual)
+        if (timer30) {
+          const notificacao = new Notification(`🔔 ${culto.titulo}`, {
+            body: `Começa em ${diff30} minutos!\n📍 ${culto.local}`,
+            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+            vibrate: [200, 100, 200]
+          });
+        }
+      });
+      
+      // Notificação geral do dia
+      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
+      
+      const notificacaoGeral = new Notification('📅 Cultos de Hoje', {
+        body: `${listaCultos}\n\n${versiculo}\n\nDeus abençoe.`,
+        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+        vibrate: [200, 100, 200],
+        requireInteraction: true
+      });
+      
       toast('📤 Lembretes enviados!');
     }
 
