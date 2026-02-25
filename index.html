@@ -6,9 +6,6 @@
   <title>Agenda CCB — Amambai</title>
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Manifest para PWA -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Agenda%20CCB%22%2C%22short_name%22%3A%22CCB%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22background_color%22%3A%22%230b1220%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%3EC%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image/svg+xml%22%7D%5D%7D">
-  
   <style>
     * {
       margin: 0;
@@ -28,16 +25,6 @@
       --border: rgba(148, 163, 184, 0.22);
       --glass: rgba(15, 23, 42, 0.55);
       --radius: 18px;
-      --font-size-base: 14px;
-      --font-size-title: 16px;
-      --font-size-small: 12px;
-    }
-
-    /* Modo idoso - fonte aumentada */
-    [data-font-size="grande"] {
-      --font-size-base: 18px;
-      --font-size-title: 22px;
-      --font-size-small: 16px;
     }
 
     [data-theme="light"] {
@@ -55,8 +42,6 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      font-size: var(--font-size-base);
-      transition: font-size 0.2s;
     }
 
     .container {
@@ -81,7 +66,6 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 12px;
     }
 
     .logo {
@@ -93,10 +77,6 @@
     .logo svg {
       width: 60px;
       height: 34px;
-    }
-
-    .logo h2 {
-      font-size: var(--font-size-title);
     }
 
     .actions {
@@ -111,7 +91,7 @@
       background: var(--glass);
       color: var(--text);
       border-radius: 999px;
-      font-size: var(--font-size-small);
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
@@ -140,39 +120,68 @@
       border: none;
     }
 
-    /* Botão de acessibilidade */
-    .btn-acessibilidade {
-      background: #8b5cf6;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-size: var(--font-size-small);
-      font-weight: 600;
-      cursor: pointer;
+    /* BOTÃO DE NOTIFICAÇÃO EM DESTAQUE - CORRIGIDO */
+    .notificacao-container {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(34, 197, 94, 0.15));
+      border: 2px solid var(--success);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    .notificacao-info {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 16px;
     }
 
-    .btn-acessibilidade:hover {
-      background: #7c3aed;
+    .notificacao-icone {
+      font-size: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Botão de notificação em destaque */
+    .notificacao-texto h3 {
+      font-size: 18px;
+      margin-bottom: 4px;
+      color: var(--success);
+    }
+
+    .notificacao-texto p {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
     .btn-notificacao-destaque {
-      background: linear-gradient(135deg, var(--accent), var(--success));
+      background: linear-gradient(135deg, var(--success), #16a34a);
       color: white;
       border: none;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 999px;
-      font-size: var(--font-size-base);
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
       transition: transform 0.2s;
     }
 
@@ -184,47 +193,13 @@
       transform: scale(0.95);
     }
 
-    /* Banner de notificação */
-    .notificacao-banner {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(34, 197, 94, 0.2));
-      border: 2px solid var(--success);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .notificacao-info {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .notificacao-icone {
-      font-size: 32px;
-    }
-
-    .notificacao-texto h3 {
-      font-size: var(--font-size-title);
-      margin-bottom: 4px;
-    }
-
-    .notificacao-texto p {
-      font-size: var(--font-size-small);
-      color: var(--text-light);
-    }
-
     /* Banner */
     .banner {
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid var(--accent);
       border-radius: var(--radius);
       padding: 16px;
-      margin-bottom: 16px;
+      margin: 16px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -233,13 +208,13 @@
     }
 
     .banner-info h2 {
-      font-size: var(--font-size-title);
+      font-size: 16px;
       margin-bottom: 4px;
     }
 
     .banner-info p {
       color: var(--text-light);
-      font-size: var(--font-size-small);
+      font-size: 13px;
     }
 
     .banner-stats {
@@ -253,7 +228,7 @@
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 999px;
-      font-size: var(--font-size-small);
+      font-size: 12px;
       font-weight: 600;
     }
 
@@ -262,7 +237,7 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin: 16px 0;
     }
 
     .search-box {
@@ -282,12 +257,8 @@
       background: none;
       border: none;
       color: var(--text);
-      font-size: var(--font-size-base);
+      font-size: 13px;
       outline: none;
-    }
-
-    .search-box input::placeholder {
-      font-size: var(--font-size-small);
     }
 
     .filter-group {
@@ -306,9 +277,8 @@
       background: transparent;
       color: var(--text-light);
       border-radius: 999px;
-      font-size: var(--font-size-small);
+      font-size: 12px;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .filter-btn.active {
@@ -337,7 +307,7 @@
     }
 
     .result-count {
-      font-size: var(--font-size-small);
+      font-size: 12px;
       color: var(--text-light);
       margin-left: 8px;
     }
@@ -348,7 +318,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
-      margin-bottom: 16px;
+      margin: 16px 0;
     }
 
     .admin-header {
@@ -358,10 +328,6 @@
       margin-bottom: 12px;
       flex-wrap: wrap;
       gap: 10px;
-    }
-
-    .admin-header h3 {
-      font-size: var(--font-size-title);
     }
 
     .admin-actions {
@@ -392,7 +358,7 @@
     }
 
     .stat-label {
-      font-size: var(--font-size-small);
+      font-size: 12px;
       color: var(--text-light);
     }
 
@@ -420,7 +386,7 @@
 
     .day-name {
       font-weight: 700;
-      font-size: var(--font-size-title);
+      font-size: 15px;
     }
 
     .day-badge {
@@ -428,7 +394,7 @@
       background: var(--glass);
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: var(--font-size-small);
+      font-size: 11px;
     }
 
     .day-badge.today {
@@ -455,13 +421,13 @@
 
     .event-title {
       font-weight: 600;
-      font-size: var(--font-size-base);
+      font-size: 14px;
       margin-bottom: 6px;
     }
 
     .event-place {
       color: var(--text-light);
-      font-size: var(--font-size-small);
+      font-size: 12px;
     }
 
     .event-tag {
@@ -469,7 +435,7 @@
       padding: 2px 8px;
       background: rgba(56, 189, 248, 0.2);
       border-radius: 999px;
-      font-size: calc(var(--font-size-small) - 2px);
+      font-size: 10px;
       margin-left: 6px;
     }
 
@@ -478,7 +444,7 @@
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 999px;
-      font-size: var(--font-size-small);
+      font-size: 12px;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -489,10 +455,9 @@
       border: 1px solid var(--success);
       color: var(--success);
       border-radius: 6px;
-      font-size: var(--font-size-small);
+      font-size: 11px;
       cursor: pointer;
       margin-top: 8px;
-      transition: 0.2s;
     }
 
     .btn-lembrete:hover {
@@ -518,14 +483,10 @@
       gap: 10px;
     }
 
-    .festas-header h3 {
-      font-size: var(--font-size-title);
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: var(--font-size-small);
+      font-size: 13px;
     }
 
     th {
@@ -533,13 +494,11 @@
       padding: 12px;
       background: rgba(0, 0, 0, 0.3);
       color: var(--text-light);
-      font-size: var(--font-size-small);
     }
 
     td {
       padding: 12px;
       border-bottom: 1px solid var(--border);
-      font-size: var(--font-size-small);
     }
 
     .action-btn {
@@ -549,7 +508,6 @@
       border-radius: 6px;
       cursor: pointer;
       margin: 0 4px;
-      font-size: var(--font-size-small);
     }
 
     /* FAB */
@@ -566,7 +524,6 @@
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
       z-index: 100;
-      font-size: var(--font-size-base);
     }
 
     /* Modal */
@@ -594,14 +551,8 @@
       overflow-y: auto;
     }
 
-    .modal-content h3 {
-      font-size: var(--font-size-title);
-      margin-bottom: 16px;
-    }
-
     .modal-content input,
-    .modal-content select,
-    .modal-content textarea {
+    .modal-content select {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
@@ -609,7 +560,6 @@
       border-radius: 8px;
       background: var(--glass);
       color: var(--text);
-      font-size: var(--font-size-base);
     }
 
     .modal-actions {
@@ -631,7 +581,6 @@
       border-radius: 8px;
       display: none;
       z-index: 1000;
-      font-size: var(--font-size-base);
     }
 
     /* Switch */
@@ -657,7 +606,6 @@
       right: 0;
       bottom: 0;
       background-color: var(--border);
-      transition: .2s;
       border-radius: 24px;
     }
 
@@ -669,7 +617,6 @@
       left: 2px;
       bottom: 2px;
       background-color: white;
-      transition: .2s;
       border-radius: 50%;
     }
 
@@ -685,7 +632,7 @@
       .fab span { display: none; }
       .fab { padding: 12px; border-radius: 50%; }
       .filters { flex-direction: column; }
-      .btn-notificacao-destaque { width: 100%; justify-content: center; }
+      .notificacao-container { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -708,121 +655,75 @@
           </div>
         </div>
         <div class="actions">
-          <!-- Botão de acessibilidade para idosos -->
-          <button class="btn-acessibilidade" onclick="toggleFonteGrande()">
-            <span>🔍</span> <span>A+</span>
-          </button>
           <span class="chip" id="themeBtn" onclick="toggleTheme()">🌓 Tema</span>
           <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
           <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
         </div>
       </div>
+    </div>
 
-      <!-- Banner Hoje -->
-      <div class="banner" id="banner">
-        <div class="banner-info">
-          <h2 id="bannerTitle">Carregando...</h2>
-          <p id="bannerSubtitle"></p>
-        </div>
-        <div class="banner-stats">
-          <span class="chip" id="clock">--:--</span>
-          <span class="chip" id="weekInfo">Semana: --</span>
-          <span class="chip" id="nextEvent">Falta: --</span>
+    <!-- BOTÃO DE NOTIFICAÇÃO EM DESTAQUE - AGORA VISÍVEL -->
+    <div class="notificacao-container" id="notificacaoBanner">
+      <div class="notificacao-info">
+        <div class="notificacao-icone">🔔</div>
+        <div class="notificacao-texto">
+          <h3>📱 Ative as notificações!</h3>
+          <p>Receba lembretes dos cultos diretamente no seu celular</p>
         </div>
       </div>
+      <button class="btn-notificacao-destaque" onclick="solicitarPermissaoNotificacao()">
+        <span>🔔</span>
+        <span>ATIVAR NOTIFICAÇÕES</span>
+      </button>
+    </div>
 
-      <!-- Banner de Notificação em DESTAQUE -->
-      <div class="notificacao-banner" id="notificacaoBanner" style="display: none;">
-        <div class="notificacao-info">
-          <span class="notificacao-icone">🔔</span>
-          <div class="notificacao-texto">
-            <h3>Não perca nenhum culto!</h3>
-            <p>Ative as notificações e receba lembretes antes dos cultos</p>
-          </div>
-        </div>
-        <button class="btn-notificacao-destaque" onclick="solicitarPermissaoNotificacao()">
-          <span>🔔</span> <span>ATIVAR NOTIFICAÇÕES</span>
-        </button>
+    <!-- Banner Hoje -->
+    <div class="banner" id="banner">
+      <div class="banner-info">
+        <h2 id="bannerTitle">Carregando...</h2>
+        <p id="bannerSubtitle"></p>
+      </div>
+      <div class="banner-stats">
+        <span class="chip" id="clock">--:--</span>
+        <span class="chip" id="weekInfo">Semana: --</span>
+        <span class="chip" id="nextEvent">Falta: --</span>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="search" id="search" placeholder="Buscar cultos..." oninput="aplicarFiltros()">
+      </div>
+      
+      <div class="filter-group">
+        <button class="filter-btn" onclick="setFilter('today')" id="filterToday">📅 Hoje</button>
+        <button class="filter-btn" onclick="setFilter('week')" id="filterWeek">📆 Semana</button>
+        <button class="filter-btn" onclick="setFilter('all')" id="filterAll" class="active">📋 Todos</button>
       </div>
 
-      <!-- Filtros -->
-      <div class="filters">
-        <div class="search-box">
-          <span>🔍</span>
-          <input type="search" id="search" placeholder="Buscar cultos..." oninput="aplicarFiltros()">
-        </div>
-        
-        <div class="filter-group">
-          <button class="filter-btn" onclick="setFilter('today')" id="filterToday">📅 Hoje</button>
-          <button class="filter-btn" onclick="setFilter('week')" id="filterWeek">📆 Semana</button>
-          <button class="filter-btn" onclick="setFilter('all')" id="filterAll" class="active">📋 Todos</button>
-        </div>
-
-        <div class="filter-group">
-          <button class="filter-btn location" onclick="filtrarLocal('todos')" id="localTodos">🌍 Todos</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Central')">🏛️ Central</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Vila Limeira')">🏘️ Limeira</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Vila Glória')">🏘️ Glória</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Vila Cristina')">🏘️ Cristina</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Aldeia')">⛪ Aldeias</button>
-          <button class="filter-btn location clear" onclick="limparLocal()">✕</button>
-          <span class="result-count" id="resultCount"></span>
-        </div>
+      <div class="filter-group">
+        <button class="filter-btn location" onclick="filtrarLocal('todos')" id="localTodos">🌍 Todos</button>
+        <button class="filter-btn location" onclick="filtrarLocal('Central')">🏛️ Central</button>
+        <button class="filter-btn location" onclick="filtrarLocal('Vila Limeira')">🏘️ Limeira</button>
+        <button class="filter-btn location" onclick="filtrarLocal('Vila Glória')">🏘️ Glória</button>
+        <button class="filter-btn location" onclick="filtrarLocal('Vila Cristina')">🏘️ Cristina</button>
+        <button class="filter-btn location" onclick="filtrarLocal('Aldeia')">⛪ Aldeias</button>
+        <button class="filter-btn location clear" onclick="limparLocal()">✕</button>
+        <span class="result-count" id="resultCount"></span>
       </div>
     </div>
 
     <!-- Seção Admin -->
     <div class="admin-section" id="adminSection" style="display: none;">
       <div class="admin-header">
-        <h3>⚙️ Painel Admin - Lembretes</h3>
+        <h3>⚙️ Painel Admin</h3>
         <div class="admin-actions">
-          <button class="btn btn-success" onclick="enviarLembretesManualmente()">📤 Enviar Manualmente</button>
-          <button class="btn btn-warning" onclick="agendarLembretes()">⏰ Agendar Automático</button>
+          <button class="btn btn-success" onclick="testarNotificacao()">📤 Testar Notificação</button>
+          <button class="btn btn-warning" onclick="enviarLembretesManualmente()">📅 Lembretes Hoje</button>
           <button class="btn" onclick="verLembretesAtivos()">📋 Ver Agendados</button>
         </div>
-      </div>
-
-      <!-- Estatísticas -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="totalUsuarios">0</div>
-          <div class="stat-label">Usuários com notificação</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="totalLembretes">0</div>
-          <div class="stat-label">Lembretes ativos</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="cultosHoje">0</div>
-          <div class="stat-label">Cultos hoje</div>
-        </div>
-      </div>
-
-      <!-- Controles de lembrete -->
-      <div style="margin: 16px 0;">
-        <label style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-          <span style="display: flex; align-items: center;">
-            <label class="switch">
-              <input type="checkbox" id="lembrete30min" checked>
-              <span class="slider"></span>
-            </label>
-            <span>30 minutos antes</span>
-          </span>
-          <span style="display: flex; align-items: center;">
-            <label class="switch">
-              <input type="checkbox" id="lembrete1h">
-              <span class="slider"></span>
-            </label>
-            <span>1 hora antes</span>
-          </span>
-          <span style="display: flex; align-items: center;">
-            <label class="switch">
-              <input type="checkbox" id="lembrete2h">
-              <span class="slider"></span>
-            </label>
-            <span>2 horas antes</span>
-          </span>
-        </label>
       </div>
     </div>
 
@@ -888,13 +789,12 @@
     </div>
   </div>
 
-  <!-- Modal Lembretes Ativos -->
+  <!-- Modal Lembretes -->
   <div id="lembretesModal" class="modal" style="display:none">
     <div class="modal-content">
       <h3>📋 Lembretes Agendados</h3>
       <div id="lembretesLista" style="margin: 16px 0; max-height: 300px; overflow-y: auto;"></div>
       <div class="modal-actions">
-        <button class="btn btn-danger" onclick="cancelarTodosLembretes()">Cancelar todos</button>
         <button class="btn" onclick="fecharModal('lembretes')">Fechar</button>
       </div>
     </div>
@@ -933,88 +833,105 @@
     let isAdmin = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
     let notificacoesPermitidas = false;
-    let usuariosNotificacao = [];
     let lembretesAtivos = [];
     
     const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const ADMIN_SENHA = "ccb2025";
     const FESTAS_KEY = 'ccb_festas';
-    const NOTIFICACOES_KEY = 'ccb_notificacoes';
     const LEMBRETES_KEY = 'ccb_lembretes';
-    const FONTE_KEY = 'ccb_fonte';
 
     // Inicialização
     function init() {
-      carregarFonte();
       carregarFestas();
-      carregarNotificacoes();
       carregarLembretes();
+      verificarPermissaoNotificacao();
       aplicarFiltros();
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
       setInterval(verificarLembretes, 60000);
-      verificarPermissaoNotificacao();
     }
 
-    // ===== FUNÇÕES DE ACESSIBILIDADE =====
-    function toggleFonteGrande() {
-      const atual = document.documentElement.getAttribute('data-font-size') || 'normal';
-      const nova = atual === 'normal' ? 'grande' : 'normal';
-      document.documentElement.setAttribute('data-font-size', nova);
-      localStorage.setItem(FONTE_KEY, nova);
-      toast(nova === 'grande' ? '🔍 Fonte aumentada' : '🔍 Fonte normal');
-    }
-
-    function carregarFonte() {
-      const saved = localStorage.getItem(FONTE_KEY) || 'normal';
-      document.documentElement.setAttribute('data-font-size', saved);
-    }
-
-    // ===== SISTEMA DE NOTIFICAÇÕES =====
+    // ===== SISTEMA DE NOTIFICAÇÕES CORRIGIDO =====
     function verificarPermissaoNotificacao() {
       if ('Notification' in window) {
         if (Notification.permission === 'granted') {
           notificacoesPermitidas = true;
           document.getElementById('notificacaoBanner').style.display = 'none';
+          console.log('Notificações já permitidas');
         } else if (Notification.permission === 'denied') {
           document.getElementById('notificacaoBanner').style.display = 'none';
+          console.log('Notificações bloqueadas');
         } else {
           document.getElementById('notificacaoBanner').style.display = 'flex';
+          console.log('Aguardando permissão');
         }
+      } else {
+        console.log('Navegador não suporta notificações');
+        document.getElementById('notificacaoBanner').style.display = 'none';
       }
     }
 
     function solicitarPermissaoNotificacao() {
-      if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-          if (permission === 'granted') {
-            notificacoesPermitidas = true;
-            document.getElementById('notificacaoBanner').style.display = 'none';
-            
-            const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            usuariosNotificacao.push({
-              id: userId,
-              data: new Date().toISOString()
-            });
-            localStorage.setItem(NOTIFICACOES_KEY, JSON.stringify(usuariosNotificacao));
-            
-            toast('✅ Notificações ativadas! Agora você receberá lembretes dos cultos.');
-            setTimeout(() => criarLembretesPadrao(), 1000);
-          }
-        });
-      }
-    }
-
-    function criarLembretesPadrao() {
-      const minutos = prompt('Deseja ser lembrado com quantos minutos de antecedência?\n(30, 60 ou 120)', '30');
-      if (!minutos) return;
-      
-      const minutosInt = parseInt(minutos);
-      if (![30, 60, 120].includes(minutosInt)) {
-        toast('❌ Valor inválido. Use 30, 60 ou 120');
+      if (!('Notification' in window)) {
+        alert('Seu navegador não suporta notificações');
         return;
       }
+
+      Notification.requestPermission().then(permission => {
+        console.log('Permissão:', permission);
+        
+        if (permission === 'granted') {
+          notificacoesPermitidas = true;
+          document.getElementById('notificacaoBanner').style.display = 'none';
+          
+          // Enviar notificação de teste
+          const notificacao = new Notification('✅ Notificações ativadas!', {
+            body: 'Agora você receberá lembretes dos cultos.',
+            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+            requireInteraction: false
+          });
+          
+          toast('✅ Notificações ativadas!');
+          
+          // Perguntar se quer lembretes
+          setTimeout(() => {
+            if (confirm('Deseja ativar lembretes para todos os cultos desta semana?')) {
+              criarLembretesSemana();
+            }
+          }, 1000);
+        } else {
+          alert('❌ Você precisa permitir notificações para receber lembretes');
+        }
+      });
+    }
+
+    function testarNotificacao() {
+      if (!('Notification' in window)) {
+        alert('Navegador não suporta notificações');
+        return;
+      }
+
+      if (Notification.permission !== 'granted') {
+        alert('Ative as notificações primeiro!');
+        return;
+      }
+
+      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
       
+      const notificacao = new Notification('🔔 Teste de Notificação', {
+        body: `Se você está vendo isso, as notificações funcionam!\n\n${versiculo}`,
+        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+        vibrate: [200, 100, 200],
+        requireInteraction: true
+      });
+
+      notificacao.onclick = function() {
+        window.focus();
+      };
+    }
+
+    function criarLembretesSemana() {
+      lembretesAtivos = [];
       const semana = getSemana();
       const hoje = new Date();
       
@@ -1031,55 +948,17 @@
         dataCulto.setHours(h, m, 0);
         
         lembretesAtivos.push({
-          id: 'culto_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          id: Date.now() + Math.random(),
           titulo: culto.titulo,
           local: culto.local,
           data: dataCulto.toISOString(),
-          minutosAntes: minutosInt,
+          minutosAntes: 30,
           ativo: true
         });
       });
       
       localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      toast(`✅ Lembretes criados para ${lembretesAtivos.length} cultos!`);
-    }
-
-    function adicionarLembrete(cultoId) {
-      if (!notificacoesPermitidas) {
-        solicitarPermissaoNotificacao();
-        return;
-      }
-      
-      const culto = cultos.find(c => c.id === cultoId);
-      if (!culto) return;
-      
-      const minutos = prompt('Quantos minutos antes deseja ser lembrado? (30, 60, 120)', '30');
-      if (!minutos) return;
-      
-      const minutosInt = parseInt(minutos);
-      if (![30, 60, 120].includes(minutosInt)) {
-        toast('❌ Valor inválido. Use 30, 60 ou 120');
-        return;
-      }
-      
-      const hoje = new Date();
-      const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
-      const dataCulto = new Date();
-      dataCulto.setDate(hoje.getDate() + diasAte);
-      const [h, m] = culto.hora.split(':').map(Number);
-      dataCulto.setHours(h, m, 0);
-      
-      lembretesAtivos.push({
-        id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-        titulo: culto.titulo,
-        local: culto.local,
-        data: dataCulto.toISOString(),
-        minutosAntes: minutosInt,
-        ativo: true
-      });
-      
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      toast(`✅ Lembrete criado para ${minutosInt} minutos antes`);
+      toast(`✅ ${lembretesAtivos.length} lembretes criados!`);
     }
 
     function verificarLembretes() {
@@ -1094,7 +973,15 @@
         const diffMinutos = (dataLembrete - agora) / (1000 * 60);
         
         if (Math.abs(diffMinutos - lembrete.minutosAntes) < 0.5) {
-          enviarNotificacao(lembrete);
+          const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
+          
+          const notificacao = new Notification('🔔 Lembrete de Culto', {
+            body: `${lembrete.titulo} em ${lembrete.local}\nComeça em ${lembrete.minutosAntes} minutos!\n\n${versiculo}`,
+            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+            vibrate: [200, 100, 200],
+            requireInteraction: true
+          });
+          
           lembrete.ativo = false;
         }
       });
@@ -1102,32 +989,11 @@
       localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
     }
 
-    function enviarNotificacao(lembrete) {
-      if (!('Notification' in window) || Notification.permission !== 'granted') return;
-      
-      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
-      
-      const notificacao = new Notification('🔔 Lembrete de Culto', {
-        body: `${lembrete.titulo} em ${lembrete.local}\nComeça em ${lembrete.minutosAntes} minutos!\n\n${versiculo}`,
-        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-        badge: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-        vibrate: [200, 100, 200],
-        requireInteraction: true
-      });
-      
-      notificacao.onclick = function() {
-        window.focus();
-        document.getElementById(`dia-${new Date().getDay()}`).scrollIntoView({ behavior: 'smooth' });
-      };
-    }
-
-    // ===== FUNÇÕES ADMIN =====
     function enviarLembretesManualmente() {
       if (!isAdmin) return;
       
-      const agora = new Date();
       const semana = getSemana();
-      const diaHoje = agora.getDay();
+      const diaHoje = new Date().getDay();
       
       const cultosHoje = cultos.filter(c => c.dia === diaHoje).filter(c => {
         if (c.regra === 'all') return true;
@@ -1141,71 +1007,18 @@
       }
       
       const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
+      const lista = cultosHoje.map(c => `${c.hora} - ${c.titulo} (${c.local})`).join('\n');
       
-      cultosHoje.forEach(culto => {
-        const notificacao = new Notification('📅 Agenda de Hoje', {
-          body: `${culto.hora} - ${culto.titulo} (${culto.local})\n\n${versiculo}\n\nDeus abençoe.`,
-          icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-          requireInteraction: true
-        });
+      const notificacao = new Notification('📅 Cultos de Hoje', {
+        body: `${lista}\n\n${versiculo}\n\nDeus abençoe.`,
+        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
+        requireInteraction: true
       });
       
-      toast(`📤 Lembretes enviados para ${cultosHoje.length} cultos`);
-    }
-
-    function agendarLembretes() {
-      if (!isAdmin) return;
-      
-      lembretesAtivos = [];
-      
-      const minutos = [];
-      if (document.getElementById('lembrete30min').checked) minutos.push(30);
-      if (document.getElementById('lembrete1h').checked) minutos.push(60);
-      if (document.getElementById('lembrete2h').checked) minutos.push(120);
-      
-      if (minutos.length === 0) {
-        toast('❌ Selecione pelo menos um tempo de lembrete');
-        return;
-      }
-      
-      const semana = getSemana();
-      const hoje = new Date();
-      
-      for (let dia = 0; dia < 7; dia++) {
-        const cultosDia = cultos.filter(c => c.dia === dia).filter(c => {
-          if (c.regra === 'all') return true;
-          const semanas = c.regra.replace('nth:', '').split(',').map(Number);
-          return semanas.includes(semana);
-        });
-        
-        cultosDia.forEach(culto => {
-          const dataCulto = new Date();
-          const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
-          dataCulto.setDate(hoje.getDate() + diasAte);
-          const [h, m] = culto.hora.split(':').map(Number);
-          dataCulto.setHours(h, m, 0);
-          
-          minutos.forEach(min => {
-            lembretesAtivos.push({
-              id: `admin_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
-              titulo: culto.titulo,
-              local: culto.local,
-              data: dataCulto.toISOString(),
-              minutosAntes: min,
-              ativo: true
-            });
-          });
-        });
-      }
-      
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      atualizarStats();
-      toast(`✅ ${lembretesAtivos.length} lembretes agendados para a semana`);
+      toast('📤 Lembretes enviados');
     }
 
     function verLembretesAtivos() {
-      if (!isAdmin) return;
-      
       const lista = document.getElementById('lembretesLista');
       
       if (lembretesAtivos.length === 0) {
@@ -1213,57 +1026,17 @@
       } else {
         lista.innerHTML = lembretesAtivos.map(l => {
           const data = new Date(l.data);
-          const dataLembrete = new Date(data.getTime() - (l.minutosAntes * 60000));
-          
           return `
             <div style="border-bottom:1px solid var(--border); padding:12px;">
-              <div><strong>${l.titulo}</strong></div>
-              <div style="font-size:12px; color:var(--text-light);">
-                📍 ${l.local}<br>
-                ⏰ Culto: ${data.toLocaleString()}<br>
-                🔔 Lembrete: ${dataLembrete.toLocaleString()} (${l.minutosAntes}min antes)
-              </div>
-              <button class="btn btn-danger" style="margin-top:8px;" onclick="cancelarLembrete('${l.id}')">Cancelar</button>
+              <strong>${l.titulo}</strong><br>
+              📍 ${l.local}<br>
+              ⏰ ${data.toLocaleString()} (${l.minutosAntes}min antes)
             </div>
           `;
         }).join('');
       }
       
       document.getElementById('lembretesModal').style.display = 'flex';
-    }
-
-    function cancelarLembrete(id) {
-      lembretesAtivos = lembretesAtivos.filter(l => l.id !== id);
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      verLembretesAtivos();
-      atualizarStats();
-      toast('✅ Lembrete cancelado');
-    }
-
-    function cancelarTodosLembretes() {
-      if (confirm('Cancelar todos os lembretes?')) {
-        lembretesAtivos = [];
-        localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-        fecharModal('lembretes');
-        atualizarStats();
-        toast('🗑️ Todos os lembretes cancelados');
-      }
-    }
-
-    function atualizarStats() {
-      if (!isAdmin) return;
-      document.getElementById('totalUsuarios').textContent = usuariosNotificacao.length;
-      document.getElementById('totalLembretes').textContent = lembretesAtivos.length;
-      
-      const semana = getSemana();
-      const hoje = new Date().getDay();
-      const cultosHoje = cultos.filter(c => c.dia === hoje).filter(c => {
-        if (c.regra === 'all') return true;
-        const semanas = c.regra.replace('nth:', '').split(',').map(Number);
-        return semanas.includes(semana);
-      }).length;
-      
-      document.getElementById('cultosHoje').textContent = cultosHoje;
     }
 
     // ===== FUNÇÕES EXISTENTES =====
@@ -1317,11 +1090,6 @@
                     <div>
                       <div class="event-title">${c.titulo} ${tag}</div>
                       <div class="event-place">📍 ${c.local}</div>
-                      ${notificacoesPermitidas ? `
-                        <button class="btn-lembrete" onclick="adicionarLembrete('${c.id}')">
-                          🔔 Lembrar-me
-                        </button>
-                      ` : ''}
                     </div>
                     <div class="event-time">${c.hora}</div>
                   </div>
@@ -1363,11 +1131,6 @@
           </td>` : ''}
         </tr>
       `).join('');
-    }
-
-    function carregarNotificacoes() {
-      const saved = localStorage.getItem(NOTIFICACOES_KEY);
-      usuariosNotificacao = saved ? JSON.parse(saved) : [];
     }
 
     function carregarLembretes() {
@@ -1466,7 +1229,6 @@
         document.getElementById('adminSection').style.display = 'block';
         fecharModal('login');
         renderizarFestas();
-        atualizarStats();
         toast('✅ Modo admin ativado');
       } else {
         alert('Senha incorreta!');
