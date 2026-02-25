@@ -6,18 +6,19 @@
   <title>CCB - Amambai</title>
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Meta tags anti-cache para forçar atualização -->
+  <!-- Meta tags anti-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  
+  <!-- Forçar atualização com versão -->
+  <meta name="version" content="1.0.1">
   
   <!-- PWA - Ícone CCB -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22CCB%20-%20Amambai%22%2C%22short_name%22%3A%22CCB%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%2C%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="CCB Amambai">
-  
-  <!-- Ícone para iOS -->
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E">
   
   <!-- ONESIGNAL -->
@@ -388,6 +389,7 @@
       <div class="festas-header">
         <h3><span>⭐</span>Festas Espirituais</h3>
         <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova</button>
+        <span class="chip" style="background: #f59e0b; color: white;" onclick="atualizarFestas()">🔄 Atualizar</span>
       </div>
       <div style="overflow-x:auto;">
         <table>
@@ -403,6 +405,9 @@
           </thead>
           <tbody id="festas-list"></tbody>
         </table>
+        <div style="text-align: center; margin-top: 10px;">
+          <span style="color: var(--text-light); font-size: 12px;">Última atualização: <span id="ultimaAtualizacao">-</span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -530,6 +535,7 @@
     const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
     const ADMIN_SENHA = "ccb2025";
     const FESTAS_KEY = 'ccb_festas';
+    const ULTIMA_ATUALIZACAO_KEY = 'ccb_ultima_atualizacao';
 
     // Avisos (banner no cabeçalho)
     const AVISO_KEY = 'ccb_aviso_header';
@@ -538,7 +544,7 @@
     // OneSignal
     window.OneSignalDeferred = window.OneSignalDeferred || [];
 
-    // ===== FUNÇÃO COMPARTILHAR =====
+    // ===== COMPARTILHAR =====
     function compartilharSistema() {
       const url = window.location.href;
       const texto = `📱 *CCB - Amambai*\n\nAgenda de cultos e festas espirituais\n\nAcesse: ${url}`;
@@ -565,10 +571,47 @@
       });
     }
 
-    // ===== CORREÇÃO PARA ATUALIZAÇÃO AUTOMÁTICA =====
+    // ===== CORREÇÃO PARA ATUALIZAÇÃO AUTOMÁTICA DAS FESTAS =====
+    function carregarFestas() {
+      const saved = localStorage.getItem(FESTAS_KEY);
+      const ultimaAtualizacao = localStorage.getItem(ULTIMA_ATUALIZACAO_KEY);
+      
+      // Mostrar quando foi a última atualização
+      if (ultimaAtualizacao) {
+        const data = new Date(parseInt(ultimaAtualizacao));
+        document.getElementById('ultimaAtualizacao').textContent = data.toLocaleString();
+      } else {
+        document.getElementById('ultimaAtualizacao').textContent = 'Nunca';
+      }
+      
+      if (saved) {
+        festas = JSON.parse(saved);
+      } else {
+        // Festas iniciais de exemplo
+        festas = [
+          { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
+          { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
+        ];
+        salvarFestas();
+      }
+      renderizarFestas();
+    }
+
+    function salvarFestas() {
+      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+      localStorage.setItem(ULTIMA_ATUALIZACAO_KEY, Date.now().toString());
+      document.getElementById('ultimaAtualizacao').textContent = new Date().toLocaleString();
+    }
+
+    // Botão manual para atualizar
+    function atualizarFestas() {
+      carregarFestas();
+      toast('🔄 Festas atualizadas!');
+    }
+
+    // ===== SERVICE WORKER PARA ATUALIZAÇÃO AUTOMÁTICA =====
     function registrarServiceWorkerCorrigido() {
       if ('serviceWorker' in navigator) {
-        // Criar um Service Worker simples inline
         const swCode = `
           self.addEventListener('install', event => {
             self.skipWaiting();
@@ -585,7 +628,7 @@
           scope: '/',
           updateViaCache: 'none'
         }).then(registration => {
-          console.log('✅ Service Worker registrado com atualização automática');
+          console.log('✅ Service Worker registrado');
           
           // Verificar atualizações a cada 30 minutos
           setInterval(() => {
@@ -600,7 +643,7 @@
             
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('✨ Nova versão instalada. Atualizando...');
+                console.log('✨ Nova versão instalada');
                 if (confirm('🔄 Nova versão disponível! Atualizar agora?')) {
                   window.location.reload();
                 }
@@ -624,8 +667,13 @@
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
       
-      // Registrar Service Worker para atualizações automáticas
+      // Registrar Service Worker
       registrarServiceWorkerCorrigido();
+      
+      // Verificar atualizações das festas a cada 5 minutos
+      setInterval(() => {
+        carregarFestas();
+      }, 5 * 60 * 1000);
     }
 
     // ===== AVISO NO CABEÇALHO =====
@@ -818,15 +866,6 @@
       atualizarBanner();
     }
 
-    function carregarFestas(){
-      const saved = localStorage.getItem(FESTAS_KEY);
-      festas = saved ? JSON.parse(saved) : [
-        { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
-        { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
-      ];
-      renderizarFestas();
-    }
-
     function renderizarFestas(){
       const hoje = new Date().toISOString().split('T')[0];
       const futuras = festas.filter(f => f.data >= hoje).sort((a,b) => a.data.localeCompare(b.data));
@@ -992,7 +1031,7 @@
 
       const novaFesta = { id: Date.now(), titulo: titulos[tipo] || titulo, data, hora, local, irmao };
       festas.push(novaFesta);
-      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+      salvarFestas();
       renderizarFestas();
       fecharModal('festa');
       toast('✅ Festa adicionada');
@@ -1003,7 +1042,7 @@
     function excluirFesta(id){
       if (confirm('Excluir festa?')) {
         festas = festas.filter(f => f.id !== id);
-        localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
+        salvarFestas();
         renderizarFestas();
         toast('✅ Festa excluída');
       }
