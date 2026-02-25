@@ -2,1308 +2,863 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Agenda CCB — Amambai</title>
-  
-  <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#0f172a">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="color-scheme" content="dark light" />
-  
   <style>
-    :root{
-      --bg:#ffffff; --card:#ffffff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0;
-      --accent:#0f172a; --accent2:#0ea5e9; --ok:#16a34a;
-      --shadow: 0 10px 22px rgba(2,6,23,.06);
-      --shadow2: 0 22px 54px rgba(2,6,23,.10);
-      --r:18px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    [data-theme="dark"]{
-      --bg:#0b1220; --card:#0b152a; --ink:#e5e7eb; --muted:#94a3b8; --line:#1f2a44;
-      --accent:#e5e7eb; --accent2:#38bdf8; --ok:#22c55e;
-      --shadow: 0 14px 28px rgba(0,0,0,.28);
-      --shadow2: 0 22px 54px rgba(0,0,0,.34);
+
+    :root {
+      --bg: #0b1220;
+      --card: #0b152a;
+      --text: #e5e7eb;
+      --text-light: #94a3b8;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --border: rgba(148, 163, 184, 0.22);
+      --glass: rgba(15, 23, 42, 0.55);
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(1200px 700px at 15% -10%, rgba(56,189,248,0.14), rgba(0,0,0,0) 55%),
-        radial-gradient(900px 600px at 110% 0%, rgba(148,163,184,0.10), rgba(0,0,0,0) 50%),
-        radial-gradient(900px 650px at 50% 120%, rgba(56,189,248,0.08), rgba(0,0,0,0) 55%),
-        linear-gradient(135deg, #0b1220 0%, #0f172a 55%, #0b1220 100%);
-      background-attachment: fixed;
-      color: var(--ink);
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-light: #475569;
+      --accent: #0ea5e9;
+      --border: #e2e8f0;
+      --glass: rgba(255, 255, 255, 0.78);
     }
-    .wrap{max-width:1040px;margin:0 auto;padding:16px 14px 90px}
-    
-    /* Header principal */
-    .topo{
-      width: 100%;
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
       max-width: 1040px;
-      margin: 0 auto 12px auto;
-      padding: 14px 14px 12px 14px;
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.22);
-      background: rgba(15,23,42,0.55);
+      margin: 0 auto;
+      padding: 16px 20px 90px;
+    }
+
+    /* Header */
+    .header {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
       backdrop-filter: blur(10px);
-      display:flex;
-      align-items:center;
-      gap:12px;
     }
-    [data-theme="light"] .topo{
-      background: rgba(255,255,255,0.78);
-      border:1px solid var(--line);
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
     }
-    
-    .logoMark{
-      width: 68px; height: 44px;
-      border-radius: 12px;
-      border: 1px solid rgba(56,189,248,0.25);
-      background: #fff;
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .logoMark svg{width:60px;height:34px}
-    .titulo h1{margin:0;font-size:18px;font-weight:950;color:var(--accent);letter-spacing:.2px}
-    .subtitulo{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.35}
-    
-    /* Barra superior */
-    .toprow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .titles p{margin:0;font-size:12px;line-height:1.35;color:var(--muted)}
-    .actions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-    .btn{
-      appearance:none;border:1px solid var(--line);
-      background: rgba(255,255,255,.78);
-      color: var(--accent);
-      font-weight:950;font-size:12px;padding:9px 12px;border-radius:12px;cursor:pointer;
+
+    .logo svg {
+      width: 60px;
+      height: 34px;
     }
-    [data-theme="dark"] .btn{background: rgba(11,18,32,.70);}
-    .btn.primary{border-color: rgba(56,189,248,.50);}
-    .btn.danger{border-color: rgba(239,68,68,.50); color: #ef4444;}
-    .btn.success{border-color: rgba(34,197,94,.50); color: #22c55e;}
-    
-    .pill{
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:7px 10px;
-      font-size:12px;color:var(--muted);
-      display:flex;gap:8px;align-items:center;
-      background:rgba(255,255,255,.62)
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    [data-theme="dark"] .pill{background:rgba(11,18,32,.62)}
-    .dot{width:8px;height:8px;border-radius:999px;background:var(--accent2);box-shadow:0 0 0 4px rgba(56,189,248,.14);}
-    
+
+    .btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--text);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+      border: none;
+    }
+
     /* Banner */
-    .banner{
-      margin-top:12px;border:1px solid rgba(56,189,248,.40);
-      border-radius: var(--r);background: rgba(56,189,248,.10);
-      padding:12px 14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    .banner {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .banner .big{font-weight:950;font-size:13px}
-    .banner .small{font-size:12px;color:var(--muted);line-height:1.35}
-    .banner .right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .pchip{
-      font-size:12px;font-weight:950;padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(56,189,248,.24);
-      background: rgba(56,189,248,.12);color: var(--accent);white-space:nowrap;
-      text-decoration:none;
+
+    .banner-info h2 {
+      font-size: 16px;
+      margin-bottom: 4px;
     }
-    .pchip.ok{border-color: rgba(34,197,94,.28); background: rgba(34,197,94,.14);}
-    .pchip.dim{border-color: rgba(148,163,184,.22); background: rgba(148,163,184,.12); opacity:.9;}
-    
-    /* Navegação */
-    .navCities{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .cityBtn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:950;
-      font-size:13px;
-      color:var(--accent);
-      text-decoration:none;
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
+
+    .banner-info p {
+      color: var(--text-light);
+      font-size: 13px;
     }
-    [data-theme="dark"] .cityBtn{background: rgba(11,18,32,.70);}
-    .cityBtn[aria-current="page"]{
-      border-color: rgba(56,189,248,.60);
-      box-shadow: 0 12px 28px rgba(56,189,248,.12);
+
+    .banner-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
-    .cityDot{
-      width:10px;height:10px;border-radius:999px;background:var(--accent2);
-      box-shadow:0 0 0 4px rgba(56,189,248,.10);
+
+    .chip {
+      padding: 6px 12px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
     }
-    
-    .nav{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .nav a{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      padding:10px 12px;border-radius:12px;
-      font-weight:950;font-size:13px;color:var(--accent);text-decoration:none;
+
+    /* Filtros */
+    .filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
-    [data-theme="dark"] .nav a{background: rgba(11,18,32,.70);}
-    .nav a[aria-current="true"]{border-color: rgba(56,189,248,.60);}
-    
-    /* Controles */
-    .controls{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .search{
-      flex:1 1 280px;
-      display:flex;gap:10px;align-items:center;
-      border:1px solid var(--line);border-radius:14px;
-      padding:10px 12px;background: rgba(255,255,255,.72);
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
     }
-    [data-theme="dark"] .search{background: rgba(11,18,32,.70);}
-    .search input{border:0;outline:none;background:transparent;color:var(--ink);font-size:13px;width:100%}
-    .helper{font-size:12px;color:var(--muted)}
-    .switch{
-      display:flex;gap:10px;align-items:center;border:1px solid var(--line);
-      border-radius:14px;padding:10px 12px;background: rgba(255,255,255,.72);
-      cursor:pointer;user-select:none;
+
+    .search-box input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
     }
-    [data-theme="dark"] .switch{background: rgba(11,18,32,.70);}
-    .toggle{width:40px;height:22px;border-radius:999px;border:1px solid var(--line);background:rgba(148,163,184,.22);position:relative}
-    .knob{width:18px;height:18px;border-radius:999px;background:var(--accent2);position:absolute;top:1px;left:1px;transition:left .15s ease}
-    .switch.on .knob{left:19px}
-    .switch span{font-weight:950;font-size:12px;color:var(--accent);}
-    
-    /* Botão admin */
-    .admin-btn{
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white !important;
-      border: none !important;
+
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 8px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
     }
-    
+
+    .filter-btn {
+      padding: 6px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .filter-btn.location {
+      border: 1px solid var(--border);
+    }
+
+    .filter-btn.location.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .filter-btn.clear {
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .filter-btn.clear:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    .result-count {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-left: 8px;
+    }
+
     /* Cards de dia */
-    .section{margin-top:18px}
-    .section h3{margin:0 0 10px;font-size:14px;font-weight:950;color:var(--accent)}
-    
-    .daycard{
-      border:1px solid rgba(148,163,184,0.22);
-      border-radius: var(--r);
-      background: rgba(15,23,42,0.42);
-      box-shadow: var(--shadow);
-      overflow:hidden;margin:12px 0;
+    .day-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--glass);
+      margin: 12px 0;
+      overflow: hidden;
     }
-    [data-theme="light"] .daycard{background: var(--card); border:1px solid var(--line)}
-    .daycard.today{
-      border-color: rgba(56,189,248,.78);
-      box-shadow: 0 18px 46px rgba(56,189,248,.14);
+
+    .day-card.today {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
     }
-    .dayhead{
-      padding:12px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-      border-bottom:1px solid var(--line);
-    }
-    .dayname{font-weight:950;font-size:14px;color:var(--accent);}
-    .badge{
-      font-size:11px;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;
-      background:rgba(255,255,255,.62);
-    }
-    [data-theme="dark"] .badge{background:rgba(11,18,32,.62);}
-    .badge.today{border-color: rgba(56,189,248,.55); color: var(--accent); background: rgba(56,189,248,.14);}
-    
-    /* Itens de evento */
-    .items{padding:10px 14px 14px;display:flex;flex-direction:column;gap:10px}
-    .item{
-      border: 1px solid rgba(148,163,184,0.18);
-      border-radius: 14px;
-      background: rgba(2,6,23,0.18);
-      padding:10px 12px;
-    }
-    [data-theme="light"] .item{background: rgba(248,250,252,.55); border:1px solid var(--line)}
-    .item.next{border-color: rgba(56,189,248,.78); box-shadow: 0 14px 28px rgba(56,189,248,.12);}
-    .item.past{opacity:.68}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
-    .title{font-weight:950;font-size:13px;line-height:1.25}
-    .place{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.35}
-    .meta{margin-top:8px;font-size:12px}
-    .link{color:var(--accent2);font-weight:950;text-decoration:none}
-    .link:hover{text-decoration:underline}
-    .time{
-      font-weight:950;font-size:12px;color: var(--accent);
-      padding:7px 10px;border-radius:999px;border:1px solid rgba(56,189,248,.24);
-      background: rgba(56,189,248,.12);white-space:nowrap;
-    }
-    .tag{
-      display:inline-block;font-size:11px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);
-      background: rgba(255,255,255,.64);color: var(--muted);margin-left:6px;
-    }
-    [data-theme="dark"] .tag{background: rgba(11,18,32,.62);}
-    
-    /* Tabela de festas */
-    .tablecard{
-      border:1px solid var(--line);
-      border-radius: var(--r);
-      background: var(--card);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      margin-bottom: 20px;
-    }
-    [data-theme="dark"] .tablecard{background: rgba(15,23,42,0.42); border:1px solid rgba(148,163,184,0.22)}
-    .tablehead{
-      padding:14px;
-      border-bottom:1px solid var(--line);
+
+    .day-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .tablehead .t{font-weight:950;font-size:14px;color:var(--accent);}
-    .tablehead .s{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
-    .tablewrap{overflow:auto}
-    table{width:100%;border-collapse:collapse;font-size:12px}
-    th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
-    th{text-align:left;color:var(--muted);background:rgba(15,23,42,.75);}
-    [data-theme="light"] th{background:rgba(248,250,252,.75);}
-    tr:last-child td{border-bottom:0}
-    .emph{font-weight:950}
-    
-    /* Ações da tabela */
-    .action-btn{
-      background: none;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 4px 8px;
-      margin: 0 2px;
-      cursor: pointer;
-      color: var(--ink);
+
+    .day-name {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .day-badge {
+      padding: 4px 10px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
       font-size: 11px;
     }
-    .action-btn.edit:hover{background: var(--accent2); color: white;}
-    .action-btn.delete:hover{background: #ef4444; color: white;}
-    
+
+    .day-badge.today {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .events {
+      padding: 12px;
+    }
+
+    .event {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .event-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .event-place {
+      color: var(--text-light);
+      font-size: 12px;
+    }
+
+    .event-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(56, 189, 248, 0.2);
+      border-radius: 999px;
+      font-size: 10px;
+      margin-left: 6px;
+    }
+
+    .event-time {
+      padding: 6px 12px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Festas */
+    .festas-section {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 24px;
+    }
+
+    .festas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text-light);
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .action-btn {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0 2px;
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+      z-index: 100;
+    }
+
     /* Modal */
-    .modal{
+    .modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
     }
-    .modal-content{
+
+    .modal-content {
       background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 20px;
-      max-width: 500px;
+      max-width: 400px;
       width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
     }
-    .modal h3{margin-bottom: 20px; color: var(--accent);}
-    .modal input, .modal select, .modal textarea{
+
+    .modal-content input,
+    .modal-content select {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      border: 1px solid var(--line);
+      margin: 8px 0;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      background: rgba(255,255,255,.1);
-      color: var(--ink);
+      background: var(--glass);
+      color: var(--text);
     }
-    .modal-actions{
+
+    .modal-actions {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
       margin-top: 20px;
     }
-    
-    /* Toast */
-    .toast{
-      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-      background: rgba(2,6,23,.92);color:#fff;
-      padding:10px 12px;border-radius:12px;display:none;
-      box-shadow: 0 10px 22px rgba(0,0,0,.22);
-      font-size:12px;max-width:92vw;text-align:center;z-index:50;
-    }
-    [data-theme="dark"] .toast{background: rgba(229,231,235,.92); color:#0b1220;}
-    
-    /* FAB */
-    .fabToday{
+
+    .toast {
       position: fixed;
-      right: 16px;
-      bottom: 18px;
-      z-index: 60;
-      border: 1px solid rgba(56,189,248,.55);
-      background: rgba(56,189,248,.16);
-      color: var(--accent);
-      font-weight: 950;
-      font-size: 12px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      box-shadow: 0 14px 28px rgba(56,189,248,.14);
-      backdrop-filter: blur(10px);
-    }
-    
-    /* Login modal */
-    .login-modal{
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-    .login-box{
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
       background: var(--card);
-      border: 2px solid var(--accent);
-      border-radius: var(--r);
-      padding: 30px;
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
-    }
-    .login-box h2{
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .login-box input{
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid var(--line);
+      border-left: 4px solid var(--success);
+      padding: 12px 24px;
       border-radius: 8px;
-      background: rgba(255,255,255,.1);
-      color: var(--ink);
-      font-size: 16px;
+      display: none;
+      z-index: 1000;
     }
-    .login-box button{
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      background: var(--accent);
-      color: white;
-      font-weight: 950;
-      cursor: pointer;
-    }
-    .login-box .admin-info{
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--line);
-      font-size: 12px;
-      color: var(--muted);
-    }
-    
-    /* Impressão */
-    @media print{
-      body{background:#fff !important;color:#000 !important}
-      .actions,.nav,.controls,.banner,.navCities{display:none !important}
+
+    @media (max-width: 768px) {
+      .fab span { display: none; }
+      .fab { padding: 12px; border-radius: 50%; }
+      .filters { flex-direction: column; }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="container">
     <!-- Header -->
-    <header class="topo" role="banner">
-      <div class="logoMark" aria-label="Logo CCB">
-        <svg viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CCB">
-          <rect x="0" y="0" width="240" height="140" rx="18" fill="#ffffff"/>
-          <path d="M120 18c27 0 50 17 58 40-9-6-20-10-33-10-18 0-34 8-44 20-10-12-26-20-44-20-13 0-24 4-33 10 8-23 31-40 58-40z" fill="#0f172a" opacity="0.92"/>
-          <path d="M47 78c10-10 24-16 40-16 14 0 26 5 35 13 9-8 21-13 35-13 16 0 30 6 40 16-14 26-39 44-75 44S61 104 47 78z" fill="#0ea5e9" opacity="0.92"/>
-          <text x="120" y="96" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="900" fill="#0f172a">CCB</text>
-        </svg>
-      </div>
-      <div class="titulo">
-        <h1>Agenda CCB — Amambai</h1>
-        <p class="subtitulo">Cultos, Reuniões e Festas Espirituais</p>
-      </div>
-    </header>
-
-    <!-- Barra superior -->
     <div class="header">
-      <div class="toprow">
-        <div class="titles">
-          <p><strong>Amambai — MS</strong></p>
-        </div>
-
-        <div class="actions">
-          <div class="pill"><span class="dot"></span><span id="modeTxt">Modo escuro</span></div>
-          <button class="btn" type="button" onclick="toggleTheme()">🌓 Tema</button>
-          <button class="btn" id="adminLoginBtn" type="button" onclick="mostrarLogin()">🔐 Admin</button>
-          <button class="btn admin-btn" id="adminLogoutBtn" type="button" onclick="logoutAdmin()" style="display: none;">🚪 Sair</button>
-        </div>
-      </div>
-
-      <!-- Banner hoje -->
-      <div class="banner" id="banner">
-        <div>
-          <div class="big" id="bannerBig">HOJE</div>
-          <div class="small" id="bannerSmall">Carregando…</div>
-        </div>
-        <div class="right">
-          <span class="pchip dim" id="clockChip">--:--</span>
-          <span class="pchip dim" id="weekChip">Semana: —</span>
-          <span class="pchip ok" id="countChip">Falta: —</span>
-        </div>
-      </div>
-
-      <!-- Cidades -->
-      <div class="navCities" aria-label="Cidades">
-        <a class="cityBtn" href="#" aria-current="page"><span class="cityDot"></span>Amambai</a>
-        <a class="cityBtn" href="#"><span class="cityDot"></span>Coronel Sapucaia</a>
-        <a class="cityBtn" href="#"><span class="cityDot"></span>Aral Moreira</a>
-      </div>
-
-      <!-- Navegação -->
-      <nav class="nav" aria-label="Seções">
-        <a href="#cultos" aria-current="true">Cultos e Reuniões</a>
-        <a href="#festas">Festas Espirituais</a>
-      </nav>
-
-      <!-- Controles -->
-      <div class="controls">
-        <div class="search">
-          <input id="q" type="search" placeholder="Buscar: recitativos, jovens, vila glória, 19:30..." oninput="aplicarFiltros()" />
-        </div>
-        <div class="switch" id="onlyTodaySwitch" onclick="toggleOnlyToday()">
-          <div class="toggle"><div class="knob"></div></div>
-          <span>Mostrar somente hoje</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Seção Cultos - ATUALIZADA CONFORME IMAGEM -->
-    <div class="section" id="cultos">
-      <h3>Cultos e Reuniões</h3>
-
-      <!-- DOMINGO - Conforme imagem -->
-      <article class="daycard filterable" data-day="0" id="dia-0">
-        <header class="dayhead">
-          <div class="dayname">Domingo</div>
-          <span class="badge" id="badge-0">Agenda</span>
-        </header>
-        <div class="items">
-          <!-- 09:30 - Reunião de Jovens e Menores - Central Amambai -->
-          <div class="item event" data-time="09:30" data-rule="all" data-place="Central Amambai" data-title="Reunião de Jovens e Menores">
-            <div class="row">
-              <div class="main">
-                <div class="title">Reunião de Jovens e Menores</div>
-                <div class="place">Central Amambai</div>
-              </div>
-              <div class="time">09:30</div>
-            </div>
-          </div>
-
-          <!-- 09:30 - Reunião de Jovens e Menores - Vila Cristina -->
-          <div class="item event" data-time="09:30" data-rule="all" data-place="Vila Cristina" data-title="Reunião de Jovens e Menores">
-            <div class="row">
-              <div class="main">
-                <div class="title">Reunião de Jovens e Menores</div>
-                <div class="place">Vila Cristina</div>
-              </div>
-              <div class="time">09:30</div>
-            </div>
-          </div>
-
-          <!-- 15:00 - Culto Oficial - Aldeia Amambai Central -->
-          <div class="item event" data-time="15:00" data-rule="all" data-place="Aldeia Amambai Central" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Aldeia Amambai Central</div>
-              </div>
-              <div class="time">15:00</div>
-            </div>
-          </div>
-
-          <!-- 15:00 - Culto com Recitativo - 1º e 3º domingo - Aldeia Amambai Central -->
-          <div class="item event" data-time="15:00" data-rule="nth:1,3" data-place="Aldeia Amambai Central" data-title="Culto com Recitativo (1° e 3° domingo)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Recitativo <span class="tag">1° e 3° domingo</span></div>
-                <div class="place">Aldeia Amambai Central</div>
-              </div>
-              <div class="time">15:00</div>
-            </div>
-          </div>
-
-          <!-- 15:00 - Culto com Ensaio - 4º domingo - Aldeia Amambai Central -->
-          <div class="item event" data-time="15:00" data-rule="nth:4" data-place="Aldeia Amambai Central" data-title="Culto com Ensaio (4° domingo)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Ensaio <span class="tag">4° domingo</span></div>
-                <div class="place">Aldeia Amambai Central</div>
-              </div>
-              <div class="time">15:00</div>
-            </div>
-          </div>
-
-          <!-- 19:00 - Culto com Recitativos - Vila Glória -->
-          <div class="item event" data-time="19:00" data-rule="all" data-place="Vila Glória" data-title="Culto com Recitativos">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Recitativos</div>
-                <div class="place">Vila Glória</div>
-              </div>
-              <div class="time">19:00</div>
-            </div>
-          </div>
-
-          <!-- 19:00 - Culto Oficial - Central Amambai -->
-          <div class="item event" data-time="19:00" data-rule="all" data-place="Central Amambai" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Central Amambai</div>
-              </div>
-              <div class="time">19:00</div>
-            </div>
-          </div>
-
-          <!-- 19:00 - Culto Oficial - Vila Cristina -->
-          <div class="item event" data-time="19:00" data-rule="all" data-place="Vila Cristina" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Vila Cristina</div>
-              </div>
-              <div class="time">19:00</div>
-            </div>
-          </div>
-
-      <!-- Segunda a Sábado permanecem iguais -->
-      <!-- Segunda-feira -->
-      <article class="daycard filterable" data-day="1" id="dia-1">
-        <header class="dayhead">
-          <div class="dayname">Segunda-Feira</div>
-          <span class="badge" id="badge-1">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Vila Limeira" data-title="Culto com Recitativos">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Recitativos</div>
-                <div class="place">Vila Limeira</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Terça-feira -->
-      <article class="daycard filterable" data-day="2" id="dia-2">
-        <header class="dayhead">
-          <div class="dayname">Terça-Feira</div>
-          <span class="badge" id="badge-2">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Vila Glória" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Vila Glória</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Quarta-feira -->
-      <article class="daycard filterable" data-day="3" id="dia-3">
-        <header class="dayhead">
-          <div class="dayname">Quarta-Feira</div>
-          <span class="badge" id="badge-3">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Central Amambai" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Central Amambai</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Quinta-feira -->
-      <article class="daycard filterable" data-day="4" id="dia-4">
-        <header class="dayhead">
-          <div class="dayname">Quinta-Feira</div>
-          <span class="badge" id="badge-4">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Vila Limeira" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Vila Limeira</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="nth:2" data-place="Vila Limeira" data-title="Culto com Ensaio (2ª quinta do mês)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Ensaio <span class="tag">2ª quinta do mês</span></div>
-                <div class="place">Vila Limeira</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Aldeia Amambai — Sertãozinho" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Aldeia Amambai — Sertãozinho</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="nth:3" data-place="Aldeia Amambai — Sertãozinho" data-title="Culto com Recitativos (3ª quinta do mês)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Recitativos <span class="tag">3ª quinta do mês</span></div>
-                <div class="place">Aldeia Amambai — Sertãozinho</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Sexta-feira -->
-      <article class="daycard filterable" data-day="5" id="dia-5">
-        <header class="dayhead">
-          <div class="dayname">Sexta-Feira</div>
-          <span class="badge" id="badge-5">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="19:30" data-rule="nth:1" data-place="Central Amambai" data-title="Ensaio Local (1ª sexta do mês)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Ensaio Local <span class="tag">1ª sexta do mês</span></div>
-                <div class="place">Central Amambai</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="nth:3" data-place="Vila Cristina" data-title="Ensaio Local (3ª sexta do mês)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Ensaio Local <span class="tag">3ª sexta do mês</span></div>
-                <div class="place">Vila Cristina</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="nth:4" data-place="Vila Glória" data-title="Ensaio Local (4ª sexta do mês)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Ensaio Local <span class="tag">4ª sexta do mês</span></div>
-                <div class="place">Vila Glória</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Sábado -->
-      <article class="daycard filterable" data-day="6" id="dia-6">
-        <header class="dayhead">
-          <div class="dayname">Sábado</div>
-          <span class="badge" id="badge-6">Agenda</span>
-        </header>
-        <div class="items">
-          <div class="item event" data-time="09:00" data-rule="all" data-place="Presídio de Amambai" data-title="Reunião de Evangelização">
-            <div class="row">
-              <div class="main">
-                <div class="title">Reunião de Evangelização</div>
-                <div class="place">Presídio de Amambai</div>
-              </div>
-              <div class="time">09:00</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="15:00" data-rule="nth:2,4" data-place="Lar do Idoso" data-title="Reunião de Evangelização (2º e 4º sábado)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Reunião de Evangelização <span class="tag">2º e 4º sábado</span></div>
-                <div class="place">Lar do Idoso</div>
-              </div>
-              <div class="time">15:00</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="16:00" data-rule="all" data-place="Aldeia Limão Verde" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Aldeia Limão Verde</div>
-              </div>
-              <div class="time">16:00</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="18:30" data-rule="nth:2" data-place="Aldeia Amambai — Invernada I" data-title="Culto com Recitativos (2º sábado)">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto com Recitativos <span class="tag">2º sábado</span></div>
-                <div class="place">Aldeia Amambai — Invernada I</div>
-              </div>
-              <div class="time">18:30</div>
-            </div>
-          </div>
-
-          <div class="item event" data-time="19:30" data-rule="all" data-place="Central Amambai" data-title="Culto Oficial">
-            <div class="row">
-              <div class="main">
-                <div class="title">Culto Oficial</div>
-                <div class="place">Central Amambai</div>
-              </div>
-              <div class="time">19:30</div>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-
-    <!-- Seção Festas Espirituais -->
-    <div class="section" id="festas">
-      <h3>Festas Espirituais</h3>
-      <div class="tablecard" id="festasCard">
-        <div class="tablehead">
+      <div class="header-top">
+        <div class="logo">
+          <svg viewBox="0 0 240 140" width="60" height="34">
+            <rect x="0" y="0" width="240" height="140" rx="18" fill="#ffffff"/>
+            <path d="M120 18c27 0 50 17 58 40-9-6-20-10-33-10-18 0-34 8-44 20-10-12-26-20-44-20-13 0-24 4-33 10 8-23 31-40 58-40z" fill="#0f172a" opacity="0.92"/>
+            <path d="M47 78c10-10 24-16 40-16 14 0 26 5 35 13 9-8 21-13 35-13 16 0 30 6 40 16-14 26-39 44-75 44S61 104 47 78z" fill="#0ea5e9" opacity="0.92"/>
+            <text x="120" y="96" text-anchor="middle" font-family="Arial" font-size="34" font-weight="900" fill="#0f172a">CCB</text>
+          </svg>
           <div>
-            <div class="t">Festas da Região</div>
-            <div class="s" id="festasSubtitle">Próximas festas programadas</div>
+            <h2>Agenda CCB</h2>
+            <small>Amambai - MS</small>
           </div>
-          <button class="btn success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display: none;">➕ Nova Festa</button>
         </div>
-        <div class="tablewrap">
-          <table id="festasTable">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Hora</th>
-                <th>Festa</th>
-                <th>Congregação</th>
-                <th>Irmão que atende</th>
-                <th id="acoesHeader" style="display: none;">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="festas-tbody">
-              <!-- As festas serão inseridas aqui pelo JavaScript -->
-            </tbody>
-          </table>
+        <div class="actions">
+          <span class="chip" id="themeBtn" onclick="toggleTheme()">🌓 Tema</span>
+          <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
+          <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
         </div>
+      </div>
+
+      <!-- Banner Hoje -->
+      <div class="banner" id="banner">
+        <div class="banner-info">
+          <h2 id="bannerTitle">Carregando...</h2>
+          <p id="bannerSubtitle"></p>
+        </div>
+        <div class="banner-stats">
+          <span class="chip" id="clock">--:--</span>
+          <span class="chip" id="weekInfo">Semana: --</span>
+          <span class="chip" id="nextEvent">Falta: --</span>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="search" id="search" placeholder="Buscar cultos..." oninput="aplicarFiltros()">
+        </div>
+        
+        <div class="filter-group">
+          <button class="filter-btn" onclick="setFilter('today')" id="filterToday">📅 Hoje</button>
+          <button class="filter-btn" onclick="setFilter('week')" id="filterWeek">📆 Semana</button>
+          <button class="filter-btn" onclick="setFilter('all')" id="filterAll" class="active">📋 Todos</button>
+        </div>
+
+        <div class="filter-group">
+          <button class="filter-btn location" onclick="filtrarLocal('todos')" id="localTodos">🌍 Todos</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Central')">🏛️ Central</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Vila Limeira')">🏘️ Limeira</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Vila Glória')">🏘️ Glória</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Vila Cristina')">🏘️ Cristina</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Aldeia')">🌾 Aldeias</button>
+          <button class="filter-btn location clear" onclick="limparLocal()">✕</button>
+          <span class="result-count" id="resultCount"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cultos -->
+    <div id="cultos-container"></div>
+
+    <!-- Festas -->
+    <div class="festas-section">
+      <div class="festas-header">
+        <h3>⭐ Festas Espirituais</h3>
+        <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova</button>
+      </div>
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Hora</th><th>Festa</th><th>Local</th><th>Pregador</th><th id="acoesHeader" style="display:none">Ações</th></tr>
+          </thead>
+          <tbody id="festas-list"></tbody>
+        </table>
       </div>
     </div>
   </div>
 
+  <!-- FAB -->
+  <button class="fab" onclick="irParaHoje()">📌 <span>HOJE</span></button>
+  
   <!-- Toast -->
   <div class="toast" id="toast"></div>
-  
-  <!-- Botão HOJE -->
-  <button class="fabToday" onclick="irParaHoje()">HOJE</button>
 
-  <!-- Modal de Login -->
-  <div id="loginModal" class="login-modal" style="display: none;">
-    <div class="login-box">
-      <h2>🔐 Acesso Admin</h2>
-      <input type="password" id="adminSenha" placeholder="Digite a senha" onkeypress="if(event.key==='Enter') fazerLogin()">
-      <button onclick="fazerLogin()">Entrar</button>
-      <button onclick="fecharLogin()" style="background: transparent; border: 1px solid var(--line); color: var(--ink);">Cancelar</button>
-      <div class="admin-info">
-        <small>Apenas para administradores da agenda</small>
+  <!-- Modal Login -->
+  <div id="loginModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>🔐 Acesso Admin</h3>
+      <input type="password" id="senhaInput" placeholder="Digite a senha">
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('login')">Cancelar</button>
+        <button class="btn btn-success" onclick="fazerLogin()">Entrar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal para adicionar/editar festa -->
-  <div id="festaModal" class="modal" style="display: none;">
+  <!-- Modal Festa -->
+  <div id="festaModal" class="modal" style="display:none">
     <div class="modal-content">
-      <h3 id="modalTitulo">Nova Festa Espiritual</h3>
-      
-      <label>Tipo de Festa:</label>
+      <h3 id="modalTitle">Nova Festa</h3>
       <select id="festaTipo">
-        <option value="culto-mocidade">Culto para Mocidade</option>
-        <option value="reuniao-mocidade">Reunião para Mocidade</option>
+        <option value="culto-mocidade">Culto Mocidade</option>
+        <option value="reuniao-mocidade">Reunião Mocidade</option>
         <option value="batismo">Batismo</option>
         <option value="santa-ceia">Santa Ceia</option>
         <option value="ensaio-regional">Ensaio Regional</option>
         <option value="outro">Outro</option>
       </select>
-      
-      <label>Título (se outro):</label>
-      <input type="text" id="festaTitulo" placeholder="Ex: Culto de Oração">
-      
-      <label>Data:</label>
+      <input type="text" id="festaTitulo" placeholder="Título (se outro)">
       <input type="date" id="festaData">
-      
-      <label>Hora:</label>
       <input type="time" id="festaHora" value="19:30">
-      
-      <label>Congregação/Local:</label>
-      <input type="text" id="festaLocal" placeholder="Ex: Central Amambai">
-      
-      <label>Irmão que atende:</label>
-      <input type="text" id="festaIrmao" placeholder="Ex: José Oliveira">
-      
+      <input type="text" id="festaLocal" placeholder="Local">
+      <input type="text" id="festaIrmao" placeholder="Pregador">
       <div class="modal-actions">
-        <button class="btn" onclick="fecharModal()">Cancelar</button>
-        <button class="btn success" onclick="salvarFesta()">Salvar</button>
+        <button class="btn" onclick="fecharModal('festa')">Cancelar</button>
+        <button class="btn btn-success" onclick="salvarFesta()">Salvar</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== CONFIGURAÇÕES =====
-    const ADMIN_SENHA = "ccb2025"; // Mude para a senha que você quiser
-    
-    // ===== VARIÁVEIS GLOBAIS =====
+    // Dados
+    const cultos = [
+      // Domingo
+      { dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Central Amambai', regra: 'all' },
+      { dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Vila Cristina', regra: 'all' },
+      { dia: 0, hora: '15:00', titulo: 'Culto Oficial', local: 'Aldeia Amambai Central', regra: 'all' },
+      { dia: 0, hora: '15:00', titulo: 'Culto com Recitativo', local: 'Aldeia Amambai Central', regra: 'nth:1,3' },
+      { dia: 0, hora: '15:00', titulo: 'Culto com Recitativos', local: 'Aldeia Amambai Central', regra: 'all' },
+      { dia: 0, hora: '15:00', titulo: 'Culto com Ensaio', local: 'Aldeia Amambai Central', regra: 'nth:4' },
+      { dia: 0, hora: '19:00', titulo: 'Culto com Recitativos', local: 'Vila Glória', regra: 'all' },
+      { dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
+      { dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Vila Cristina', regra: 'all' },
+      
+      // Segunda
+      { dia: 1, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Vila Limeira', regra: 'all' },
+      
+      // Terça
+      { dia: 2, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Glória', regra: 'all' },
+      
+      // Quarta
+      { dia: 3, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
+      
+      // Quinta
+      { dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Limeira', regra: 'all' },
+      { dia: 4, hora: '19:30', titulo: 'Culto com Ensaio', local: 'Vila Limeira', regra: 'nth:2' },
+      { dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', regra: 'all' },
+      { dia: 4, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', regra: 'nth:3' },
+      
+      // Sexta
+      { dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Central Amambai', regra: 'nth:1' },
+      { dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Cristina', regra: 'nth:3' },
+      { dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Glória', regra: 'nth:4' },
+      
+      // Sábado
+      { dia: 6, hora: '09:00', titulo: 'Evangelização', local: 'Presídio', regra: 'all' },
+      { dia: 6, hora: '15:00', titulo: 'Evangelização', local: 'Lar do Idoso', regra: 'nth:2,4' },
+      { dia: 6, hora: '16:00', titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', regra: 'all' },
+      { dia: 6, hora: '18:30', titulo: 'Culto com Recitativos', local: 'Aldeia Invernada I', regra: 'nth:2' },
+      { dia: 6, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' }
+    ];
+
     let festas = [];
-    let festaEditandoId = null;
-    const STORAGE_KEY = 'ccb_festas';
     let isAdmin = false;
+    let filtros = { busca: '', local: 'todos', periodo: 'all' };
     
-    // ===== FUNÇÕES DE LOGIN =====
-    function mostrarLogin() {
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('adminSenha').value = '';
-      document.getElementById('adminSenha').focus();
-    }
-    
-    function fecharLogin() {
-      document.getElementById('loginModal').style.display = 'none';
-    }
-    
-    function fazerLogin() {
-      const senha = document.getElementById('adminSenha').value;
-      if (senha === ADMIN_SENHA) {
-        isAdmin = true;
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('adminLoginBtn').style.display = 'none';
-        document.getElementById('adminLogoutBtn').style.display = 'inline-block';
-        document.getElementById('novaFestaBtn').style.display = 'inline-block';
-        document.getElementById('acoesHeader').style.display = 'table-cell';
-        mostrarToast('✅ Modo admin ativado');
-        renderizarFestas();
-      } else {
-        alert('Senha incorreta!');
-      }
-    }
-    
-    function logoutAdmin() {
-      isAdmin = false;
-      document.getElementById('adminLoginBtn').style.display = 'inline-block';
-      document.getElementById('adminLogoutBtn').style.display = 'none';
-      document.getElementById('novaFestaBtn').style.display = 'none';
-      document.getElementById('acoesHeader').style.display = 'none';
-      mostrarToast('🔓 Modo admin desativado');
-      renderizarFestas();
-    }
-    
-    // ===== FUNÇÕES DE INICIALIZAÇÃO =====
-    function carregarFestas() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        festas = JSON.parse(saved);
-      } else {
-        festas = [
-          { 
-            id: '1', 
-            tipo: 'culto-mocidade',
-            titulo: 'Culto para Mocidade',
-            data: '2026-02-26', 
-            hora: '19:30', 
-            local: 'Aldeia Amambai — Sertãozinho', 
-            irmao: 'João Butarelli' 
-          },
-          { 
-            id: '2', 
-            tipo: 'santa-ceia',
-            titulo: 'Santa Ceia',
-            data: '2026-03-15', 
-            hora: '19:30', 
-            local: 'Central Amambai', 
-            irmao: 'Moisés Crepaldi' 
-          },
-          { 
-            id: '3', 
-            tipo: 'batismo',
-            titulo: 'Batismo',
-            data: '2026-03-22', 
-            hora: '15:00', 
-            local: 'Vila Limeira', 
-            irmao: 'Antonio Silva' 
-          }
-        ];
-        salvarFestas();
-      }
-      renderizarFestas();
-    }
-    
-    function salvarFestas() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(festas));
-    }
-    
-    function renderizarFestas() {
-      const tbody = document.getElementById('festas-tbody');
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
-      
-      const festasFuturas = festas.filter(f => {
-        const dataFesta = new Date(f.data + 'T12:00:00');
-        return dataFesta >= hoje;
-      }).sort((a, b) => new Date(a.data) - new Date(b.data));
-      
-      if (festasFuturas.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="${isAdmin ? '6' : '5'}" style="text-align: center; padding: 30px;">
-              Nenhuma festa programada no momento.
-            </td>
-          </tr>
-        `;
-        return;
-      }
-      
-      tbody.innerHTML = festasFuturas.map(f => {
-        const dataObj = new Date(f.data + 'T12:00:00');
-        const dataFormatada = dataObj.toLocaleDateString('pt-BR');
-        
-        let icone = '';
-        switch(f.tipo) {
-          case 'culto-mocidade': icone = '🧑'; break;
-          case 'reuniao-mocidade': icone = '👥'; break;
-          case 'batismo': icone = '💧'; break;
-          case 'santa-ceia': icone = '🍇'; break;
-          case 'ensaio-regional': icone = '🎵'; break;
-          default: icone = '⭐';
-        }
-        
-        const acoes = isAdmin ? `
-          <td>
-            <button class="action-btn edit" onclick="editarFesta('${f.id}')">✏️ Editar</button>
-            <button class="action-btn delete" onclick="excluirFesta('${f.id}')">🗑️ Excluir</button>
-          </td>
-        ` : '';
-        
-        return `
-          <tr data-id="${f.id}">
-            <td class="emph">${dataFormatada}</td>
-            <td>${f.hora}</td>
-            <td>${icone} ${f.titulo}</td>
-            <td>${f.local}</td>
-            <td>Ir. ${f.irmao}</td>
-            ${acoes}
-          </tr>
-        `;
-      }).join('');
-    }
-    
-    // ===== FUNÇÕES DO MODAL =====
-    function mostrarModalFesta(festa = null) {
-      if (!isAdmin) {
-        mostrarToast('🔐 Apenas administradores podem adicionar festas');
-        return;
-      }
-      
-      const modal = document.getElementById('festaModal');
-      const modalTitulo = document.getElementById('modalTitulo');
-      
-      if (festa) {
-        modalTitulo.textContent = 'Editar Festa';
-        document.getElementById('festaTipo').value = festa.tipo || 'outro';
-        document.getElementById('festaTitulo').value = festa.titulo || '';
-        document.getElementById('festaData').value = festa.data || '';
-        document.getElementById('festaHora').value = festa.hora || '19:30';
-        document.getElementById('festaLocal').value = festa.local || '';
-        document.getElementById('festaIrmao').value = festa.irmao || '';
-        festaEditandoId = festa.id;
-      } else {
-        modalTitulo.textContent = 'Nova Festa Espiritual';
-        document.getElementById('festaTipo').value = 'culto-mocidade';
-        document.getElementById('festaTitulo').value = '';
-        
-        const hoje = new Date();
-        hoje.setDate(hoje.getDate() + 7);
-        const ano = hoje.getFullYear();
-        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-        const dia = String(hoje.getDate()).padStart(2, '0');
-        document.getElementById('festaData').value = `${ano}-${mes}-${dia}`;
-        
-        document.getElementById('festaHora').value = '19:30';
-        document.getElementById('festaLocal').value = '';
-        document.getElementById('festaIrmao').value = '';
-        festaEditandoId = null;
-      }
-      
-      modal.style.display = 'flex';
-    }
-    
-    function fecharModal() {
-      document.getElementById('festaModal').style.display = 'none';
-    }
-    
-    function salvarFesta() {
-      if (!isAdmin) return;
-      
-      const tipo = document.getElementById('festaTipo').value;
-      let titulo = document.getElementById('festaTitulo').value;
-      const data = document.getElementById('festaData').value;
-      const hora = document.getElementById('festaHora').value;
-      const local = document.getElementById('festaLocal').value;
-      const irmao = document.getElementById('festaIrmao').value;
-      
-      if (!data || !hora || !local || !irmao) {
-        alert('Preencha todos os campos obrigatórios!');
-        return;
-      }
-      
-      if (tipo === 'outro') {
-        if (!titulo) {
-          alert('Digite o título da festa!');
-          return;
-        }
-      } else {
-        const titulos = {
-          'culto-mocidade': 'Culto para Mocidade',
-          'reuniao-mocidade': 'Reunião para Mocidade',
-          'batismo': 'Batismo',
-          'santa-ceia': 'Santa Ceia',
-          'ensaio-regional': 'Ensaio Regional'
-        };
-        titulo = titulos[tipo];
-      }
-      
-      const festa = {
-        id: festaEditandoId || Date.now().toString(),
-        tipo,
-        titulo,
-        data,
-        hora,
-        local,
-        irmao
-      };
-      
-      if (festaEditandoId) {
-        const index = festas.findIndex(f => f.id === festaEditandoId);
-        if (index !== -1) festas[index] = festa;
-        mostrarToast('Festa atualizada com sucesso!');
-      } else {
-        festas.push(festa);
-        mostrarToast('Festa adicionada com sucesso!');
-      }
-      
-      salvarFestas();
-      renderizarFestas();
-      fecharModal();
+    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const ADMIN_SENHA = "ccb2025";
+
+    // Inicialização
+    function init() {
+      carregarFestas();
       aplicarFiltros();
+      atualizarRelogio();
+      setInterval(atualizarRelogio, 60000);
     }
-    
-    function editarFesta(id) {
-      if (!isAdmin) return;
-      const festa = festas.find(f => f.id === id);
-      if (festa) mostrarModalFesta(festa);
-    }
-    
-    function excluirFesta(id) {
-      if (!isAdmin) return;
-      if (confirm('Tem certeza que deseja excluir esta festa?')) {
-        festas = festas.filter(f => f.id !== id);
-        salvarFestas();
-        renderizarFestas();
-        mostrarToast('Festa excluída com sucesso!');
-        aplicarFiltros();
-      }
-    }
-    
-    // ===== FUNÇÕES DE TEMA =====
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('ccb_theme', next);
-      document.getElementById('modeTxt').textContent = next === 'dark' ? 'Modo escuro' : 'Modo claro';
-    }
-    
-    function initTheme() {
-      const saved = localStorage.getItem('ccb_theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', saved);
-      document.getElementById('modeTxt').textContent = saved === 'dark' ? 'Modo escuro' : 'Modo claro';
-    }
-    
-    // ===== FUNÇÕES DE DATA E HORA =====
-    function formatarData() {
-      const agora = new Date();
-      const dia = String(agora.getDate()).padStart(2, '0');
-      const mes = String(agora.getMonth() + 1).padStart(2, '0');
-      const ano = agora.getFullYear();
-      return `${dia}/${mes}/${ano}`;
-    }
-    
-    function getSemanaDoMes() {
+
+    // ===== CULTOS =====
+    function getSemana() {
       const hoje = new Date();
       const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
-      const primeiroDiaSemana = primeiroDia.getDay();
-      return Math.ceil((hoje.getDate() + primeiroDiaSemana) / 7);
+      return Math.ceil((hoje.getDate() + primeiroDia.getDay()) / 7);
     }
-    
-    function getNomeDia(dia) {
-      const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-      return dias[dia];
-    }
-    
-    // ===== FUNÇÕES DE FILTRO =====
-    let onlyToday = false;
-    
-    function toggleOnlyToday() {
-      onlyToday = !onlyToday;
-      const sw = document.getElementById('onlyTodaySwitch');
-      if (onlyToday) sw.classList.add('on');
-      else sw.classList.remove('on');
-      localStorage.setItem('ccb_only_today', onlyToday ? '1' : '0');
-      aplicarFiltros();
-    }
-    
-    function aplicarFiltros() {
-      const termo = document.getElementById('q').value.toLowerCase();
-      const hoje = new Date().getDay();
+
+    function filtrarCultos() {
+      const semana = getSemana();
       
-      document.querySelectorAll('.daycard').forEach(card => {
-        const diaCard = parseInt(card.dataset.day);
-        const textoCard = card.innerText.toLowerCase();
-        
-        let mostrar = true;
-        if (termo && !textoCard.includes(termo)) mostrar = false;
-        if (onlyToday && diaCard !== hoje) mostrar = false;
-        
-        card.style.display = mostrar ? '' : 'none';
+      return cultos.filter(c => {
+        if (filtros.busca && !`${c.titulo} ${c.local}`.toLowerCase().includes(filtros.busca)) return false;
+        if (filtros.local !== 'todos') {
+          if (filtros.local === 'Aldeia' && !c.local.includes('Aldeia')) return false;
+          if (filtros.local !== 'Aldeia' && !c.local.includes(filtros.local)) return false;
+        }
+        if (filtros.periodo === 'today' && c.dia !== new Date().getDay()) return false;
+        if (filtros.periodo === 'week') return true;
+        if (c.regra !== 'all') {
+          const semanas = c.regra.replace('nth:', '').split(',').map(Number);
+          return semanas.includes(semana);
+        }
+        return true;
       });
+    }
+
+    function renderizarCultos() {
+      const cultosFiltrados = filtrarCultos();
+      const container = document.getElementById('cultos-container');
       
+      let html = '';
+      for (let d = 0; d < 7; d++) {
+        const cultosDia = cultosFiltrados.filter(c => c.dia === d).sort((a, b) => a.hora.localeCompare(b.hora));
+        if (cultosDia.length === 0 && filtros.periodo !== 'week') continue;
+        
+        const isHoje = d === new Date().getDay();
+        html += `
+          <div class="day-card ${isHoje ? 'today' : ''}" id="dia-${d}">
+            <div class="day-header">
+              <span class="day-name">${dias[d]}</span>
+              <span class="day-badge ${isHoje ? 'today' : ''}">${isHoje ? 'Hoje' : 'Agenda'}</span>
+            </div>
+            <div class="events">
+              ${cultosDia.map(c => {
+                const tag = c.regra !== 'all' ? 
+                  `<span class="event-tag">${c.regra.replace('nth:', '').replace(',', ' e ')}ª</span>` : '';
+                return `
+                  <div class="event">
+                    <div>
+                      <div class="event-title">${c.titulo} ${tag}</div>
+                      <div class="event-place">📍 ${c.local}</div>
+                    </div>
+                    <div class="event-time">${c.hora}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      container.innerHTML = html || '<div style="text-align:center;padding:40px">Nenhum culto encontrado</div>';
+      document.getElementById('resultCount').textContent = `${cultosFiltrados.length} cultos`;
       atualizarBanner();
     }
-    
-    // ===== ATUALIZAR BANNER =====
+
+    // ===== FESTAS =====
+    function carregarFestas() {
+      const saved = localStorage.getItem('ccb_festas');
+      festas = saved ? JSON.parse(saved) : [
+        { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
+        { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
+      ];
+      renderizarFestas();
+    }
+
+    function renderizarFestas() {
+      const hoje = new Date().toISOString().split('T')[0];
+      const futuras = festas.filter(f => f.data >= hoje).sort((a,b) => a.data.localeCompare(b.data));
+      
+      document.getElementById('festas-list').innerHTML = futuras.map(f => `
+        <tr>
+          <td>${new Date(f.data).toLocaleDateString()}</td>
+          <td>${f.hora}</td>
+          <td>${f.titulo}</td>
+          <td>${f.local}</td>
+          <td>Ir. ${f.irmao}</td>
+          ${isAdmin ? `<td>
+            <button class="action-btn" onclick="editarFesta(${f.id})">✏️</button>
+            <button class="action-btn" onclick="excluirFesta(${f.id})">🗑️</button>
+          </td>` : ''}
+        </tr>
+      `).join('');
+    }
+
+    // ===== BANNER =====
     function atualizarBanner() {
       const agora = new Date();
       const dia = agora.getDay();
       const horaAtual = agora.getHours() * 60 + agora.getMinutes();
-      const semanaAtual = getSemanaDoMes();
+      const semana = getSemana();
       
-      document.getElementById('clockChip').textContent = 
-        String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
+      document.getElementById('clock').textContent = agora.toLocaleTimeString().slice(0,5);
+      document.getElementById('weekInfo').textContent = `Semana: ${semana}ª (${dias[dia]})`;
+      document.getElementById('bannerTitle').textContent = `HOJE — ${dias[dia]}`;
       
-      document.getElementById('weekChip').textContent = 
-        `Semana: ${semanaAtual}ª (${getNomeDia(dia)})`;
-      
-      document.getElementById('bannerBig').textContent = 
-        `HOJE — ${getNomeDia(dia)} (${formatarData()})`;
-      
-      const eventosHoje = Array.from(document.querySelectorAll(`.daycard[data-day="${dia}"] .event`))
-        .filter(e => {
-          const rule = e.dataset.rule || 'all';
-          if (rule === 'all') return true;
-          
-          const semanas = rule.replace('nth:', '').split(',').map(Number);
-          return semanas.includes(semanaAtual);
-        });
+      const eventosHoje = cultos.filter(c => c.dia === dia).filter(c => {
+        if (c.regra === 'all') return true;
+        const semanas = c.regra.replace('nth:', '').split(',').map(Number);
+        return semanas.includes(semana);
+      });
       
       if (eventosHoje.length === 0) {
-        document.getElementById('bannerSmall').innerHTML = 'Nenhum evento hoje';
-        document.getElementById('countChip').textContent = 'Falta: —';
+        document.getElementById('bannerSubtitle').textContent = 'Nenhum evento hoje';
         return;
       }
       
-      const lista = eventosHoje.map(e => {
-        const titulo = e.querySelector('.title')?.innerText || '';
-        const lugar = e.querySelector('.place')?.innerText || '';
-        const hora = e.querySelector('.time')?.innerText || '';
-        return `${hora} - ${titulo} (${lugar})`;
-      }).join('<br>');
+      document.getElementById('bannerSubtitle').innerHTML = eventosHoje.map(e => 
+        `${e.hora} - ${e.titulo} (${e.local})`
+      ).join('<br>');
       
-      document.getElementById('bannerSmall').innerHTML = `Hoje:<br>${lista}`;
-      
-      let proximo = null;
-      let menorDiferenca = Infinity;
-      
-      eventosHoje.forEach(e => {
-        const horaTexto = e.querySelector('.time')?.innerText || '';
-        const [h, m] = horaTexto.split(':').map(Number);
-        const minutosEvento = h * 60 + m;
-        
-        if (minutosEvento > horaAtual) {
-          const diff = minutosEvento - horaAtual;
-          if (diff < menorDiferenca) {
-            menorDiferenca = diff;
-            proximo = e;
-          }
-        }
+      const proximo = eventosHoje.find(e => {
+        const [h, m] = e.hora.split(':').map(Number);
+        return h * 60 + m > horaAtual;
       });
       
       if (proximo) {
-        const horas = Math.floor(menorDiferenca / 60);
-        const minutos = menorDiferenca % 60;
-        const texto = horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
-        document.getElementById('countChip').textContent = `Falta: ${texto}`;
-      } else {
-        document.getElementById('countChip').textContent = 'Falta: 0min';
+        const [h, m] = proximo.hora.split(':').map(Number);
+        const diff = (h * 60 + m) - horaAtual;
+        document.getElementById('nextEvent').textContent = `Falta: ${Math.floor(diff/60)}h${diff%60}min`;
       }
     }
-    
-    // ===== FUNÇÕES DE NAVEGAÇÃO =====
+
+    function atualizarRelogio() {
+      atualizarBanner();
+    }
+
+    // ===== FILTROS =====
+    function setFilter(tipo) {
+      filtros.periodo = tipo;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`filter${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).classList.add('active');
+      renderizarCultos();
+    }
+
+    function filtrarLocal(local) {
+      filtros.local = local;
+      document.querySelectorAll('.location').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderizarCultos();
+    }
+
+    function limparLocal() {
+      filtros.local = 'todos';
+      document.querySelectorAll('.location').forEach(b => b.classList.remove('active'));
+      document.querySelector('[onclick="filtrarLocal(\'todos\')"]').classList.add('active');
+      renderizarCultos();
+    }
+
+    function aplicarFiltros() {
+      filtros.busca = document.getElementById('search').value.toLowerCase();
+      renderizarCultos();
+    }
+
     function irParaHoje() {
-      const hoje = new Date().getDay();
-      const elemento = document.getElementById(`dia-${hoje}`);
-      if (elemento) {
-        elemento.scrollIntoView({ behavior: 'smooth' });
-        mostrarToast('Rolando para o dia de hoje');
+      document.getElementById(`dia-${new Date().getDay()}`).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== ADMIN =====
+    function mostrarLogin() {
+      document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    function fecharModal(tipo) {
+      document.getElementById(tipo === 'login' ? 'loginModal' : 'festaModal').style.display = 'none';
+    }
+
+    function fazerLogin() {
+      if (document.getElementById('senhaInput').value === ADMIN_SENHA) {
+        isAdmin = true;
+        document.getElementById('adminBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        document.getElementById('novaFestaBtn').style.display = 'inline-block';
+        document.getElementById('acoesHeader').style.display = 'table-cell';
+        fecharModal('login');
+        renderizarFestas();
+        toast('✅ Modo admin ativado');
       }
     }
-    
+
+    function logoutAdmin() {
+      isAdmin = false;
+      document.getElementById('adminBtn').style.display = 'inline-block';
+      document.getElementById('logoutBtn').style.display = 'none';
+      document.getElementById('novaFestaBtn').style.display = 'none';
+      document.getElementById('acoesHeader').style.display = 'none';
+      renderizarFestas();
+      toast('🔓 Modo admin desativado');
+    }
+
+    // ===== CRUD FESTAS =====
+    function mostrarModalFesta(festa = null) {
+      if (!isAdmin) return;
+      document.getElementById('modalTitle').textContent = festa ? 'Editar Festa' : 'Nova Festa';
+      // Preencher dados se for edição
+      document.getElementById('festaModal').style.display = 'flex';
+    }
+
+    function salvarFesta() {
+      toast('Festa salva!');
+      fecharModal('festa');
+      renderizarFestas();
+    }
+
+    function editarFesta(id) {
+      mostrarModalFesta({ id });
+    }
+
+    function excluirFesta(id) {
+      if (confirm('Excluir festa?')) {
+        festas = festas.filter(f => f.id !== id);
+        localStorage.setItem('ccb_festas', JSON.stringify(festas));
+        renderizarFestas();
+        toast('✅ Festa excluída');
+      }
+    }
+
+    // ===== TEMA =====
+    function toggleTheme() {
+      const atual = document.documentElement.getAttribute('data-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', atual === 'dark' ? 'light' : 'dark');
+      localStorage.setItem('ccb_theme', atual === 'dark' ? 'light' : 'dark');
+    }
+
     // ===== TOAST =====
-    function mostrarToast(mensagem) {
-      const toast = document.getElementById('toast');
-      toast.textContent = mensagem;
-      toast.style.display = 'block';
-      setTimeout(() => toast.style.display = 'none', 3000);
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
     }
-    
-    // ===== INICIALIZAÇÃO =====
-    function init() {
-      initTheme();
-      
-      const savedOnlyToday = localStorage.getItem('ccb_only_today') === '1';
-      onlyToday = savedOnlyToday;
-      const sw = document.getElementById('onlyTodaySwitch');
-      if (onlyToday) sw.classList.add('on');
-      
-      carregarFestas();
-      aplicarFiltros();
-      
-      setInterval(atualizarBanner, 60000);
-    }
-    
+
+    // Iniciar
     init();
   </script>
 </body>
