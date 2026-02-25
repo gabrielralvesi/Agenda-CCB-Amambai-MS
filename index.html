@@ -120,36 +120,158 @@
       border: none;
     }
 
-    /* BOTÃO DE NOTIFICAÇÃO EM DESTAQUE - CORRIGIDO */
-    .notificacao-container {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(34, 197, 94, 0.15));
-      border: 2px solid var(--success);
+    /* Seção de Notificações - IGUAL AO PRINT */
+    .notificacao-section {
+      background: var(--glass);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
-      margin: 20px 0;
+      margin-bottom: 20px;
+    }
+
+    .notificacao-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .notificacao-header h3 {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notificacao-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notificacao-info-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .notificacao-info-box ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .notificacao-info-box code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .notificacao-lista {
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      margin: 16px 0;
+    }
+
+    .notificacao-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notificacao-item:last-child {
+      border-bottom: none;
+    }
+
+    .notificacao-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .notificacao-numero {
+      flex: 1;
+      font-family: monospace;
+    }
+
+    .notificacao-nome {
+      color: var(--text-light);
+      font-size: 12px;
+      min-width: 100px;
+    }
+
+    .btn-remover {
+      color: var(--danger);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .btn-remover:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .notificacao-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .notificacao-timer {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .timer-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .notificacao-stats {
+      color: var(--text-light);
+      font-size: 13px;
+    }
+
+    /* Banner de ativação */
+    .ativar-notificacao {
+      background: linear-gradient(135deg, var(--success), #16a34a);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      animation: pulse 2s infinite;
+      color: white;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-    }
-
-    .notificacao-info {
+    .ativar-info {
       display: flex;
       align-items: center;
       gap: 16px;
     }
 
-    .notificacao-icone {
-      font-size: 40px;
-      background: rgba(255, 255, 255, 0.1);
+    .ativar-icone {
+      font-size: 32px;
+      background: rgba(255, 255, 255, 0.2);
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -158,39 +280,33 @@
       justify-content: center;
     }
 
-    .notificacao-texto h3 {
+    .ativar-texto h3 {
       font-size: 18px;
       margin-bottom: 4px;
-      color: var(--success);
     }
 
-    .notificacao-texto p {
+    .ativar-texto p {
       font-size: 14px;
-      color: var(--text-light);
+      opacity: 0.9;
     }
 
-    .btn-notificacao-destaque {
-      background: linear-gradient(135deg, var(--success), #16a34a);
-      color: white;
+    .btn-ativar {
+      background: white;
+      color: var(--success);
       border: none;
-      padding: 14px 28px;
+      padding: 12px 24px;
       border-radius: 999px;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-      transition: transform 0.2s;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .btn-notificacao-destaque:hover {
+    .btn-ativar:hover {
       transform: scale(1.05);
-    }
-
-    .btn-notificacao-destaque:active {
-      transform: scale(0.95);
     }
 
     /* Banner */
@@ -199,7 +315,7 @@
       border: 1px solid var(--accent);
       border-radius: var(--radius);
       padding: 16px;
-      margin: 16px 0;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -237,7 +353,7 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin: 16px 0;
+      margin-bottom: 16px;
     }
 
     .search-box {
@@ -310,56 +426,6 @@
       font-size: 12px;
       color: var(--text-light);
       margin-left: 8px;
-    }
-
-    /* Admin Section */
-    .admin-section {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin: 16px 0;
-    }
-
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .admin-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin: 16px 0;
-    }
-
-    .stat-card {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid var(--accent);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-light);
     }
 
     /* Cards de dia */
@@ -449,22 +515,6 @@
       white-space: nowrap;
     }
 
-    .btn-lembrete {
-      padding: 6px 12px;
-      background: transparent;
-      border: 1px solid var(--success);
-      color: var(--success);
-      border-radius: 6px;
-      font-size: 11px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .btn-lembrete:hover {
-      background: var(--success);
-      color: white;
-    }
-
     /* Festas */
     .festas-section {
       background: var(--glass);
@@ -481,6 +531,12 @@
       margin-bottom: 16px;
       flex-wrap: wrap;
       gap: 10px;
+    }
+
+    .festas-header h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     table {
@@ -510,22 +566,6 @@
       margin: 0 4px;
     }
 
-    /* FAB */
-    .fab {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 12px 24px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
-      z-index: 100;
-    }
-
     /* Modal */
     .modal {
       position: fixed;
@@ -552,7 +592,8 @@
     }
 
     .modal-content input,
-    .modal-content select {
+    .modal-content select,
+    .modal-content textarea {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
@@ -560,6 +601,11 @@
       border-radius: 8px;
       background: var(--glass);
       color: var(--text);
+    }
+
+    .modal-content textarea {
+      min-height: 200px;
+      font-family: monospace;
     }
 
     .modal-actions {
@@ -583,56 +629,28 @@
       z-index: 1000;
     }
 
-    /* Switch */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 24px;
-      margin-right: 8px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
+    /* FAB */
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 700;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: var(--border);
-      border-radius: 24px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 2px;
-      bottom: 2px;
-      background-color: white;
-      border-radius: 50%;
-    }
-
-    input:checked + .slider {
-      background-color: var(--success);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(26px);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+      z-index: 100;
     }
 
     @media (max-width: 768px) {
       .fab span { display: none; }
       .fab { padding: 12px; border-radius: 50%; }
       .filters { flex-direction: column; }
-      .notificacao-container { flex-direction: column; text-align: center; }
+      .ativar-notificacao { flex-direction: column; text-align: center; }
+      .notificacao-footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -662,19 +680,66 @@
       </div>
     </div>
 
-    <!-- BOTÃO DE NOTIFICAÇÃO EM DESTAQUE - AGORA VISÍVEL -->
-    <div class="notificacao-container" id="notificacaoBanner">
-      <div class="notificacao-info">
-        <div class="notificacao-icone">🔔</div>
-        <div class="notificacao-texto">
-          <h3>📱 Ative as notificações!</h3>
-          <p>Receba lembretes dos cultos diretamente no seu celular</p>
+    <!-- Banner de Ativação de Notificações (aparece para quem não ativou) -->
+    <div class="ativar-notificacao" id="ativarBanner">
+      <div class="ativar-info">
+        <div class="ativar-icone">🔔</div>
+        <div class="ativar-texto">
+          <h3>Receba lembretes dos cultos!</h3>
+          <p>Ative as notificações e seja avisado antes dos cultos</p>
         </div>
       </div>
-      <button class="btn-notificacao-destaque" onclick="solicitarPermissaoNotificacao()">
+      <button class="btn-ativar" onclick="solicitarPermissao()">
         <span>🔔</span>
         <span>ATIVAR NOTIFICAÇÕES</span>
       </button>
+    </div>
+
+    <!-- Seção de Notificações (aparece após ativar) -->
+    <div class="notificacao-section" id="notificacaoSection" style="display: none;">
+      <div class="notificacao-header">
+        <h3>
+          <span>📱</span>
+          Lembretes por Notificação
+        </h3>
+        <div class="notificacao-actions">
+          <button class="btn btn-success" onclick="mostrarModalAdicionar()">➕ Adicionar</button>
+          <button class="btn btn-success" onclick="mostrarModalImportar()">📥 Importar</button>
+          <button class="btn btn-warning" onclick="enviarLembretes()">📤 Enviar Agora</button>
+          <button class="btn" onclick="exportarContatos()">💾 Exportar</button>
+        </div>
+      </div>
+
+      <div class="notificacao-info-box">
+        <strong>📌 Instruções para importar:</strong>
+        <ul>
+          <li>Formato: <strong>Número;Nome</strong> (um por linha)</li>
+          <li>Exemplo: <code>67999999999;João Silva</code></li>
+          <li>O nome é opcional: <code>67999999999</code></li>
+          <li>Você pode copiar de uma planilha ou tirar print e digitar</li>
+        </ul>
+      </div>
+
+      <div class="notificacao-lista" id="contatosLista">
+        <div style="text-align: center; padding: 30px; color: var(--text-light);">
+          Nenhum contato cadastrado. Clique em "Importar" para adicionar vários de uma vez.
+        </div>
+      </div>
+
+      <div class="notificacao-footer">
+        <div class="notificacao-timer">
+          <label class="timer-option">
+            <input type="checkbox" id="timer30" checked> ✅ 30min antes
+          </label>
+          <label class="timer-option">
+            <input type="checkbox" id="timer60"> 🕒 1h antes
+          </label>
+        </div>
+        <div class="notificacao-stats">
+          <span id="totalContatos">0</span> contatos cadastrados | 
+          <span id="selecionadosContatos">0</span> selecionados
+        </div>
+      </div>
     </div>
 
     <!-- Banner Hoje -->
@@ -715,31 +780,29 @@
       </div>
     </div>
 
-    <!-- Seção Admin -->
-    <div class="admin-section" id="adminSection" style="display: none;">
-      <div class="admin-header">
-        <h3>⚙️ Painel Admin</h3>
-        <div class="admin-actions">
-          <button class="btn btn-success" onclick="testarNotificacao()">📤 Testar Notificação</button>
-          <button class="btn btn-warning" onclick="enviarLembretesManualmente()">📅 Lembretes Hoje</button>
-          <button class="btn" onclick="verLembretesAtivos()">📋 Ver Agendados</button>
-        </div>
-      </div>
-    </div>
-
     <!-- Cultos -->
     <div id="cultos-container"></div>
 
     <!-- Festas -->
     <div class="festas-section">
       <div class="festas-header">
-        <h3>⭐ Festas Espirituais</h3>
+        <h3>
+          <span>⭐</span>
+          Festas Espirituais
+        </h3>
         <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova</button>
       </div>
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr><th>Data</th><th>Hora</th><th>Festa</th><th>Local</th><th>Pregador</th><th id="acoesHeader" style="display:none">Ações</th></tr>
+            <tr>
+              <th>Data</th>
+              <th>Hora</th>
+              <th>Festa</th>
+              <th>Local</th>
+              <th>Pregador</th>
+              <th id="acoesHeader" style="display:none">Ações</th>
+            </tr>
           </thead>
           <tbody id="festas-list"></tbody>
         </table>
@@ -761,6 +824,32 @@
       <div class="modal-actions">
         <button class="btn" onclick="fecharModal('login')">Cancelar</button>
         <button class="btn btn-success" onclick="fazerLogin()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Adicionar Contato -->
+  <div id="contatoModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>➕ Adicionar Contato</h3>
+      <input type="text" id="contatoNome" placeholder="Nome (opcional)">
+      <input type="text" id="contatoNumero" placeholder="WhatsApp (com DDD, ex: 67999999999)">
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('contato')">Cancelar</button>
+        <button class="btn btn-success" onclick="salvarContato()">Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Importar Contatos -->
+  <div id="importarModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>📥 Importar Contatos</h3>
+      <p style="margin-bottom: 10px;">Cole sua lista de contatos (um por linha):</p>
+      <textarea id="importarTexto" placeholder="67999999999;João Silva&#10;67988888888;Maria Oliveira&#10;67977777777"></textarea>
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('importar')">Cancelar</button>
+        <button class="btn btn-success" onclick="importarContatos()">Importar</button>
       </div>
     </div>
   </div>
@@ -789,20 +878,10 @@
     </div>
   </div>
 
-  <!-- Modal Lembretes -->
-  <div id="lembretesModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>📋 Lembretes Agendados</h3>
-      <div id="lembretesLista" style="margin: 16px 0; max-height: 300px; overflow-y: auto;"></div>
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('lembretes')">Fechar</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     // Dados dos cultos
     const cultos = [
+      // Domingo
       { id: 'dom1', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Central Amambai', regra: 'all' },
       { id: 'dom2', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Vila Cristina', regra: 'all' },
       { id: 'dom3', dia: 0, hora: '15:00', titulo: 'Culto Oficial', local: 'Aldeia Amambai Central', regra: 'all' },
@@ -812,16 +891,28 @@
       { id: 'dom7', dia: 0, hora: '19:00', titulo: 'Culto com Recitativos', local: 'Vila Glória', regra: 'all' },
       { id: 'dom8', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
       { id: 'dom9', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Vila Cristina', regra: 'all' },
+      
+      // Segunda
       { id: 'seg1', dia: 1, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Vila Limeira', regra: 'all' },
+      
+      // Terça
       { id: 'ter1', dia: 2, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Glória', regra: 'all' },
+      
+      // Quarta
       { id: 'qua1', dia: 3, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
+      
+      // Quinta
       { id: 'qui1', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Limeira', regra: 'all' },
       { id: 'qui2', dia: 4, hora: '19:30', titulo: 'Culto com Ensaio', local: 'Vila Limeira', regra: 'nth:2' },
       { id: 'qui3', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', regra: 'all' },
       { id: 'qui4', dia: 4, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', regra: 'nth:3' },
+      
+      // Sexta
       { id: 'sex1', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Central Amambai', regra: 'nth:1' },
       { id: 'sex2', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Cristina', regra: 'nth:3' },
       { id: 'sex3', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Glória', regra: 'nth:4' },
+      
+      // Sábado
       { id: 'sab1', dia: 6, hora: '09:00', titulo: 'Evangelização', local: 'Presídio', regra: 'all' },
       { id: 'sab2', dia: 6, hora: '15:00', titulo: 'Evangelização', local: 'Lar do Idoso', regra: 'nth:2,4' },
       { id: 'sab3', dia: 6, hora: '16:00', titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', regra: 'all' },
@@ -830,168 +921,69 @@
     ];
 
     let festas = [];
+    let contatos = [];
     let isAdmin = false;
+    let notificacoesAtivas = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
-    let notificacoesPermitidas = false;
-    let lembretesAtivos = [];
     
     const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const ADMIN_SENHA = "ccb2025";
     const FESTAS_KEY = 'ccb_festas';
-    const LEMBRETES_KEY = 'ccb_lembretes';
+    const CONTATOS_KEY = 'ccb_contatos';
 
     // Inicialização
     function init() {
       carregarFestas();
-      carregarLembretes();
-      verificarPermissaoNotificacao();
+      carregarContatos();
+      verificarNotificacoes();
       aplicarFiltros();
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
-      setInterval(verificarLembretes, 60000);
     }
 
-    // ===== SISTEMA DE NOTIFICAÇÕES CORRIGIDO =====
-    function verificarPermissaoNotificacao() {
+    // ===== SISTEMA DE NOTIFICAÇÕES =====
+    function verificarNotificacoes() {
       if ('Notification' in window) {
         if (Notification.permission === 'granted') {
-          notificacoesPermitidas = true;
-          document.getElementById('notificacaoBanner').style.display = 'none';
-          console.log('Notificações já permitidas');
-        } else if (Notification.permission === 'denied') {
-          document.getElementById('notificacaoBanner').style.display = 'none';
-          console.log('Notificações bloqueadas');
+          notificacoesAtivas = true;
+          document.getElementById('ativarBanner').style.display = 'none';
+          document.getElementById('notificacaoSection').style.display = 'block';
         } else {
-          document.getElementById('notificacaoBanner').style.display = 'flex';
-          console.log('Aguardando permissão');
+          document.getElementById('ativarBanner').style.display = 'flex';
+          document.getElementById('notificacaoSection').style.display = 'none';
         }
-      } else {
-        console.log('Navegador não suporta notificações');
-        document.getElementById('notificacaoBanner').style.display = 'none';
       }
     }
 
-    function solicitarPermissaoNotificacao() {
-      if (!('Notification' in window)) {
-        alert('Seu navegador não suporta notificações');
-        return;
-      }
-
+    function solicitarPermissao() {
       Notification.requestPermission().then(permission => {
-        console.log('Permissão:', permission);
-        
         if (permission === 'granted') {
-          notificacoesPermitidas = true;
-          document.getElementById('notificacaoBanner').style.display = 'none';
+          notificacoesAtivas = true;
+          document.getElementById('ativarBanner').style.display = 'none';
+          document.getElementById('notificacaoSection').style.display = 'block';
           
-          // Enviar notificação de teste
-          const notificacao = new Notification('✅ Notificações ativadas!', {
+          // Notificação de boas-vindas
+          new Notification('✅ Notificações ativadas!', {
             body: 'Agora você receberá lembretes dos cultos.',
-            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-            requireInteraction: false
+            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E'
           });
           
           toast('✅ Notificações ativadas!');
-          
-          // Perguntar se quer lembretes
-          setTimeout(() => {
-            if (confirm('Deseja ativar lembretes para todos os cultos desta semana?')) {
-              criarLembretesSemana();
-            }
-          }, 1000);
-        } else {
-          alert('❌ Você precisa permitir notificações para receber lembretes');
         }
       });
     }
 
-    function testarNotificacao() {
-      if (!('Notification' in window)) {
-        alert('Navegador não suporta notificações');
-        return;
-      }
-
-      if (Notification.permission !== 'granted') {
-        alert('Ative as notificações primeiro!');
-        return;
-      }
-
-      const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
+    function enviarNotificacao(titulo, mensagem) {
+      if (!notificacoesAtivas) return;
       
-      const notificacao = new Notification('🔔 Teste de Notificação', {
-        body: `Se você está vendo isso, as notificações funcionam!\n\n${versiculo}`,
+      new Notification(titulo, {
+        body: mensagem,
         icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-        vibrate: [200, 100, 200],
-        requireInteraction: true
+        vibrate: [200, 100, 200]
       });
-
-      notificacao.onclick = function() {
-        window.focus();
-      };
     }
 
-    function criarLembretesSemana() {
-      lembretesAtivos = [];
-      const semana = getSemana();
-      const hoje = new Date();
-      
-      cultos.forEach(culto => {
-        if (culto.regra !== 'all') {
-          const semanas = culto.regra.replace('nth:', '').split(',').map(Number);
-          if (!semanas.includes(semana)) return;
-        }
-        
-        const dataCulto = new Date();
-        const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
-        dataCulto.setDate(hoje.getDate() + diasAte);
-        const [h, m] = culto.hora.split(':').map(Number);
-        dataCulto.setHours(h, m, 0);
-        
-        lembretesAtivos.push({
-          id: Date.now() + Math.random(),
-          titulo: culto.titulo,
-          local: culto.local,
-          data: dataCulto.toISOString(),
-          minutosAntes: 30,
-          ativo: true
-        });
-      });
-      
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      toast(`✅ ${lembretesAtivos.length} lembretes criados!`);
-    }
-
-    function verificarLembretes() {
-      if (!notificacoesPermitidas) return;
-      
-      const agora = new Date();
-      
-      lembretesAtivos.forEach(lembrete => {
-        if (!lembrete.ativo) return;
-        
-        const dataLembrete = new Date(lembrete.data);
-        const diffMinutos = (dataLembrete - agora) / (1000 * 60);
-        
-        if (Math.abs(diffMinutos - lembrete.minutosAntes) < 0.5) {
-          const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
-          
-          const notificacao = new Notification('🔔 Lembrete de Culto', {
-            body: `${lembrete.titulo} em ${lembrete.local}\nComeça em ${lembrete.minutosAntes} minutos!\n\n${versiculo}`,
-            icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-            vibrate: [200, 100, 200],
-            requireInteraction: true
-          });
-          
-          lembrete.ativo = false;
-        }
-      });
-      
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-    }
-
-    function enviarLembretesManualmente() {
-      if (!isAdmin) return;
-      
+    function enviarLembretes() {
       const semana = getSemana();
       const diaHoje = new Date().getDay();
       
@@ -1007,36 +999,137 @@
       }
       
       const versiculo = '"Porque vale mais um dia nos teus átrios do que em outra parte mil" Salmos 84:10';
-      const lista = cultosHoje.map(c => `${c.hora} - ${c.titulo} (${c.local})`).join('\n');
+      const lista = cultosHoje.map(c => `• ${c.hora} - ${c.titulo} (${c.local})`).join('\n');
       
-      const notificacao = new Notification('📅 Cultos de Hoje', {
-        body: `${lista}\n\n${versiculo}\n\nDeus abençoe.`,
-        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%230f172a\'/%3E%3Ctext x=\'50\' y=\'65\' font-size=\'50\' text-anchor=\'middle\' fill=\'%23ffffff\'%3EC%3C/text%3E%3C/svg%3E',
-        requireInteraction: true
-      });
-      
-      toast('📤 Lembretes enviados');
+      enviarNotificacao('📅 Cultos de Hoje', `${lista}\n\n${versiculo}\n\nDeus abençoe.`);
+      toast('📤 Lembretes enviados!');
     }
 
-    function verLembretesAtivos() {
-      const lista = document.getElementById('lembretesLista');
+    // ===== CONTATOS =====
+    function carregarContatos() {
+      const saved = localStorage.getItem(CONTATOS_KEY);
+      contatos = saved ? JSON.parse(saved) : [];
+      renderizarContatos();
+    }
+
+    function renderizarContatos() {
+      const lista = document.getElementById('contatosLista');
+      const total = contatos.length;
+      const selecionados = contatos.filter(c => c.selecionado !== false).length;
       
-      if (lembretesAtivos.length === 0) {
-        lista.innerHTML = '<div style="text-align:center;padding:20px;">Nenhum lembrete ativo</div>';
+      document.getElementById('totalContatos').textContent = total;
+      document.getElementById('selecionadosContatos').textContent = selecionados;
+      
+      if (total === 0) {
+        lista.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light)">Nenhum contato cadastrado. Clique em "Importar" para adicionar vários de uma vez.</div>';
       } else {
-        lista.innerHTML = lembretesAtivos.map(l => {
-          const data = new Date(l.data);
-          return `
-            <div style="border-bottom:1px solid var(--border); padding:12px;">
-              <strong>${l.titulo}</strong><br>
-              📍 ${l.local}<br>
-              ⏰ ${data.toLocaleString()} (${l.minutosAntes}min antes)
-            </div>
-          `;
-        }).join('');
+        lista.innerHTML = contatos.map((c, index) => `
+          <div class="notificacao-item">
+            <input type="checkbox" ${c.selecionado !== false ? 'checked' : ''} onchange="toggleContato(${index}, this.checked)">
+            <span class="notificacao-numero">${c.numero}</span>
+            <span class="notificacao-nome">${c.nome || 'Sem nome'}</span>
+            <span class="btn-remover" onclick="removerContato(${index})">🗑️</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function toggleContato(index, checked) {
+      contatos[index].selecionado = checked;
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+    }
+
+    function removerContato(index) {
+      if (confirm('Remover este contato?')) {
+        contatos.splice(index, 1);
+        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+        renderizarContatos();
+        toast('✅ Contato removido');
+      }
+    }
+
+    function mostrarModalAdicionar() {
+      document.getElementById('contatoNome').value = '';
+      document.getElementById('contatoNumero').value = '';
+      document.getElementById('contatoModal').style.display = 'flex';
+    }
+
+    function mostrarModalImportar() {
+      document.getElementById('importarTexto').value = '';
+      document.getElementById('importarModal').style.display = 'flex';
+    }
+
+    function salvarContato() {
+      const nome = document.getElementById('contatoNome').value;
+      const numero = document.getElementById('contatoNumero').value.replace(/\D/g, '');
+      
+      if (numero.length < 10 || numero.length > 11) {
+        alert('Número inválido! Digite com DDD (ex: 67999999999)');
+        return;
       }
       
-      document.getElementById('lembretesModal').style.display = 'flex';
+      contatos.push({
+        numero,
+        nome,
+        selecionado: true
+      });
+      
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+      fecharModal('contato');
+      toast('✅ Contato adicionado');
+    }
+
+    function importarContatos() {
+      const texto = document.getElementById('importarTexto').value;
+      const linhas = texto.split('\n').filter(l => l.trim() !== '');
+      
+      let importados = 0;
+      let erros = 0;
+      
+      linhas.forEach(linha => {
+        let [numero, nome] = linha.split(';').map(s => s.trim());
+        numero = numero.replace(/\D/g, '');
+        
+        if (numero.length >= 10 && numero.length <= 11) {
+          contatos.push({
+            numero,
+            nome: nome || '',
+            selecionado: true
+          });
+          importados++;
+        } else {
+          erros++;
+        }
+      });
+      
+      if (importados > 0) {
+        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+        renderizarContatos();
+        toast(`✅ ${importados} contatos importados${erros > 0 ? `, ${erros} erros ignorados` : ''}`);
+      } else {
+        toast('❌ Nenhum contato válido encontrado');
+      }
+      
+      fecharModal('importar');
+    }
+
+    function exportarContatos() {
+      if (contatos.length === 0) {
+        toast('📭 Nenhum contato para exportar');
+        return;
+      }
+      
+      const texto = contatos.map(c => `${c.numero};${c.nome || ''}`).join('\n');
+      const blob = new Blob([texto], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `contatos-ccb-${new Date().toISOString().split('T')[0]}.txt`;
+      a.click();
+      
+      toast('💾 Arquivo exportado');
     }
 
     // ===== FUNÇÕES EXISTENTES =====
@@ -1133,11 +1226,6 @@
       `).join('');
     }
 
-    function carregarLembretes() {
-      const saved = localStorage.getItem(LEMBRETES_KEY);
-      lembretesAtivos = saved ? JSON.parse(saved) : [];
-    }
-
     function atualizarBanner() {
       const agora = new Date();
       const dia = agora.getDay();
@@ -1215,8 +1303,9 @@
 
     function fecharModal(tipo) {
       if (tipo === 'login') document.getElementById('loginModal').style.display = 'none';
+      if (tipo === 'contato') document.getElementById('contatoModal').style.display = 'none';
+      if (tipo === 'importar') document.getElementById('importarModal').style.display = 'none';
       if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
-      if (tipo === 'lembretes') document.getElementById('lembretesModal').style.display = 'none';
     }
 
     function fazerLogin() {
@@ -1226,7 +1315,6 @@
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('novaFestaBtn').style.display = 'inline-block';
         document.getElementById('acoesHeader').style.display = 'table-cell';
-        document.getElementById('adminSection').style.display = 'block';
         fecharModal('login');
         renderizarFestas();
         toast('✅ Modo admin ativado');
@@ -1241,7 +1329,6 @@
       document.getElementById('logoutBtn').style.display = 'none';
       document.getElementById('novaFestaBtn').style.display = 'none';
       document.getElementById('acoesHeader').style.display = 'none';
-      document.getElementById('adminSection').style.display = 'none';
       renderizarFestas();
       toast('🔓 Modo admin desativado');
     }
@@ -1302,6 +1389,10 @@
       renderizarFestas();
       fecharModal('festa');
       toast('✅ Festa adicionada');
+    }
+
+    function editarFesta(id) {
+      toast('✏️ Editar festa');
     }
 
     function excluirFesta(id) {
