@@ -319,48 +319,62 @@
       .notificacao-actions{ justify-content:center; }
       .header-notify{ align-items:flex-start; }
     }
+
+    /* Banner Push no Cabeçalho */
+    .header-push{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(34,197,94,0.35);
+      background: rgba(34,197,94,0.10);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .header-push-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 240px;
+      flex: 1;
+    }
+    .header-push-ico{
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(34,197,94,0.22);
+      border: 1px solid rgba(34,197,94,0.35);
+      font-size: 18px;
+    }
+    .header-push-title{ font-weight: 800; font-size: 14px; }
+    .header-push-sub{ color: var(--text-light); font-size: 12px; margin-top: 2px; }
+    .header-push-actions{ display:flex; gap: 8px; align-items:center; }
+    .header-push-actions .btn{ padding: 8px 14px; }
+
   </style>
-  <!-- PWA (modo APP na Tela de Início) -->
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Agenda CCB">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <!-- OneSignal (Web Push) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    // ===== OneSignal Init =====
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "bae41e89-0fc8-4e28-a8ba-ca1eea7d4626",
+        notifyButton: { enable: false }
+      });
+      // Atualiza UI quando OneSignal carregar
+      atualizarBannerPush();
+    });
+  </script>
 
 </head>
 
 <body>
-  <!-- Splash (quando abrir como APP): “wallpaper” com CCB -->
-  <div id="pwaSplash" style="
-    position: fixed; inset: 0; z-index: 5000;
-    display: flex; align-items: center; justify-content: center;
-    background: #0f172a;
-  ">
-    <div style="
-      width: min(420px, 86vw);
-      border: 2px solid rgba(56,189,248,.55);
-      border-radius: 22px;
-      padding: 28px 22px;
-      text-align: center;
-      background: rgba(15,23,42,.55);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.35);
-    ">
-      <div style="
-        width: 86px; height: 86px; margin: 0 auto 16px;
-        border-radius: 22px;
-        background: rgba(56,189,248,.12);
-        border: 1px solid rgba(56,189,248,.35);
-        display:flex; align-items:center; justify-content:center;
-        font-weight: 900; font-size: 40px; color: #fff;
-        letter-spacing: 1px;
-      ">CCB</div>
-      <div style="font-size: 18px; font-weight: 800; color: #e5e7eb;">Agenda CCB</div>
-      <div style="margin-top: 6px; font-size: 13px; color: #94a3b8;">Amambai - MS</div>
-    </div>
-  </div>
-
   <div class="container">
     <!-- Header -->
     <div class="header">
@@ -383,6 +397,7 @@
           <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
           <span class="chip" id="notifyAdminBtn" onclick="mostrarModalAviso()" style="display:none">📣 Aviso</span>
           <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
+          <span class="chip" id="adminPushBtn" onclick="adminEnviarPush()" style="display:none">📣 Notificar</span>
         </div>
       </div>
 
@@ -451,6 +466,21 @@
         <div class="notificacao-stats">
           <span id="totalContatos">0</span> contatos cadastrados |
           <span id="selecionadosContatos">0</span> selecionados
+        </div>
+      </div>
+
+      <!-- Banner Push no Cabeçalho -->
+      <div class="header-push" id="headerPush" style="display:none">
+        <div class="header-push-left">
+          <span class="header-push-ico" aria-hidden="true">🔔</span>
+          <div class="header-push-text">
+            <div class="header-push-title" id="headerPushTitle">Ative as notificações</div>
+            <div class="header-push-sub" id="headerPushSub">Receba lembretes automáticos antes dos cultos.</div>
+          </div>
+        </div>
+        <div class="header-push-actions">
+          <button class="btn btn-success" id="headerPushBtn" onclick="pedirPush()">Ativar</button>
+          <button class="btn" id="headerPushClose" onclick="fecharBannerPush()">✕</button>
         </div>
       </div>
     </div>
@@ -1225,6 +1255,7 @@
         isAdmin = true;
         document.getElementById('adminBtn').style.display = 'none';
         document.getElementById('logoutBtn').style.display = 'inline-block';
+        document.getElementById('adminPushBtn').style.display = 'inline-flex';
         document.getElementById('notifyAdminBtn').style.display = 'inline-block';
         document.getElementById('novaFestaBtn').style.display = 'inline-block';
         document.getElementById('acoesHeader').style.display = 'table-cell';
@@ -1240,6 +1271,7 @@
       isAdmin = false;
       document.getElementById('adminBtn').style.display = 'inline-block';
       document.getElementById('logoutBtn').style.display = 'none';
+      document.getElementById('adminPushBtn').style.display = 'none';
       document.getElementById('notifyAdminBtn').style.display = 'none';
       document.getElementById('novaFestaBtn').style.display = 'none';
       document.getElementById('acoesHeader').style.display = 'none';
@@ -1315,24 +1347,109 @@
       setTimeout(() => t.style.display = 'none', 3000);
     }
 
-    init();
-      // ===== PWA (modo APP) =====
-    (function(){
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").catch(()=>{});
-        });
-      }
-      // Esconde o “wallpaper” após carregar
-      window.addEventListener("load", () => {
-        const s = document.getElementById("pwaSplash");
-        if (!s) return;
-        s.style.transition = "opacity .25s ease";
-        s.style.opacity = "0";
-        setTimeout(()=>{ s.remove(); }, 260);
-      });
-    })();
+    // ===== OneSignal UI Helpers =====
+    const PUSH_BANNER_HIDE_KEY = "ccb_push_banner_hide";
+    const MAKE_WEBHOOK_URL = ""; // <-- COLE AQUI a URL do seu Webhook do Make (Integromat)
 
-</script>
+    function fecharBannerPush(){
+      localStorage.setItem(PUSH_BANNER_HIDE_KEY, "1");
+      const el = document.getElementById("headerPush");
+      if (el) el.style.display = "none";
+    }
+
+    async function pedirPush(){
+      if (!window.OneSignalDeferred) {
+        alert("OneSignal ainda está carregando. Tente novamente em alguns segundos.");
+        return;
+      }
+      OneSignalDeferred.push(async function(OneSignal) {
+        try{
+          // Preferir Slidedown se existir
+          if (OneSignal.Slidedown && OneSignal.Slidedown.promptPush) {
+            await OneSignal.Slidedown.promptPush();
+          } else if (OneSignal.Notifications && OneSignal.Notifications.requestPermission) {
+            await OneSignal.Notifications.requestPermission();
+          } else {
+            // fallback: tentar API nativa
+            if ('Notification' in window) await Notification.requestPermission();
+          }
+        } catch(e){
+          console.warn(e);
+        }
+        atualizarBannerPush();
+      });
+    }
+
+    function atualizarBannerPush(){
+      const hide = localStorage.getItem(PUSH_BANNER_HIDE_KEY) === "1";
+      const el = document.getElementById("headerPush");
+      if (!el) return;
+
+      if (hide) { el.style.display = "none"; return; }
+
+      // Se o navegador nem suporta
+      if (!("Notification" in window)) {
+        el.style.display = "none";
+        return;
+      }
+
+      // Estado padrão
+      el.style.display = "flex";
+      const title = document.getElementById("headerPushTitle");
+      const sub = document.getElementById("headerPushSub");
+      const btn = document.getElementById("headerPushBtn");
+
+      const perm = Notification.permission;
+      if (perm === "granted"){
+        // Permissão ok — esconder banner e também o banner grande antigo
+        el.style.display = "none";
+        const old = document.getElementById("ativarBanner");
+        if (old) old.style.display = "none";
+        const sec = document.getElementById("notificacaoSection");
+        if (sec) sec.style.display = "block";
+        return;
+      }
+      if (perm === "denied"){
+        title.textContent = "Notificações bloqueadas";
+        sub.textContent = "Ative nas configurações do navegador para receber lembretes.";
+        btn.textContent = "Entendi";
+        btn.onclick = fecharBannerPush;
+        return;
+      }
+      // default
+      title.textContent = "Ative as notificações";
+      sub.textContent = "Receba lembretes automáticos antes dos cultos.";
+      btn.textContent = "Ativar";
+      btn.onclick = pedirPush;
+    }
+
+    // ===== Admin: Enviar push manual (via Make) =====
+    async function adminEnviarPush(){
+      if (!isAdmin) return alert("Somente Admin.");
+      if (!MAKE_WEBHOOK_URL) {
+        alert("Falta configurar o MAKE_WEBHOOK_URL no código (cole a URL do Webhook do Make).");
+        return;
+      }
+      const titulo = prompt("Título da notificação:", "📢 Aviso CCB");
+      if (!titulo) return;
+      const msg = prompt("Mensagem:", "Deus abençoe. Hoje teremos culto às 19:30.");
+      if (!msg) return;
+
+      try{
+        await fetch(MAKE_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: titulo, message: msg, url: location.href })
+        });
+        toast("✅ Enviado para o OneSignal!");
+      } catch(e){
+        console.warn(e);
+        alert("Falha ao enviar. Verifique o Webhook do Make.");
+      }
+    }
+
+
+    init();
+  </script>
 </body>
 </html>

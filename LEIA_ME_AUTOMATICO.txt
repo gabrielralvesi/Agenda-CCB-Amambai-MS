@@ -1,0 +1,49 @@
+COMO DEIXAR AUTOMÁTICO (conforme agenda) — OneSignal + Make
+
+Por que precisa do Make?
+• GitHub Pages não roda tarefas agendadas.
+• O Make roda a cada 5 min e dispara a notificação via OneSignal para TODOS inscritos.
+
+PASSO A PASSO
+
+1) Suba estes arquivos no seu repositório do GitHub Pages:
+• index.html (este arquivo pronto)
+• OneSignalSDKWorker.js (na mesma pasta do index)
+• agenda.json (na mesma pasta do index)
+
+2) OneSignal (Dashboard)
+• Em Web > Advanced Push Settings:
+  - Ative "Customize service worker paths and filenames"
+  - Path: /Agenda-CCB-Amambai-MS/
+  - Filename: OneSignalSDKWorker.js
+  - Scope: /Agenda-CCB-Amambai-MS/
+
+3) Make (Integromat) — cenário
+3.1 Scheduler: Every 5 minutes
+3.2 HTTP GET: https://gabrielralvesi.github.io/Agenda-CCB-Amambai-MS/agenda.json
+3.3 Code (JS): calcular quais cultos são HOJE e se faltam 60min ou 30min
+3.4 Anti-duplicação: Data Store (chave: AAAA-MM-DD + id + janela)
+3.5 HTTP POST: enviar para OneSignal
+
+Enviar para OneSignal (REST):
+POST https://onesignal.com/api/v1/notifications
+Headers:
+  Authorization: Basic SEU_REST_API_KEY
+  Content-Type: application/json
+Body:
+{
+  "app_id": "SEU_APP_ID",
+  "included_segments": ["Subscribed Users"],
+  "headings": {"pt": "🔔 Lembrete: Culto"},
+  "contents": {"pt": "Falta 30 min • 19:30\n📍 Central Amambai"},
+  "url": "https://gabrielralvesi.github.io/Agenda-CCB-Amambai-MS/"
+}
+
+4) Botão Admin “📣 Notificar”
+• No index.html, cole a URL do Webhook do Make em:
+  const MAKE_WEBHOOK_URL = "COLE_AQUI";
+
+Pronto: Admin manda manualmente + Make envia automaticamente.
+
+Observação iPhone:
+• Precisa “Adicionar à Tela de Início” e permitir notificações no modo app.
