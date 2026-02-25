@@ -6,7 +6,7 @@
   <title>Agenda CCB — Amambai</title>
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Manifest para PWA (necessário para notificações) -->
+  <!-- Manifest para PWA -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Agenda%20CCB%22%2C%22short_name%22%3A%22CCB%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22background_color%22%3A%22%230b1220%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%3EC%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image/svg+xml%22%7D%5D%7D">
   
   <style>
@@ -28,6 +28,16 @@
       --border: rgba(148, 163, 184, 0.22);
       --glass: rgba(15, 23, 42, 0.55);
       --radius: 18px;
+      --font-size-base: 14px;
+      --font-size-title: 16px;
+      --font-size-small: 12px;
+    }
+
+    /* Modo idoso - fonte aumentada */
+    [data-font-size="grande"] {
+      --font-size-base: 18px;
+      --font-size-title: 22px;
+      --font-size-small: 16px;
     }
 
     [data-theme="light"] {
@@ -45,6 +55,8 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      font-size: var(--font-size-base);
+      transition: font-size 0.2s;
     }
 
     .container {
@@ -83,6 +95,10 @@
       height: 34px;
     }
 
+    .logo h2 {
+      font-size: var(--font-size-title);
+    }
+
     .actions {
       display: flex;
       gap: 8px;
@@ -90,12 +106,12 @@
     }
 
     .btn {
-      padding: 8px 12px;
+      padding: 8px 16px;
       border: 1px solid var(--border);
       background: var(--glass);
       color: var(--text);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: var(--font-size-small);
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
@@ -124,6 +140,84 @@
       border: none;
     }
 
+    /* Botão de acessibilidade */
+    .btn-acessibilidade {
+      background: #8b5cf6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: var(--font-size-small);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-acessibilidade:hover {
+      background: #7c3aed;
+    }
+
+    /* Botão de notificação em destaque */
+    .btn-notificacao-destaque {
+      background: linear-gradient(135deg, var(--accent), var(--success));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: var(--font-size-base);
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .btn-notificacao-destaque:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-notificacao-destaque:active {
+      transform: scale(0.95);
+    }
+
+    /* Banner de notificação */
+    .notificacao-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(34, 197, 94, 0.2));
+      border: 2px solid var(--success);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .notificacao-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .notificacao-icone {
+      font-size: 32px;
+    }
+
+    .notificacao-texto h3 {
+      font-size: var(--font-size-title);
+      margin-bottom: 4px;
+    }
+
+    .notificacao-texto p {
+      font-size: var(--font-size-small);
+      color: var(--text-light);
+    }
+
     /* Banner */
     .banner {
       background: rgba(56, 189, 248, 0.1);
@@ -139,13 +233,13 @@
     }
 
     .banner-info h2 {
-      font-size: 16px;
+      font-size: var(--font-size-title);
       margin-bottom: 4px;
     }
 
     .banner-info p {
       color: var(--text-light);
-      font-size: 13px;
+      font-size: var(--font-size-small);
     }
 
     .banner-stats {
@@ -159,32 +253,8 @@
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: var(--font-size-small);
       font-weight: 600;
-    }
-
-    /* Notificação Banner */
-    .notificacao-banner {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(34, 197, 94, 0.2));
-      border: 1px solid var(--success);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .notificacao-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .notificacao-icone {
-      font-size: 24px;
     }
 
     /* Filtros */
@@ -212,8 +282,12 @@
       background: none;
       border: none;
       color: var(--text);
-      font-size: 13px;
+      font-size: var(--font-size-base);
       outline: none;
+    }
+
+    .search-box input::placeholder {
+      font-size: var(--font-size-small);
     }
 
     .filter-group {
@@ -232,7 +306,7 @@
       background: transparent;
       color: var(--text-light);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: var(--font-size-small);
       cursor: pointer;
       transition: 0.2s;
     }
@@ -263,7 +337,7 @@
     }
 
     .result-count {
-      font-size: 12px;
+      font-size: var(--font-size-small);
       color: var(--text-light);
       margin-left: 8px;
     }
@@ -286,6 +360,10 @@
       gap: 10px;
     }
 
+    .admin-header h3 {
+      font-size: var(--font-size-title);
+    }
+
     .admin-actions {
       display: flex;
       gap: 8px;
@@ -303,51 +381,19 @@
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid var(--accent);
       border-radius: 12px;
-      padding: 12px;
+      padding: 16px;
       text-align: center;
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
       color: var(--accent);
     }
 
     .stat-label {
-      font-size: 12px;
+      font-size: var(--font-size-small);
       color: var(--text-light);
-    }
-
-    .lembrete-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      margin: 8px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .lembrete-info {
-      flex: 1;
-    }
-
-    .lembrete-titulo {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .lembrete-detalhes {
-      font-size: 12px;
-      color: var(--text-light);
-    }
-
-    .lembrete-actions {
-      display: flex;
-      gap: 8px;
     }
 
     /* Cards de dia */
@@ -355,7 +401,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--glass);
-      margin: 12px 0;
+      margin: 16px 0;
       overflow: hidden;
     }
 
@@ -365,7 +411,7 @@
     }
 
     .day-header {
-      padding: 12px 16px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -374,15 +420,15 @@
 
     .day-name {
       font-weight: 700;
-      font-size: 15px;
+      font-size: var(--font-size-title);
     }
 
     .day-badge {
-      padding: 4px 10px;
+      padding: 4px 12px;
       background: var(--glass);
       border: 1px solid var(--border);
       border-radius: 999px;
-      font-size: 11px;
+      font-size: var(--font-size-small);
     }
 
     .day-badge.today {
@@ -392,14 +438,14 @@
     }
 
     .events {
-      padding: 12px;
+      padding: 16px;
     }
 
     .event {
-      padding: 12px;
+      padding: 16px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       background: rgba(0, 0, 0, 0.2);
       display: flex;
       justify-content: space-between;
@@ -409,13 +455,13 @@
 
     .event-title {
       font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 4px;
+      font-size: var(--font-size-base);
+      margin-bottom: 6px;
     }
 
     .event-place {
       color: var(--text-light);
-      font-size: 12px;
+      font-size: var(--font-size-small);
     }
 
     .event-tag {
@@ -423,39 +469,33 @@
       padding: 2px 8px;
       background: rgba(56, 189, 248, 0.2);
       border-radius: 999px;
-      font-size: 10px;
+      font-size: calc(var(--font-size-small) - 2px);
       margin-left: 6px;
     }
 
     .event-time {
-      padding: 6px 12px;
+      padding: 8px 16px;
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 999px;
-      font-size: 12px;
+      font-size: var(--font-size-small);
       font-weight: 600;
       white-space: nowrap;
     }
 
-    /* Botão lembrete no evento */
     .btn-lembrete {
-      padding: 4px 8px;
+      padding: 6px 12px;
       background: transparent;
       border: 1px solid var(--success);
       color: var(--success);
       border-radius: 6px;
-      font-size: 11px;
+      font-size: var(--font-size-small);
       cursor: pointer;
-      margin-left: 8px;
+      margin-top: 8px;
       transition: 0.2s;
     }
 
     .btn-lembrete:hover {
-      background: var(--success);
-      color: white;
-    }
-
-    .btn-lembrete.ativo {
       background: var(--success);
       color: white;
     }
@@ -478,31 +518,38 @@
       gap: 10px;
     }
 
+    .festas-header h3 {
+      font-size: var(--font-size-title);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: var(--font-size-small);
     }
 
     th {
       text-align: left;
-      padding: 10px;
+      padding: 12px;
       background: rgba(0, 0, 0, 0.3);
       color: var(--text-light);
+      font-size: var(--font-size-small);
     }
 
     td {
-      padding: 10px;
+      padding: 12px;
       border-bottom: 1px solid var(--border);
+      font-size: var(--font-size-small);
     }
 
     .action-btn {
-      padding: 4px 8px;
+      padding: 6px 12px;
       border: 1px solid var(--border);
       background: transparent;
       border-radius: 6px;
       cursor: pointer;
-      margin: 0 2px;
+      margin: 0 4px;
+      font-size: var(--font-size-small);
     }
 
     /* FAB */
@@ -519,6 +566,7 @@
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
       z-index: 100;
+      font-size: var(--font-size-base);
     }
 
     /* Modal */
@@ -539,28 +587,34 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 24px;
       max-width: 500px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
     }
 
+    .modal-content h3 {
+      font-size: var(--font-size-title);
+      margin-bottom: 16px;
+    }
+
     .modal-content input,
     .modal-content select,
     .modal-content textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 8px 0;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--glass);
       color: var(--text);
+      font-size: var(--font-size-base);
     }
 
     .modal-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: flex-end;
       margin-top: 20px;
       flex-wrap: wrap;
@@ -573,10 +627,11 @@
       transform: translateX(-50%);
       background: var(--card);
       border-left: 4px solid var(--success);
-      padding: 12px 24px;
+      padding: 16px 24px;
       border-radius: 8px;
       display: none;
       z-index: 1000;
+      font-size: var(--font-size-base);
     }
 
     /* Switch */
@@ -630,6 +685,7 @@
       .fab span { display: none; }
       .fab { padding: 12px; border-radius: 50%; }
       .filters { flex-direction: column; }
+      .btn-notificacao-destaque { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -652,6 +708,10 @@
           </div>
         </div>
         <div class="actions">
+          <!-- Botão de acessibilidade para idosos -->
+          <button class="btn-acessibilidade" onclick="toggleFonteGrande()">
+            <span>🔍</span> <span>A+</span>
+          </button>
           <span class="chip" id="themeBtn" onclick="toggleTheme()">🌓 Tema</span>
           <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
           <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
@@ -671,16 +731,18 @@
         </div>
       </div>
 
-      <!-- Banner de Permissão de Notificações (para todos) -->
+      <!-- Banner de Notificação em DESTAQUE -->
       <div class="notificacao-banner" id="notificacaoBanner" style="display: none;">
         <div class="notificacao-info">
           <span class="notificacao-icone">🔔</span>
-          <div>
-            <strong>Receba lembretes dos cultos!</strong>
-            <p style="font-size: 12px; color: var(--text-light);">Ative as notificações para ser avisado antes dos cultos</p>
+          <div class="notificacao-texto">
+            <h3>Não perca nenhum culto!</h3>
+            <p>Ative as notificações e receba lembretes antes dos cultos</p>
           </div>
         </div>
-        <button class="btn btn-success" onclick="solicitarPermissaoNotificacao()">🔔 Ativar lembretes</button>
+        <button class="btn-notificacao-destaque" onclick="solicitarPermissaoNotificacao()">
+          <span>🔔</span> <span>ATIVAR NOTIFICAÇÕES</span>
+        </button>
       </div>
 
       <!-- Filtros -->
@@ -709,7 +771,7 @@
       </div>
     </div>
 
-    <!-- Seção Admin (visível apenas para admin) -->
+    <!-- Seção Admin -->
     <div class="admin-section" id="adminSection" style="display: none;">
       <div class="admin-header">
         <h3>⚙️ Painel Admin - Lembretes</h3>
@@ -761,11 +823,6 @@
             <span>2 horas antes</span>
           </span>
         </label>
-      </div>
-
-      <!-- Lista de lembretes ativos -->
-      <div id="lembretesAtivos" style="margin-top: 16px;">
-        <!-- Será preenchido via JavaScript -->
       </div>
     </div>
 
@@ -835,9 +892,7 @@
   <div id="lembretesModal" class="modal" style="display:none">
     <div class="modal-content">
       <h3>📋 Lembretes Agendados</h3>
-      <div id="lembretesLista" style="margin: 16px 0; max-height: 300px; overflow-y: auto;">
-        <!-- Lista será inserida aqui -->
-      </div>
+      <div id="lembretesLista" style="margin: 16px 0; max-height: 300px; overflow-y: auto;"></div>
       <div class="modal-actions">
         <button class="btn btn-danger" onclick="cancelarTodosLembretes()">Cancelar todos</button>
         <button class="btn" onclick="fecharModal('lembretes')">Fechar</button>
@@ -846,9 +901,8 @@
   </div>
 
   <script>
-    // Dados
+    // Dados dos cultos
     const cultos = [
-      // Domingo
       { id: 'dom1', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Central Amambai', regra: 'all' },
       { id: 'dom2', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Vila Cristina', regra: 'all' },
       { id: 'dom3', dia: 0, hora: '15:00', titulo: 'Culto Oficial', local: 'Aldeia Amambai Central', regra: 'all' },
@@ -858,28 +912,16 @@
       { id: 'dom7', dia: 0, hora: '19:00', titulo: 'Culto com Recitativos', local: 'Vila Glória', regra: 'all' },
       { id: 'dom8', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
       { id: 'dom9', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Vila Cristina', regra: 'all' },
-      
-      // Segunda
       { id: 'seg1', dia: 1, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Vila Limeira', regra: 'all' },
-      
-      // Terça
       { id: 'ter1', dia: 2, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Glória', regra: 'all' },
-      
-      // Quarta
       { id: 'qua1', dia: 3, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
-      
-      // Quinta
       { id: 'qui1', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Limeira', regra: 'all' },
       { id: 'qui2', dia: 4, hora: '19:30', titulo: 'Culto com Ensaio', local: 'Vila Limeira', regra: 'nth:2' },
       { id: 'qui3', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', regra: 'all' },
       { id: 'qui4', dia: 4, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', regra: 'nth:3' },
-      
-      // Sexta
       { id: 'sex1', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Central Amambai', regra: 'nth:1' },
       { id: 'sex2', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Cristina', regra: 'nth:3' },
       { id: 'sex3', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Glória', regra: 'nth:4' },
-      
-      // Sábado
       { id: 'sab1', dia: 6, hora: '09:00', titulo: 'Evangelização', local: 'Presídio', regra: 'all' },
       { id: 'sab2', dia: 6, hora: '15:00', titulo: 'Evangelização', local: 'Lar do Idoso', regra: 'nth:2,4' },
       { id: 'sab3', dia: 6, hora: '16:00', titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', regra: 'all' },
@@ -890,8 +932,6 @@
     let festas = [];
     let isAdmin = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
-    
-    // Sistema de notificações
     let notificacoesPermitidas = false;
     let usuariosNotificacao = [];
     let lembretesAtivos = [];
@@ -901,17 +941,33 @@
     const FESTAS_KEY = 'ccb_festas';
     const NOTIFICACOES_KEY = 'ccb_notificacoes';
     const LEMBRETES_KEY = 'ccb_lembretes';
+    const FONTE_KEY = 'ccb_fonte';
 
     // Inicialização
     function init() {
+      carregarFonte();
       carregarFestas();
       carregarNotificacoes();
       carregarLembretes();
       aplicarFiltros();
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
-      setInterval(verificarLembretes, 60000); // Verificar a cada minuto
+      setInterval(verificarLembretes, 60000);
       verificarPermissaoNotificacao();
+    }
+
+    // ===== FUNÇÕES DE ACESSIBILIDADE =====
+    function toggleFonteGrande() {
+      const atual = document.documentElement.getAttribute('data-font-size') || 'normal';
+      const nova = atual === 'normal' ? 'grande' : 'normal';
+      document.documentElement.setAttribute('data-font-size', nova);
+      localStorage.setItem(FONTE_KEY, nova);
+      toast(nova === 'grande' ? '🔍 Fonte aumentada' : '🔍 Fonte normal');
+    }
+
+    function carregarFonte() {
+      const saved = localStorage.getItem(FONTE_KEY) || 'normal';
+      document.documentElement.setAttribute('data-font-size', saved);
     }
 
     // ===== SISTEMA DE NOTIFICAÇÕES =====
@@ -935,7 +991,6 @@
             notificacoesPermitidas = true;
             document.getElementById('notificacaoBanner').style.display = 'none';
             
-            // Gerar ID único para este usuário
             const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             usuariosNotificacao.push({
               id: userId,
@@ -944,34 +999,31 @@
             localStorage.setItem(NOTIFICACOES_KEY, JSON.stringify(usuariosNotificacao));
             
             toast('✅ Notificações ativadas! Agora você receberá lembretes dos cultos.');
-            
-            // Mostrar opções de lembrete para o usuário
-            mostrarOpcoesLembrete();
+            setTimeout(() => criarLembretesPadrao(), 1000);
           }
         });
       }
     }
 
-    function mostrarOpcoesLembrete() {
-      const opcoes = confirm('Deseja ser lembrado dos cultos?\n\nOK = 30 minutos antes\nCancelar = escolher depois');
-      if (opcoes) {
-        // Criar lembretes para todos os cultos recorrentes
-        criarLembretesParaUsuario();
+    function criarLembretesPadrao() {
+      const minutos = prompt('Deseja ser lembrado com quantos minutos de antecedência?\n(30, 60 ou 120)', '30');
+      if (!minutos) return;
+      
+      const minutosInt = parseInt(minutos);
+      if (![30, 60, 120].includes(minutosInt)) {
+        toast('❌ Valor inválido. Use 30, 60 ou 120');
+        return;
       }
-    }
-
-    function criarLembretesParaUsuario() {
+      
       const semana = getSemana();
       const hoje = new Date();
       
       cultos.forEach(culto => {
-        // Verificar se o culto acontece esta semana
         if (culto.regra !== 'all') {
           const semanas = culto.regra.replace('nth:', '').split(',').map(Number);
           if (!semanas.includes(semana)) return;
         }
         
-        // Criar data do próximo culto
         const dataCulto = new Date();
         const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
         dataCulto.setDate(hoje.getDate() + diasAte);
@@ -983,13 +1035,51 @@
           titulo: culto.titulo,
           local: culto.local,
           data: dataCulto.toISOString(),
-          minutosAntes: 30,
+          minutosAntes: minutosInt,
           ativo: true
         });
       });
       
       localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      toast('✅ Lembretes criados para esta semana!');
+      toast(`✅ Lembretes criados para ${lembretesAtivos.length} cultos!`);
+    }
+
+    function adicionarLembrete(cultoId) {
+      if (!notificacoesPermitidas) {
+        solicitarPermissaoNotificacao();
+        return;
+      }
+      
+      const culto = cultos.find(c => c.id === cultoId);
+      if (!culto) return;
+      
+      const minutos = prompt('Quantos minutos antes deseja ser lembrado? (30, 60, 120)', '30');
+      if (!minutos) return;
+      
+      const minutosInt = parseInt(minutos);
+      if (![30, 60, 120].includes(minutosInt)) {
+        toast('❌ Valor inválido. Use 30, 60 ou 120');
+        return;
+      }
+      
+      const hoje = new Date();
+      const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
+      const dataCulto = new Date();
+      dataCulto.setDate(hoje.getDate() + diasAte);
+      const [h, m] = culto.hora.split(':').map(Number);
+      dataCulto.setHours(h, m, 0);
+      
+      lembretesAtivos.push({
+        id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+        titulo: culto.titulo,
+        local: culto.local,
+        data: dataCulto.toISOString(),
+        minutosAntes: minutosInt,
+        ativo: true
+      });
+      
+      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
+      toast(`✅ Lembrete criado para ${minutosInt} minutos antes`);
     }
 
     function verificarLembretes() {
@@ -1003,10 +1093,9 @@
         const dataLembrete = new Date(lembrete.data);
         const diffMinutos = (dataLembrete - agora) / (1000 * 60);
         
-        // Se faltam exatamente os minutos configurados
         if (Math.abs(diffMinutos - lembrete.minutosAntes) < 0.5) {
           enviarNotificacao(lembrete);
-          lembrete.ativo = false; // Desativar após enviar
+          lembrete.ativo = false;
         }
       });
       
@@ -1032,7 +1121,7 @@
       };
     }
 
-    // ===== FUNÇÕES ADMIN PARA LEMBRETES =====
+    // ===== FUNÇÕES ADMIN =====
     function enviarLembretesManualmente() {
       if (!isAdmin) return;
       
@@ -1067,7 +1156,6 @@
     function agendarLembretes() {
       if (!isAdmin) return;
       
-      // Limpar lembretes antigos
       lembretesAtivos = [];
       
       const minutos = [];
@@ -1083,7 +1171,6 @@
       const semana = getSemana();
       const hoje = new Date();
       
-      // Criar lembretes para a semana inteira
       for (let dia = 0; dia < 7; dia++) {
         const cultosDia = cultos.filter(c => c.dia === dia).filter(c => {
           if (c.regra === 'all') return true;
@@ -1100,7 +1187,7 @@
           
           minutos.forEach(min => {
             lembretesAtivos.push({
-              id: `lembrete_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+              id: `admin_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
               titulo: culto.titulo,
               local: culto.local,
               data: dataCulto.toISOString(),
@@ -1129,18 +1216,14 @@
           const dataLembrete = new Date(data.getTime() - (l.minutosAntes * 60000));
           
           return `
-            <div class="lembrete-item">
-              <div class="lembrete-info">
-                <div class="lembrete-titulo">${l.titulo}</div>
-                <div class="lembrete-detalhes">
-                  📍 ${l.local}<br>
-                  ⏰ Culto: ${data.toLocaleString()}<br>
-                  🔔 Lembrete: ${dataLembrete.toLocaleString()} (${l.minutosAntes}min antes)
-                </div>
+            <div style="border-bottom:1px solid var(--border); padding:12px;">
+              <div><strong>${l.titulo}</strong></div>
+              <div style="font-size:12px; color:var(--text-light);">
+                📍 ${l.local}<br>
+                ⏰ Culto: ${data.toLocaleString()}<br>
+                🔔 Lembrete: ${dataLembrete.toLocaleString()} (${l.minutosAntes}min antes)
               </div>
-              <div class="lembrete-actions">
-                <button class="btn btn-danger" onclick="cancelarLembrete('${l.id}')">Cancelar</button>
-              </div>
+              <button class="btn btn-danger" style="margin-top:8px;" onclick="cancelarLembrete('${l.id}')">Cancelar</button>
             </div>
           `;
         }).join('');
@@ -1168,6 +1251,7 @@
     }
 
     function atualizarStats() {
+      if (!isAdmin) return;
       document.getElementById('totalUsuarios').textContent = usuariosNotificacao.length;
       document.getElementById('totalLembretes').textContent = lembretesAtivos.length;
       
@@ -1253,55 +1337,6 @@
       atualizarBanner();
     }
 
-    function adicionarLembrete(cultoId) {
-      if (!notificacoesPermitidas) {
-        solicitarPermissaoNotificacao();
-        return;
-      }
-      
-      const culto = cultos.find(c => c.id === cultoId);
-      if (!culto) return;
-      
-      const minutos = prompt('Quantos minutos antes deseja ser lembrado? (30, 60, 120)', '30');
-      if (!minutos) return;
-      
-      const minutosInt = parseInt(minutos);
-      if (isNaN(minutosInt) || minutosInt < 1) {
-        toast('❌ Valor inválido');
-        return;
-      }
-      
-      const hoje = new Date();
-      const diasAte = (culto.dia - hoje.getDay() + 7) % 7;
-      const dataCulto = new Date();
-      dataCulto.setDate(hoje.getDate() + diasAte);
-      const [h, m] = culto.hora.split(':').map(Number);
-      dataCulto.setHours(h, m, 0);
-      
-      lembretesAtivos.push({
-        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
-        titulo: culto.titulo,
-        local: culto.local,
-        data: dataCulto.toISOString(),
-        minutosAntes: minutosInt,
-        ativo: true
-      });
-      
-      localStorage.setItem(LEMBRETES_KEY, JSON.stringify(lembretesAtivos));
-      toast(`✅ Lembrete criado para ${minutosInt} minutos antes`);
-    }
-
-    function carregarNotificacoes() {
-      const saved = localStorage.getItem(NOTIFICACOES_KEY);
-      usuariosNotificacao = saved ? JSON.parse(saved) : [];
-    }
-
-    function carregarLembretes() {
-      const saved = localStorage.getItem(LEMBRETES_KEY);
-      lembretesAtivos = saved ? JSON.parse(saved) : [];
-    }
-
-    // ===== FUNÇÕES EXISTENTES (mantidas) =====
     function carregarFestas() {
       const saved = localStorage.getItem(FESTAS_KEY);
       festas = saved ? JSON.parse(saved) : [
@@ -1330,7 +1365,16 @@
       `).join('');
     }
 
-    // ===== BANNER =====
+    function carregarNotificacoes() {
+      const saved = localStorage.getItem(NOTIFICACOES_KEY);
+      usuariosNotificacao = saved ? JSON.parse(saved) : [];
+    }
+
+    function carregarLembretes() {
+      const saved = localStorage.getItem(LEMBRETES_KEY);
+      lembretesAtivos = saved ? JSON.parse(saved) : [];
+    }
+
     function atualizarBanner() {
       const agora = new Date();
       const dia = agora.getDay();
@@ -1372,7 +1416,6 @@
       atualizarBanner();
     }
 
-    // ===== FILTROS =====
     function setFilter(tipo) {
       filtros.periodo = tipo;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1403,7 +1446,6 @@
       document.getElementById(`dia-${new Date().getDay()}`).scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ===== ADMIN =====
     function mostrarLogin() {
       document.getElementById('loginModal').style.display = 'flex';
     }
@@ -1442,24 +1484,18 @@
       toast('🔓 Modo admin desativado');
     }
 
-    // ===== CRUD FESTAS =====
-    function mostrarModalFesta(festa = null) {
+    function mostrarModalFesta() {
       if (!isAdmin) return;
+      document.getElementById('modalTitle').textContent = 'Nova Festa';
+      document.getElementById('festaTipo').value = 'culto-mocidade';
+      document.getElementById('festaTitulo').value = '';
       
-      if (festa) {
-        document.getElementById('modalTitle').textContent = 'Editar Festa';
-      } else {
-        document.getElementById('modalTitle').textContent = 'Nova Festa';
-        document.getElementById('festaTipo').value = 'culto-mocidade';
-        document.getElementById('festaTitulo').value = '';
-        
-        const hoje = new Date();
-        hoje.setDate(hoje.getDate() + 7);
-        document.getElementById('festaData').value = hoje.toISOString().split('T')[0];
-        document.getElementById('festaHora').value = '19:30';
-        document.getElementById('festaLocal').value = '';
-        document.getElementById('festaIrmao').value = '';
-      }
+      const hoje = new Date();
+      hoje.setDate(hoje.getDate() + 7);
+      document.getElementById('festaData').value = hoje.toISOString().split('T')[0];
+      document.getElementById('festaHora').value = '19:30';
+      document.getElementById('festaLocal').value = '';
+      document.getElementById('festaIrmao').value = '';
       
       document.getElementById('festaModal').style.display = 'flex';
     }
@@ -1515,14 +1551,12 @@
       }
     }
 
-    // ===== TEMA =====
     function toggleTheme() {
       const atual = document.documentElement.getAttribute('data-theme') || 'dark';
       document.documentElement.setAttribute('data-theme', atual === 'dark' ? 'light' : 'dark');
       localStorage.setItem('ccb_theme', atual === 'dark' ? 'light' : 'dark');
     }
 
-    // ===== TOAST =====
     function toast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -1530,7 +1564,6 @@
       setTimeout(() => t.style.display = 'none', 3000);
     }
 
-    // Iniciar
     init();
   </script>
 </body>
