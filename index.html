@@ -19,6 +19,7 @@
       --text-light: #94a3b8;
       --accent: #38bdf8;
       --success: #22c55e;
+      --warning: #f59e0b;
       --border: rgba(148, 163, 184, 0.22);
       --glass: rgba(15, 23, 42, 0.55);
       --radius: 18px;
@@ -102,6 +103,12 @@
 
     .btn-success {
       background: var(--success);
+      color: white;
+      border: none;
+    }
+
+    .btn-warning {
+      background: var(--warning);
       color: white;
       border: none;
     }
@@ -226,6 +233,83 @@
       margin-left: 8px;
     }
 
+    /* Lista de contatos */
+    .contatos-section {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .contatos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .contatos-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .contatos-lista {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .contato-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contato-item:last-child {
+      border-bottom: none;
+    }
+
+    .contato-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .contato-numero {
+      flex: 1;
+      font-family: monospace;
+    }
+
+    .contato-nome {
+      color: var(--text-light);
+      font-size: 12px;
+      min-width: 100px;
+    }
+
+    .btn-remover {
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px 8px;
+    }
+
+    .contatos-stats {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
     /* Cards de dia */
     .day-card {
       border: 1px solid var(--border);
@@ -327,6 +411,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     table {
@@ -391,12 +477,15 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
-      max-width: 400px;
+      max-width: 500px;
       width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
     .modal-content input,
-    .modal-content select {
+    .modal-content select,
+    .modal-content textarea {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -406,11 +495,18 @@
       color: var(--text);
     }
 
+    .modal-content textarea {
+      min-height: 150px;
+      font-family: monospace;
+      resize: vertical;
+    }
+
     .modal-actions {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
       margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .toast {
@@ -426,10 +522,25 @@
       z-index: 1000;
     }
 
+    .info-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    .info-box ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
     @media (max-width: 768px) {
       .fab span { display: none; }
       .fab { padding: 12px; border-radius: 50%; }
       .filters { flex-direction: column; }
+      .contatos-header { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -490,9 +601,49 @@
           <button class="filter-btn location" onclick="filtrarLocal('Vila Limeira')">🏘️ Limeira</button>
           <button class="filter-btn location" onclick="filtrarLocal('Vila Glória')">🏘️ Glória</button>
           <button class="filter-btn location" onclick="filtrarLocal('Vila Cristina')">🏘️ Cristina</button>
-          <button class="filter-btn location" onclick="filtrarLocal('Aldeia')">🌾 Aldeias</button>
+          <button class="filter-btn location" onclick="filtrarLocal('Aldeia')">⛪ Aldeias</button>
           <button class="filter-btn location clear" onclick="limparLocal()">✕</button>
           <span class="result-count" id="resultCount"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Contatos para Lembretes (visível apenas para admin) -->
+    <div class="contatos-section" id="contatosSection" style="display: none;">
+      <div class="contatos-header">
+        <h3>📱 Lembretes por WhatsApp</h3>
+        <div class="contatos-actions">
+          <button class="btn btn-success" onclick="mostrarModalAdicionarContato()">➕ Adicionar</button>
+          <button class="btn btn-success" onclick="mostrarModalImportarContatos()">📥 Importar</button>
+          <button class="btn btn-warning" onclick="enviarLembretes()">📤 Enviar Agora</button>
+          <button class="btn" onclick="exportarContatos()">💾 Exportar</button>
+        </div>
+      </div>
+      
+      <div class="info-box">
+        <strong>📌 Instruções para importar:</strong>
+        <ul>
+          <li>Formato: <strong>Número;Nome</strong> (um por linha)</li>
+          <li>Exemplo: <code>67999999999;João Silva</code></li>
+          <li>O nome é opcional: <code>67999999999</code></li>
+          <li>Você pode copiar de uma planilha ou tirar print e digitar</li>
+        </ul>
+      </div>
+
+      <div class="contatos-lista" id="contatosLista">
+        <!-- Lista de contatos será inserida aqui -->
+      </div>
+      
+      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <label class="filter-btn" style="display: inline-flex; align-items: center; gap: 5px;">
+          <input type="checkbox" id="lembrete30min" checked> 30min antes
+        </label>
+        <label class="filter-btn" style="display: inline-flex; align-items: center; gap: 5px;">
+          <input type="checkbox" id="lembrete1h"> 1h antes
+        </label>
+        <div class="contatos-stats">
+          <span id="totalContatos">0</span> contatos cadastrados |
+          <span id="selecionadosContatos">0</span> selecionados
         </div>
       </div>
     </div>
@@ -509,7 +660,7 @@
       <div style="overflow-x: auto;">
         <table>
           <thead>
-            <tr><th>Data</th><th>Hora</th><th>Festa</th><th>Local</th><th>Ancião<th><th id="acoesHeader" style="display:none">Ações</th></tr>
+            <tr><th>Data</th><th>Hora</th><th>Festa</th><th>Local</th><th>Pregador</th><th id="acoesHeader" style="display:none">Ações</th></tr>
           </thead>
           <tbody id="festas-list"></tbody>
         </table>
@@ -551,10 +702,37 @@
       <input type="date" id="festaData">
       <input type="time" id="festaHora" value="19:30">
       <input type="text" id="festaLocal" placeholder="Local">
-      <input type="text" id="festaIrmao" placeholder="Ancião">
+      <input type="text" id="festaIrmao" placeholder="Pregador">
       <div class="modal-actions">
         <button class="btn" onclick="fecharModal('festa')">Cancelar</button>
         <button class="btn btn-success" onclick="salvarFesta()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Contato Individual -->
+  <div id="contatoModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>➕ Adicionar Contato</h3>
+      <input type="text" id="contatoNome" placeholder="Nome (opcional)">
+      <input type="text" id="contatoNumero" placeholder="WhatsApp (com DDD, ex: 67999999999)">
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('contato')">Cancelar</button>
+        <button class="btn btn-success" onclick="salvarContato()">Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Importar Contatos -->
+  <div id="importarModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>📥 Importar Contatos</h3>
+      <p style="margin-bottom: 10px; font-size: 13px;">Cole sua lista de contatos (um por linha):</p>
+      <p style="font-size: 12px; color: var(--text-light); margin-bottom: 5px;">Formato: número;nome (ou apenas número)</p>
+      <textarea id="importarTexto" placeholder="67999999999;João Silva&#10;67988888888;Maria Oliveira&#10;67977777777"></textarea>
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('importar')">Cancelar</button>
+        <button class="btn btn-success" onclick="importarContatos()">Importar</button>
       </div>
     </div>
   </div>
@@ -602,18 +780,23 @@
     ];
 
     let festas = [];
+    let contatos = [];
     let isAdmin = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
     
     const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const ADMIN_SENHA = "ccb2025";
+    const CONTATOS_KEY = 'ccb_contatos';
+    const FESTAS_KEY = 'ccb_festas';
 
     // Inicialização
     function init() {
       carregarFestas();
+      carregarContatos();
       aplicarFiltros();
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
+      setInterval(verificarLembretes, 60000);
     }
 
     // ===== CULTOS =====
@@ -684,7 +867,7 @@
 
     // ===== FESTAS =====
     function carregarFestas() {
-      const saved = localStorage.getItem('ccb_festas');
+      const saved = localStorage.getItem(FESTAS_KEY);
       festas = saved ? JSON.parse(saved) : [
         { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
         { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
@@ -709,6 +892,236 @@
           </td>` : ''}
         </tr>
       `).join('');
+    }
+
+    // ===== CONTATOS PARA WHATSAPP =====
+    function carregarContatos() {
+      const saved = localStorage.getItem(CONTATOS_KEY);
+      contatos = saved ? JSON.parse(saved) : [];
+      renderizarContatos();
+    }
+
+    function renderizarContatos() {
+      const lista = document.getElementById('contatosLista');
+      const totalContatos = contatos.length;
+      const selecionados = contatos.filter(c => c.selecionado !== false).length;
+      
+      document.getElementById('totalContatos').textContent = totalContatos;
+      document.getElementById('selecionadosContatos').textContent = selecionados;
+      
+      if (contatos.length === 0) {
+        lista.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-light)">Nenhum contato cadastrado. Clique em "Importar" para adicionar vários de uma vez.</div>';
+      } else {
+        lista.innerHTML = contatos.map((c, index) => `
+          <div class="contato-item">
+            <input type="checkbox" ${c.selecionado !== false ? 'checked' : ''} onchange="selecionarContato(${index}, this.checked)">
+            <span class="contato-numero">${c.numero}</span>
+            <span class="contato-nome">${c.nome || 'Sem nome'}</span>
+            <span class="btn-remover" onclick="removerContato(${index})">🗑️</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function selecionarContato(index, selecionado) {
+      contatos[index].selecionado = selecionado;
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+    }
+
+    function removerContato(index) {
+      if (confirm('Remover este contato?')) {
+        contatos.splice(index, 1);
+        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+        renderizarContatos();
+        toast('✅ Contato removido');
+      }
+    }
+
+    function mostrarModalAdicionarContato() {
+      document.getElementById('contatoNome').value = '';
+      document.getElementById('contatoNumero').value = '';
+      document.getElementById('contatoModal').style.display = 'flex';
+    }
+
+    function mostrarModalImportarContatos() {
+      document.getElementById('importarTexto').value = '';
+      document.getElementById('importarModal').style.display = 'flex';
+    }
+
+    function salvarContato() {
+      const nome = document.getElementById('contatoNome').value;
+      const numero = document.getElementById('contatoNumero').value.replace(/\D/g, '');
+      
+      if (numero.length < 10 || numero.length > 11) {
+        alert('Número inválido! Digite com DDD (ex: 67999999999)');
+        return;
+      }
+      
+      contatos.push({
+        nome,
+        numero,
+        selecionado: true
+      });
+      
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+      fecharModal('contato');
+      toast('✅ Contato adicionado');
+    }
+
+    function importarContatos() {
+      const texto = document.getElementById('importarTexto').value;
+      const linhas = texto.split('\n').filter(l => l.trim() !== '');
+      
+      let importados = 0;
+      let erros = 0;
+      
+      linhas.forEach(linha => {
+        // Remove espaços extras e quebras
+        linha = linha.trim();
+        
+        // Separa número e nome (formato: "numero;nome" ou apenas "numero")
+        let [numero, nome] = linha.split(';').map(s => s.trim());
+        
+        // Remove tudo que não é número
+        numero = numero.replace(/\D/g, '');
+        
+        // Validação básica
+        if (numero.length >= 10 && numero.length <= 11) {
+          contatos.push({
+            numero,
+            nome: nome || '',
+            selecionado: true
+          });
+          importados++;
+        } else {
+          erros++;
+        }
+      });
+      
+      if (importados > 0) {
+        localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+        renderizarContatos();
+        toast(`✅ ${importados} contatos importados${erros > 0 ? `, ${erros} erros ignorados` : ''}`);
+      } else {
+        toast('❌ Nenhum contato válido encontrado');
+      }
+      
+      fecharModal('importar');
+    }
+
+    function exportarContatos() {
+      if (contatos.length === 0) {
+        toast('📭 Nenhum contato para exportar');
+        return;
+      }
+      
+      // Formato: número;nome
+      const texto = contatos.map(c => `${c.numero};${c.nome || ''}`).join('\n');
+      
+      // Criar arquivo para download
+      const blob = new Blob([texto], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `contatos-ccb-${new Date().toISOString().split('T')[0]}.txt`;
+      a.click();
+      
+      toast('💾 Arquivo exportado');
+    }
+
+    // ===== LEMBRETES WHATSAPP =====
+    function verificarLembretes() {
+      if (!isAdmin || contatos.length === 0) return;
+      
+      const agora = new Date();
+      const horaAtual = agora.getHours() * 60 + agora.getMinutes();
+      const semana = getSemana();
+      const diaHoje = agora.getDay();
+      
+      const cultosHoje = cultos.filter(c => c.dia === diaHoje).filter(c => {
+        if (c.regra === 'all') return true;
+        const semanas = c.regra.replace('nth:', '').split(',').map(Number);
+        return semanas.includes(semana);
+      });
+      
+      const dataHoje = agora.toISOString().split('T')[0];
+      const festasHoje = festas.filter(f => f.data === dataHoje);
+      
+      const eventosHoje = [...cultosHoje, ...festasHoje];
+      
+      eventosHoje.forEach(evento => {
+        const [h, m] = evento.hora.split(':').map(Number);
+        const minutosEvento = h * 60 + m;
+        const diff30 = minutosEvento - horaAtual;
+        const diff60 = minutosEvento - horaAtual;
+        
+        if (document.getElementById('lembrete30min').checked && diff30 === 30) {
+          enviarLembrete(evento, 30);
+        }
+        if (document.getElementById('lembrete1h').checked && diff60 === 60) {
+          enviarLembrete(evento, 60);
+        }
+      });
+    }
+
+    function enviarLembrete(evento, minutos) {
+      const selecionados = contatos.filter(c => c.selecionado !== false);
+      if (selecionados.length === 0) return;
+      
+      const titulo = evento.titulo || evento.titulo;
+      const local = evento.local || evento.local;
+      
+      const texto = `🔔 *LEMBRETE*\n\n${titulo}\n⏰ Em ${minutos} minutos (${evento.hora})\n📍 ${local}\n\nEm breve começa nosso culto!`;
+      
+      // Abre em novas abas (uma por contato)
+      selecionados.forEach(contato => {
+        const url = `https://wa.me/55${contato.numero}?text=${encodeURIComponent(texto)}`;
+        window.open(url, '_blank');
+      });
+      
+      toast(`📤 Lembrete enviado para ${selecionados.length} contatos`);
+    }
+
+    function enviarLembretes() {
+      if (!isAdmin) return;
+      
+      const agora = new Date();
+      const semana = getSemana();
+      const diaHoje = agora.getDay();
+      
+      const cultosHoje = cultos.filter(c => c.dia === diaHoje).filter(c => {
+        if (c.regra === 'all') return true;
+        const semanas = c.regra.replace('nth:', '').split(',').map(Number);
+        return semanas.includes(semana);
+      });
+      
+      const dataHoje = agora.toISOString().split('T')[0];
+      const festasHoje = festas.filter(f => f.data === dataHoje);
+      
+      const eventosHoje = [...cultosHoje, ...festasHoje];
+      
+      if (eventosHoje.length === 0) {
+        toast('📭 Nenhum evento hoje');
+        return;
+      }
+      
+      const selecionados = contatos.filter(c => c.selecionado !== false);
+      if (selecionados.length === 0) {
+        toast('📭 Nenhum contato selecionado');
+        return;
+      }
+      
+      const listaEventos = eventosHoje.map(e => `• ${e.hora} - ${e.titulo || e.titulo} (${e.local || e.local})`).join('\n');
+      const texto = `📅 *AGENDA DE HOJE*\n\n${listaEventos}\n\nQue a paz do Senhor Jesus esteja com todos!`;
+      
+      selecionados.forEach(contato => {
+        const url = `https://wa.me/55${contato.numero}?text=${encodeURIComponent(texto)}`;
+        window.open(url, '_blank');
+      });
+      
+      toast(`📤 Agenda enviada para ${selecionados.length} contatos`);
     }
 
     // ===== BANNER =====
@@ -790,7 +1203,10 @@
     }
 
     function fecharModal(tipo) {
-      document.getElementById(tipo === 'login' ? 'loginModal' : 'festaModal').style.display = 'none';
+      if (tipo === 'login') document.getElementById('loginModal').style.display = 'none';
+      if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
+      if (tipo === 'contato') document.getElementById('contatoModal').style.display = 'none';
+      if (tipo === 'importar') document.getElementById('importarModal').style.display = 'none';
     }
 
     function fazerLogin() {
@@ -800,9 +1216,13 @@
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('novaFestaBtn').style.display = 'inline-block';
         document.getElementById('acoesHeader').style.display = 'table-cell';
+        document.getElementById('contatosSection').style.display = 'block';
         fecharModal('login');
         renderizarFestas();
+        renderizarContatos();
         toast('✅ Modo admin ativado');
+      } else {
+        alert('Senha incorreta!');
       }
     }
 
@@ -812,6 +1232,7 @@
       document.getElementById('logoutBtn').style.display = 'none';
       document.getElementById('novaFestaBtn').style.display = 'none';
       document.getElementById('acoesHeader').style.display = 'none';
+      document.getElementById('contatosSection').style.display = 'none';
       renderizarFestas();
       toast('🔓 Modo admin desativado');
     }
@@ -819,25 +1240,77 @@
     // ===== CRUD FESTAS =====
     function mostrarModalFesta(festa = null) {
       if (!isAdmin) return;
-      document.getElementById('modalTitle').textContent = festa ? 'Editar Festa' : 'Nova Festa';
-      // Preencher dados se for edição
+      
+      if (festa) {
+        document.getElementById('modalTitle').textContent = 'Editar Festa';
+        // Implementar preenchimento dos campos
+      } else {
+        document.getElementById('modalTitle').textContent = 'Nova Festa';
+        document.getElementById('festaTipo').value = 'culto-mocidade';
+        document.getElementById('festaTitulo').value = '';
+        
+        const hoje = new Date();
+        hoje.setDate(hoje.getDate() + 7);
+        document.getElementById('festaData').value = hoje.toISOString().split('T')[0];
+        document.getElementById('festaHora').value = '19:30';
+        document.getElementById('festaLocal').value = '';
+        document.getElementById('festaIrmao').value = '';
+      }
+      
       document.getElementById('festaModal').style.display = 'flex';
     }
 
     function salvarFesta() {
-      toast('Festa salva!');
-      fecharModal('festa');
+      const tipo = document.getElementById('festaTipo').value;
+      let titulo = document.getElementById('festaTitulo').value;
+      const data = document.getElementById('festaData').value;
+      const hora = document.getElementById('festaHora').value;
+      const local = document.getElementById('festaLocal').value;
+      const irmao = document.getElementById('festaIrmao').value;
+      
+      if (!data || !hora || !local || !irmao) {
+        alert('Preencha todos os campos!');
+        return;
+      }
+      
+      if (tipo === 'outro' && !titulo) {
+        alert('Digite o título da festa!');
+        return;
+      }
+      
+      const titulos = {
+        'culto-mocidade': 'Culto para Mocidade',
+        'reuniao-mocidade': 'Reunião para Mocidade',
+        'batismo': 'Batismo',
+        'santa-ceia': 'Santa Ceia',
+        'ensaio-regional': 'Ensaio Regional'
+      };
+      
+      const novaFesta = {
+        id: Date.now(),
+        titulo: titulos[tipo] || titulo,
+        data,
+        hora,
+        local,
+        irmao
+      };
+      
+      festas.push(novaFesta);
+      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
       renderizarFestas();
+      fecharModal('festa');
+      toast('✅ Festa adicionada');
     }
 
     function editarFesta(id) {
-      mostrarModalFesta({ id });
+      // Implementar edição
+      toast('✏️ Editar festa');
     }
 
     function excluirFesta(id) {
       if (confirm('Excluir festa?')) {
         festas = festas.filter(f => f.id !== id);
-        localStorage.setItem('ccb_festas', JSON.stringify(festas));
+        localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
         renderizarFestas();
         toast('✅ Festa excluída');
       }
