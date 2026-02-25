@@ -20,6 +20,7 @@
       --accent: #38bdf8;
       --success: #22c55e;
       --warning: #f59e0b;
+      --danger: #ef4444;
       --border: rgba(148, 163, 184, 0.22);
       --glass: rgba(15, 23, 42, 0.55);
       --radius: 18px;
@@ -109,6 +110,12 @@
 
     .btn-warning {
       background: var(--warning);
+      color: white;
+      border: none;
+    }
+
+    .btn-danger {
+      background: var(--danger);
       color: white;
       border: none;
     }
@@ -258,7 +265,7 @@
     }
 
     .contatos-lista {
-      max-height: 250px;
+      max-height: 300px;
       overflow-y: auto;
       margin-bottom: 12px;
       border: 1px solid var(--border);
@@ -308,6 +315,15 @@
       font-size: 12px;
       color: var(--text-light);
       margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .contatos-bulk-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
     }
 
     /* Cards de dia */
@@ -477,7 +493,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
-      max-width: 500px;
+      max-width: 600px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
@@ -496,7 +512,7 @@
     }
 
     .modal-content textarea {
-      min-height: 150px;
+      min-height: 300px;
       font-family: monospace;
       resize: vertical;
     }
@@ -534,6 +550,13 @@
     .info-box ul {
       margin-left: 20px;
       margin-top: 8px;
+    }
+
+    .contador-grande {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-right: 5px;
     }
 
     @media (max-width: 768px) {
@@ -617,16 +640,16 @@
           <button class="btn btn-success" onclick="mostrarModalImportarContatos()">📥 Importar</button>
           <button class="btn btn-warning" onclick="enviarLembretes()">📤 Enviar Agora</button>
           <button class="btn" onclick="exportarContatos()">💾 Exportar</button>
+          <button class="btn btn-danger" onclick="confirmarExcluirTodos()">🗑️ Excluir Todos</button>
         </div>
       </div>
       
       <div class="info-box">
-        <strong>📌 Instruções para importar:</strong>
+        <strong>📌 Importação ilimitada:</strong> Cole quantos números quiser (não há limite)
         <ul>
-          <li>Formato: <strong>Número;Nome</strong> (um por linha)</li>
+          <li>Formato: <strong>67999999999;Nome</strong> (nome opcional)</li>
           <li>Exemplo: <code>67999999999;João Silva</code></li>
-          <li>O nome é opcional: <code>67999999999</code></li>
-          <li>Você pode copiar de uma planilha ou tirar print e digitar</li>
+          <li>Ou só números: <code>67999999999</code></li>
         </ul>
       </div>
 
@@ -634,17 +657,23 @@
         <!-- Lista de contatos será inserida aqui -->
       </div>
       
-      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+      <div class="contatos-stats">
+        <span>📊 <strong id="totalContatos">0</strong> contatos cadastrados</span>
+        <span>✅ <strong id="selecionadosContatos">0</strong> selecionados para receber</span>
+      </div>
+
+      <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 10px;">
         <label class="filter-btn" style="display: inline-flex; align-items: center; gap: 5px;">
           <input type="checkbox" id="lembrete30min" checked> 30min antes
         </label>
         <label class="filter-btn" style="display: inline-flex; align-items: center; gap: 5px;">
           <input type="checkbox" id="lembrete1h"> 1h antes
         </label>
-        <div class="contatos-stats">
-          <span id="totalContatos">0</span> contatos cadastrados |
-          <span id="selecionadosContatos">0</span> selecionados
-        </div>
+      </div>
+
+      <div class="contatos-bulk-actions">
+        <button class="btn" onclick="selecionarTodosContatos()">✅ Selecionar todos</button>
+        <button class="btn" onclick="desmarcarTodosContatos()">⬜ Desmarcar todos</button>
       </div>
     </div>
 
@@ -723,16 +752,29 @@
     </div>
   </div>
 
-  <!-- Modal Importar Contatos -->
+  <!-- Modal Importar Contatos (ILIMITADO) -->
   <div id="importarModal" class="modal" style="display:none">
     <div class="modal-content">
-      <h3>📥 Importar Contatos</h3>
-      <p style="margin-bottom: 10px; font-size: 13px;">Cole sua lista de contatos (um por linha):</p>
-      <p style="font-size: 12px; color: var(--text-light); margin-bottom: 5px;">Formato: número;nome (ou apenas número)</p>
-      <textarea id="importarTexto" placeholder="67999999999;João Silva&#10;67988888888;Maria Oliveira&#10;67977777777"></textarea>
+      <h3>📥 Importar Contatos (Ilimitado)</h3>
+      <p style="margin-bottom: 10px; font-size: 13px;">Cole sua lista de contatos (quantos quiser):</p>
+      <p style="font-size: 12px; color: var(--text-light); margin-bottom: 5px;">Formato: número;nome (ou apenas número) - Um por linha</p>
+      <textarea id="importarTexto" placeholder="67999999999;João Silva&#10;67988888888;Maria Oliveira&#10;67977777777&#10;67966666666;Pedro Santos"></textarea>
       <div class="modal-actions">
         <button class="btn" onclick="fecharModal('importar')">Cancelar</button>
         <button class="btn btn-success" onclick="importarContatos()">Importar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmar Exclusão -->
+  <div id="confirmarModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>⚠️ Confirmar Exclusão</h3>
+      <p>Tem certeza que deseja excluir <strong>TODOS</strong> os contatos?</p>
+      <p id="totalExclusao" style="font-size: 18px; font-weight: 700; color: var(--danger); margin: 20px 0;"></p>
+      <div class="modal-actions">
+        <button class="btn" onclick="fecharModal('confirmar')">Cancelar</button>
+        <button class="btn btn-danger" onclick="excluirTodosContatos()">Sim, excluir todos</button>
       </div>
     </div>
   </div>
@@ -894,7 +936,7 @@
       `).join('');
     }
 
-    // ===== CONTATOS PARA WHATSAPP =====
+    // ===== CONTATOS PARA WHATSAPP (ILIMITADO) =====
     function carregarContatos() {
       const saved = localStorage.getItem(CONTATOS_KEY);
       contatos = saved ? JSON.parse(saved) : [];
@@ -929,6 +971,20 @@
       renderizarContatos();
     }
 
+    function selecionarTodosContatos() {
+      contatos.forEach(c => c.selecionado = true);
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+      toast('✅ Todos selecionados');
+    }
+
+    function desmarcarTodosContatos() {
+      contatos.forEach(c => c.selecionado = false);
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+      toast('⬜ Todos desmarcados');
+    }
+
     function removerContato(index) {
       if (confirm('Remover este contato?')) {
         contatos.splice(index, 1);
@@ -936,6 +992,23 @@
         renderizarContatos();
         toast('✅ Contato removido');
       }
+    }
+
+    function confirmarExcluirTodos() {
+      if (contatos.length === 0) {
+        toast('📭 Nenhum contato para excluir');
+        return;
+      }
+      document.getElementById('totalExclusao').textContent = `${contatos.length} contatos serão excluídos`;
+      document.getElementById('confirmarModal').style.display = 'flex';
+    }
+
+    function excluirTodosContatos() {
+      contatos = [];
+      localStorage.setItem(CONTATOS_KEY, JSON.stringify(contatos));
+      renderizarContatos();
+      fecharModal('confirmar');
+      toast('🗑️ Todos os contatos foram excluídos');
     }
 
     function mostrarModalAdicionarContato() {
@@ -978,10 +1051,9 @@
       let erros = 0;
       
       linhas.forEach(linha => {
-        // Remove espaços extras e quebras
         linha = linha.trim();
         
-        // Separa número e nome (formato: "numero;nome" ou apenas "numero")
+        // Separa número e nome
         let [numero, nome] = linha.split(';').map(s => s.trim());
         
         // Remove tudo que não é número
@@ -1017,10 +1089,8 @@
         return;
       }
       
-      // Formato: número;nome
       const texto = contatos.map(c => `${c.numero};${c.nome || ''}`).join('\n');
       
-      // Criar arquivo para download
       const blob = new Blob([texto], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1075,7 +1145,6 @@
       
       const texto = `🔔 *LEMBRETE*\n\n${titulo}\n⏰ Em ${minutos} minutos (${evento.hora})\n📍 ${local}\n\nEm breve começa nosso culto!`;
       
-      // Abre em novas abas (uma por contato)
       selecionados.forEach(contato => {
         const url = `https://wa.me/55${contato.numero}?text=${encodeURIComponent(texto)}`;
         window.open(url, '_blank');
@@ -1207,6 +1276,7 @@
       if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
       if (tipo === 'contato') document.getElementById('contatoModal').style.display = 'none';
       if (tipo === 'importar') document.getElementById('importarModal').style.display = 'none';
+      if (tipo === 'confirmar') document.getElementById('confirmarModal').style.display = 'none';
     }
 
     function fazerLogin() {
