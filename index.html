@@ -6,6 +6,11 @@
   <title>CCB - Amambai</title>
   <meta name="theme-color" content="#0f172a">
   
+  <!-- Meta tags anti-cache para forçar atualização -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  
   <!-- PWA - Ícone CCB -->
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22CCB%20-%20Amambai%22%2C%22short_name%22%3A%22CCB%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%2C%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -313,7 +318,6 @@
         </div>
 
         <div class="actions">
-          <!-- BOTÃO COMPARTILHAR - NOVO -->
           <button class="btn-share" onclick="compartilharSistema()">
             <span>📤</span> Compartilhar
           </button>
@@ -561,6 +565,54 @@
       });
     }
 
+    // ===== CORREÇÃO PARA ATUALIZAÇÃO AUTOMÁTICA =====
+    function registrarServiceWorkerCorrigido() {
+      if ('serviceWorker' in navigator) {
+        // Criar um Service Worker simples inline
+        const swCode = `
+          self.addEventListener('install', event => {
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', event => {
+            event.waitUntil(clients.claim());
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swUrl, {
+          scope: '/',
+          updateViaCache: 'none'
+        }).then(registration => {
+          console.log('✅ Service Worker registrado com atualização automática');
+          
+          // Verificar atualizações a cada 30 minutos
+          setInterval(() => {
+            registration.update();
+            console.log('🔄 Verificando atualizações...');
+          }, 30 * 60 * 1000);
+          
+          // Detectar novo Service Worker
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            console.log('📦 Nova versão encontrada!');
+            
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('✨ Nova versão instalada. Atualizando...');
+                if (confirm('🔄 Nova versão disponível! Atualizar agora?')) {
+                  window.location.reload();
+                }
+              }
+            });
+          });
+        }).catch(error => {
+          console.error('❌ Erro ao registrar Service Worker:', error);
+        });
+      }
+    }
+
     function init(){
       const savedTheme = localStorage.getItem('ccb_theme');
       if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
@@ -571,6 +623,9 @@
       aplicarFiltros();
       atualizarRelogio();
       setInterval(atualizarRelogio, 60000);
+      
+      // Registrar Service Worker para atualizações automáticas
+      registrarServiceWorkerCorrigido();
     }
 
     // ===== AVISO NO CABEÇALHO =====
