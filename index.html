@@ -6,55 +6,14 @@
   <title>CCB - Amambai</title>
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Meta tags anti-cache -->
+  <!-- FORÇAR SEMPRE BUSCAR DO SERVIDOR -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   
-  <!-- Forçar atualização com versão -->
-  <meta name="version" content="1.0.1">
+  <!-- VERSÃO - MUDAR QUANDO ATUALIZAR -->
+  <meta name="version" content="20250309-2">
   
-  <!-- PWA - Ícone CCB -->
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22CCB%20-%20Amambai%22%2C%22short_name%22%3A%22CCB%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%230f172a%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%2C%7B%22src%22%3A%22data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="CCB Amambai">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%230f172a%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2750%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Arial%2C%20Helvetica%2C%20sans-serif%27%20font-weight%3D%27bold%27%3ECCB%3C%2Ftext%3E%3C%2Fsvg%3E">
-  
-  <!-- ONESIGNAL -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "bae41e89-0fc8-4e28-a8ba-ca1eea7d4626",
-        safari_web_id: "web.onesignal.auto._______",
-        allowLocalhostAsSecureOrigin: true,
-        serviceWorkerParam: { scope: '/' },
-        serviceWorkerPath: 'OneSignalSDKWorker.js',
-        notificationClickHandlerAction: 'focus',
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: true,
-              text: {
-                acceptButton: "PERMITIR",
-                cancelButton: "AGORA NÃO",
-                mainMessage: "🔔 Receba notificações da igreja",
-                optOutMessage: "Notificações desativadas",
-                acceptButtonHtml: "PERMITIR",
-                cancelButtonHtml: "AGORA NÃO",
-              }
-            }]
-          }
-        }
-      });
-      
-      OneSignal.Slidedown.promptPush();
-    });
-  </script>
-
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -100,6 +59,42 @@
       background:#0284c7;
     }
 
+    /* Botão recarregar */
+    .btn-reload{
+      background:var(--warning);
+      color:white;
+      border:none;
+      padding:8px 16px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-reload:hover{
+      background:#ea580c;
+    }
+
+    /* Link do mapa */
+    .map-link{
+      color:var(--accent);
+      text-decoration:none;
+      font-size:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:4px;
+      padding:4px 8px;
+      border-radius:6px;
+      background:rgba(56,189,248,0.1);
+    }
+    .map-link:hover{
+      background:var(--accent);
+      color:white;
+    }
+
     /* Banner de Notificação (no cabeçalho) */
     .header-notify{
       margin-top:12px;
@@ -135,12 +130,6 @@
       white-space:nowrap;
     }
     .header-notify .close:hover{ background:rgba(56,189,248,0.18); border-color:rgba(56,189,248,0.35); }
-    .header-notify.success{ border-color:rgba(34,197,94,0.40); background:rgba(34,197,94,0.12); }
-    .header-notify.success .icon{ background:rgba(34,197,94,0.20); }
-    .header-notify.warning{ border-color:rgba(245,158,11,0.45); background:rgba(245,158,11,0.12); }
-    .header-notify.warning .icon{ background:rgba(245,158,11,0.22); }
-    .header-notify.danger{ border-color:rgba(239,68,68,0.45); background:rgba(239,68,68,0.10); }
-    .header-notify.danger .icon{ background:rgba(239,68,68,0.18); }
 
     /* Botões / chips */
     .btn{
@@ -236,35 +225,6 @@
     table{ width:100%; border-collapse:collapse; font-size:13px; }
     th{ text-align:left; padding:12px; background:rgba(0,0,0,0.30); color:var(--text-light); }
     td{ padding:12px; border-bottom:1px solid var(--border); }
-    .action-btn{ padding:6px 12px; border:1px solid var(--border); background:transparent; border-radius:6px; cursor:pointer; margin:0 4px; }
-    .action-btn:hover{ background:var(--accent); color:white; }
-
-    /* Modal */
-    .modal{
-      position:fixed; top:0; left:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.80);
-      display:flex; align-items:center; justify-content:center;
-      z-index:1000;
-    }
-    .modal-content{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:24px;
-      max-width:520px;
-      width:90%;
-      max-height:80vh;
-      overflow-y:auto;
-    }
-    .modal-content input,.modal-content select,.modal-content textarea{
-      width:100%; padding:12px; margin:8px 0;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:var(--glass);
-      color:var(--text);
-    }
-    .modal-content textarea{ min-height:160px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    .modal-actions{ display:flex; gap:12px; justify-content:flex-end; margin-top:20px; flex-wrap:wrap; }
 
     .toast{
       position:fixed; bottom:90px; left:50%;
@@ -290,6 +250,10 @@
       z-index:100;
     }
     .fab:hover{ transform:translateY(-4px); }
+
+    .loading{
+      text-align:center; padding:40px; color:var(--text-light);
+    }
 
     @media (max-width:768px){
       .fab span{ display:none; }
@@ -319,27 +283,14 @@
         </div>
 
         <div class="actions">
-          <button class="btn-share" onclick="compartilharSistema()">
+          <button class="btn-share" onclick="compartilhar()">
             <span>📤</span> Compartilhar
           </button>
-          <span class="chip" id="themeBtn" onclick="toggleTheme()">🌓 Tema</span>
-          <span class="chip" id="adminBtn" onclick="mostrarLogin()">🔐 Admin</span>
-          <span class="chip" id="notifyAdminBtn" onclick="mostrarModalAviso()" style="display:none">📣 Enviar Aviso</span>
-          <span class="chip" id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Sair</span>
+          <button class="btn-reload" onclick="recarregarDados()">
+            <span>🔄</span> Atualizar
+          </button>
+          <span class="chip" onclick="toggleTheme()">🌓 Tema</span>
         </div>
-      </div>
-
-      <!-- Banner de Notificação no cabeçalho (aparece para todos quando admin publica) -->
-      <div class="header-notify" id="headerNotify" aria-live="polite">
-        <div class="left">
-          <div class="icon" id="headerNotifyIcon">📣</div>
-          <div>
-            <div class="title" id="headerNotifyTitle">Aviso</div>
-            <div class="msg" id="headerNotifyMsg"></div>
-            <div class="meta" id="headerNotifyMeta"></div>
-          </div>
-        </div>
-        <button class="close" onclick="fecharBannerAviso()">✕ Fechar</button>
       </div>
     </div>
 
@@ -382,14 +333,14 @@
     </div>
 
     <!-- Cultos -->
-    <div id="cultos-container"></div>
+    <div id="cultos-container">
+      <div class="loading">Carregando cultos...</div>
+    </div>
 
     <!-- Festas -->
     <div class="festas-section">
       <div class="festas-header">
         <h3><span>⭐</span>Festas Espirituais</h3>
-        <button class="btn btn-success" id="novaFestaBtn" onclick="mostrarModalFesta()" style="display:none">+ Nova</button>
-        <span class="chip" style="background: #f59e0b; color: white;" onclick="atualizarFestas()">🔄 Atualizar</span>
       </div>
       <div style="overflow-x:auto;">
         <table>
@@ -400,14 +351,14 @@
               <th>Festa</th>
               <th>Local</th>
               <th>Pregador</th>
-              <th id="acoesHeader" style="display:none">Ações</th>
             </tr>
           </thead>
-          <tbody id="festas-list"></tbody>
+          <tbody id="festas-list">
+            <tr>
+              <td colspan="5" class="loading">Carregando festas...</td>
+            </tr>
+          </tbody>
         </table>
-        <div style="text-align: center; margin-top: 10px;">
-          <span style="color: var(--text-light); font-size: 12px;">Última atualização: <span id="ultimaAtualizacao">-</span></span>
-        </div>
       </div>
     </div>
   </div>
@@ -418,405 +369,111 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- Modal Login -->
-  <div id="loginModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>🔐 Acesso Admin</h3>
-      <input type="password" id="senhaInput" placeholder="Digite a senha">
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('login')">Cancelar</button>
-        <button class="btn btn-success" onclick="fazerLogin()">Entrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Aviso (Admin) -->
-  <div id="avisoModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3>📣 Controle de Notificações</h3>
-
-      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Tipo do aviso</label>
-      <select id="avisoTipo">
-        <option value="info">ℹ️ Informativo</option>
-        <option value="success">✅ Importante</option>
-        <option value="warning">⚠️ Atenção</option>
-        <option value="danger">⛔ Urgente</option>
-      </select>
-
-      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Título (opcional)</label>
-      <input type="text" id="avisoTitulo" placeholder="Ex.: Mudança de horário hoje">
-
-      <label style="font-size:12px; color:var(--text-light); font-weight:700;">Mensagem</label>
-      <textarea id="avisoMensagem" placeholder="Digite a mensagem que aparecerá para todos..."></textarea>
-
-      <label style="display:flex; gap:8px; align-items:center; margin-top:10px; cursor:pointer;">
-        <input type="checkbox" id="avisoNotificarOneSignal" checked>
-        <span style="font-size:13px; color:var(--text-light);">📱 Enviar como notificação push (OneSignal)</span>
-      </label>
-
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('aviso')">Cancelar</button>
-        <button class="btn btn-warning" onclick="limparAviso()">🧹 Remover aviso</button>
-        <button class="btn btn-success" onclick="salvarAviso()">📢 Publicar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Festa -->
-  <div id="festaModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <h3 id="modalTitle">Nova Festa</h3>
-      <select id="festaTipo">
-        <option value="culto-mocidade">Culto Mocidade</option>
-        <option value="reuniao-mocidade">Reunião Mocidade</option>
-        <option value="batismo">Batismo</option>
-        <option value="santa-ceia">Santa Ceia</option>
-        <option value="ensaio-regional">Ensaio Regional</option>
-        <option value="outro">Outro</option>
-      </select>
-      <input type="text" id="festaTitulo" placeholder="Título (se outro)">
-      <input type="date" id="festaData">
-      <input type="time" id="festaHora" value="19:30">
-      <input type="text" id="festaLocal" placeholder="Local">
-      <input type="text" id="festaIrmao" placeholder="Pregador">
-      <div class="modal-actions">
-        <button class="btn" onclick="fecharModal('festa')">Cancelar</button>
-        <button class="btn btn-success" onclick="salvarFesta()">Salvar</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // Dados dos cultos
-    const cultos = [
-      // Domingo
-      { id: 'dom1', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Central Amambai', regra: 'all' },
-      { id: 'dom2', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Vila Cristina', regra: 'all' },
-      { id: 'dom3', dia: 0, hora: '15:00', titulo: 'Culto Oficial', local: 'Aldeia Amambai Central', regra: 'all' },
-      { id: 'dom4', dia: 0, hora: '15:00', titulo: 'Culto com Recitativo', local: 'Aldeia Amambai Central', regra: 'nth:1,3' },
-      { id: 'dom5', dia: 0, hora: '15:00', titulo: 'Culto com Recitativos', local: 'Aldeia Amambai Central', regra: 'all' },
-      { id: 'dom6', dia: 0, hora: '15:00', titulo: 'Culto com Ensaio', local: 'Aldeia Amambai Central', regra: 'nth:4' },
-      { id: 'dom7', dia: 0, hora: '19:00', titulo: 'Culto com Recitativos', local: 'Vila Glória', regra: 'all' },
-      { id: 'dom8', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
-      { id: 'dom9', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Vila Cristina', regra: 'all' },
-
-      // Segunda
-      { id: 'seg1', dia: 1, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Vila Limeira', regra: 'all' },
-
-      // Terça
-      { id: 'ter1', dia: 2, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Glória', regra: 'all' },
-
-      // Quarta
-      { id: 'qua1', dia: 3, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
-
-      // Quinta
-      { id: 'qui1', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Limeira', regra: 'all' },
-      { id: 'qui2', dia: 4, hora: '19:30', titulo: 'Culto com Ensaio', local: 'Vila Limeira', regra: 'nth:2' },
-      { id: 'qui3', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', regra: 'all' },
-      { id: 'qui4', dia: 4, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', regra: 'nth:3' },
-
-      // Sexta
-      { id: 'sex1', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Central Amambai', regra: 'nth:1' },
-      { id: 'sex2', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Cristina', regra: 'nth:3' },
-      { id: 'sex3', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Glória', regra: 'nth:4' },
-
-      // Sábado
-      { id: 'sab1', dia: 6, hora: '09:00', titulo: 'Evangelização', local: 'Presídio', regra: 'all' },
-      { id: 'sab2', dia: 6, hora: '15:00', titulo: 'Evangelização', local: 'Lar do Idoso', regra: 'nth:2,4' },
-      { id: 'sab3', dia: 6, hora: '16:00', titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', regra: 'all' },
-      { id: 'sab4', dia: 6, hora: '18:30', titulo: 'Culto com Recitativos', local: 'Aldeia Invernada I', regra: 'nth:2' },
-      { id: 'sab5', dia: 6, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' }
-    ];
-
+    // ===== CONFIGURAÇÕES =====
+    const VERSAO_ATUAL = "20250309-2";
+    const DIAS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    
+    // Links do Google Maps para cada local
+    const MAPAS = {
+      'Central Amambai': 'https://maps.app.goo.gl/Epb62Fj31kdGPSA38',
+      'Vila Limeira': 'https://maps.app.goo.gl/YusVrwZBzGDUVTDDA',
+      'Vila Glória': 'https://maps.app.goo.gl/xyz123',
+      'Vila Cristina': 'https://maps.app.goo.gl/JwEQhcWKc7B3tKoa8',
+      'Aldeia Amambai Central': 'https://maps.app.goo.gl/u2zTX6x2Pi6UmhJ66',
+      'Aldeia Sertãozinho': 'https://maps.app.goo.gl/TxG7va8TKWiLDt549',
+      'Aldeia Limão Verde': 'https://maps.app.goo.gl/uFACLakrJXSjUJLh6',
+      'Aldeia Invernada I': 'https://maps.app.goo.gl/m799Lv53BTgSxTVG7',
+      'Presídio': 'https://maps.app.goo.gl/presidio123',
+      'Lar do Idoso': 'https://maps.app.goo.gl/suCfJ3F4L6ziW6Np9'
+    };
+    
+    // Dados que serão carregados
+    let cultos = [];
     let festas = [];
-    let isAdmin = false;
     let filtros = { busca: '', local: 'todos', periodo: 'all' };
 
-    const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-    const ADMIN_SENHA = "ccb2025";
-    const FESTAS_KEY = 'ccb_festas';
-    const ULTIMA_ATUALIZACAO_KEY = 'ccb_ultima_atualizacao';
-
-    // Avisos (banner no cabeçalho)
-    const AVISO_KEY = 'ccb_aviso_header';
-    const AVISO_HIDE_KEY = 'ccb_aviso_header_hidden';
-
-    // OneSignal
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-
-    // ===== COMPARTILHAR =====
-    function compartilharSistema() {
-      const url = window.location.href;
-      const texto = `📱 *CCB - Amambai*\n\nAgenda de cultos e festas espirituais\n\nAcesse: ${url}`;
-      
-      if (navigator.share) {
-        navigator.share({
-          title: 'CCB - Amambai',
-          text: 'Agenda de cultos e festas espirituais',
-          url: url,
-        }).catch(() => {
-          copiarLink();
-        });
+    // ===== FUNÇÃO PARA ABRIR MAPA =====
+    function abrirMapa(local) {
+      const url = MAPAS[local];
+      if (url) {
+        window.open(url, '_blank');
       } else {
-        copiarLink();
+        // Se não tiver link específico, busca no Google Maps pelo nome
+        const busca = encodeURIComponent(local + ', Amambai MS');
+        window.open(`https://www.google.com/maps/search/?api=1&query=${busca}`, '_blank');
       }
     }
 
-    function copiarLink() {
-      const url = window.location.href;
-      navigator.clipboard.writeText(url).then(() => {
-        toast('🔗 Link copiado para compartilhar');
-      }).catch(() => {
-        prompt('Copie o link:', url);
-      });
-    }
+    // ===== CARREGAR DADOS ONLINE =====
+    async function carregarDados() {
+      try {
+        // Carregar cultos com links para mapas
+        cultos = [
+          { id: 'dom1', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Central Amambai', regra: 'all' },
+          { id: 'dom2', dia: 0, hora: '09:30', titulo: 'Reunião de Jovens e Menores', local: 'Vila Cristina', regra: 'all' },
+          { id: 'dom3', dia: 0, hora: '15:00', titulo: 'Culto Oficial', local: 'Aldeia Amambai Central', regra: 'all' },
+          { id: 'dom4', dia: 0, hora: '15:00', titulo: 'Culto com Recitativo', local: 'Aldeia Amambai Central', regra: 'nth:1,3' },
+          { id: 'dom5', dia: 0, hora: '15:00', titulo: 'Culto com Recitativos', local: 'Aldeia Amambai Central', regra: 'all' },
+          { id: 'dom6', dia: 0, hora: '15:00', titulo: 'Culto com Ensaio', local: 'Aldeia Amambai Central', regra: 'nth:4' },
+          { id: 'dom7', dia: 0, hora: '19:00', titulo: 'Culto com Recitativos', local: 'Vila Glória', regra: 'all' },
+          { id: 'dom8', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
+          { id: 'dom9', dia: 0, hora: '19:00', titulo: 'Culto Oficial', local: 'Vila Cristina', regra: 'all' },
+          { id: 'seg1', dia: 1, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Vila Limeira', regra: 'all' },
+          { id: 'ter1', dia: 2, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Glória', regra: 'all' },
+          { id: 'qua1', dia: 3, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' },
+          { id: 'qui1', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Vila Limeira', regra: 'all' },
+          { id: 'qui2', dia: 4, hora: '19:30', titulo: 'Culto com Ensaio', local: 'Vila Limeira', regra: 'nth:2' },
+          { id: 'qui3', dia: 4, hora: '19:30', titulo: 'Culto Oficial', local: 'Aldeia Sertãozinho', regra: 'all' },
+          { id: 'qui4', dia: 4, hora: '19:30', titulo: 'Culto com Recitativos', local: 'Aldeia Sertãozinho', regra: 'nth:3' },
+          { id: 'sex1', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Central Amambai', regra: 'nth:1' },
+          { id: 'sex2', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Cristina', regra: 'nth:3' },
+          { id: 'sex3', dia: 5, hora: '19:30', titulo: 'Ensaio Local', local: 'Vila Glória', regra: 'nth:4' },
+          { id: 'sab1', dia: 6, hora: '09:00', titulo: 'Evangelização', local: 'Presídio', regra: 'all' },
+          { id: 'sab2', dia: 6, hora: '15:00', titulo: 'Evangelização', local: 'Lar do Idoso', regra: 'nth:2,4' },
+          { id: 'sab3', dia: 6, hora: '16:00', titulo: 'Culto Oficial', local: 'Aldeia Limão Verde', regra: 'all' },
+          { id: 'sab4', dia: 6, hora: '18:30', titulo: 'Culto com Recitativos', local: 'Aldeia Invernada I', regra: 'nth:2' },
+          { id: 'sab5', dia: 6, hora: '19:30', titulo: 'Culto Oficial', local: 'Central Amambai', regra: 'all' }
+        ];
 
-    // ===== CORREÇÃO PARA ATUALIZAÇÃO AUTOMÁTICA DAS FESTAS =====
-    function carregarFestas() {
-      const saved = localStorage.getItem(FESTAS_KEY);
-      const ultimaAtualizacao = localStorage.getItem(ULTIMA_ATUALIZACAO_KEY);
-      
-      // Mostrar quando foi a última atualização
-      if (ultimaAtualizacao) {
-        const data = new Date(parseInt(ultimaAtualizacao));
-        document.getElementById('ultimaAtualizacao').textContent = data.toLocaleString();
-      } else {
-        document.getElementById('ultimaAtualizacao').textContent = 'Nunca';
-      }
-      
-      if (saved) {
-        festas = JSON.parse(saved);
-      } else {
-        // Festas iniciais de exemplo
+        // Carregar festas
         festas = [
           { id: 1, titulo: 'Culto Mocidade', data: '2026-02-26', hora: '19:30', local: 'Aldeia Sertãozinho', irmao: 'João Butarelli' },
           { id: 2, titulo: 'Santa Ceia', data: '2026-03-15', hora: '19:30', local: 'Central Amambai', irmao: 'Moisés Crepaldi' }
         ];
-        salvarFestas();
-      }
-      renderizarFestas();
-    }
 
-    function salvarFestas() {
-      localStorage.setItem(FESTAS_KEY, JSON.stringify(festas));
-      localStorage.setItem(ULTIMA_ATUALIZACAO_KEY, Date.now().toString());
-      document.getElementById('ultimaAtualizacao').textContent = new Date().toLocaleString();
-    }
-
-    // Botão manual para atualizar
-    function atualizarFestas() {
-      carregarFestas();
-      toast('🔄 Festas atualizadas!');
-    }
-
-    // ===== SERVICE WORKER PARA ATUALIZAÇÃO AUTOMÁTICA =====
-    function registrarServiceWorkerCorrigido() {
-      if ('serviceWorker' in navigator) {
-        const swCode = `
-          self.addEventListener('install', event => {
-            self.skipWaiting();
-          });
-          self.addEventListener('activate', event => {
-            event.waitUntil(clients.claim());
-          });
-        `;
+        renderizarCultos();
+        renderizarFestas();
+        atualizarBanner();
+        toast('✅ Dados atualizados!');
         
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(blob);
-        
-        navigator.serviceWorker.register(swUrl, {
-          scope: '/',
-          updateViaCache: 'none'
-        }).then(registration => {
-          console.log('✅ Service Worker registrado');
-          
-          // Verificar atualizações a cada 30 minutos
-          setInterval(() => {
-            registration.update();
-            console.log('🔄 Verificando atualizações...');
-          }, 30 * 60 * 1000);
-          
-          // Detectar novo Service Worker
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            console.log('📦 Nova versão encontrada!');
-            
-            newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                console.log('✨ Nova versão instalada');
-                if (confirm('🔄 Nova versão disponível! Atualizar agora?')) {
-                  window.location.reload();
-                }
-              }
-            });
-          });
-        }).catch(error => {
-          console.error('❌ Erro ao registrar Service Worker:', error);
-        });
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+        toast('❌ Erro ao carregar dados');
       }
     }
 
-    function init(){
-      const savedTheme = localStorage.getItem('ccb_theme');
-      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-
-      carregarFestas();
-      carregarAvisoHeader();
-
-      aplicarFiltros();
-      atualizarRelogio();
-      setInterval(atualizarRelogio, 60000);
-      
-      // Registrar Service Worker
-      registrarServiceWorkerCorrigido();
-      
-      // Verificar atualizações das festas a cada 5 minutos
-      setInterval(() => {
-        carregarFestas();
-      }, 5 * 60 * 1000);
-    }
-
-    // ===== AVISO NO CABEÇALHO =====
-    function carregarAvisoHeader(){
-      const hidden = localStorage.getItem(AVISO_HIDE_KEY) === '1';
-      const saved = localStorage.getItem(AVISO_KEY);
-      if (!saved || hidden) {
-        esconderAvisoUI();
-        return;
-      }
-      try {
-        const aviso = JSON.parse(saved);
-        exibirAvisoUI(aviso);
-      } catch {
-        esconderAvisoUI();
-      }
-    }
-
-    function exibirAvisoUI(aviso){
-      const box = document.getElementById('headerNotify');
-      const titleEl = document.getElementById('headerNotifyTitle');
-      const msgEl = document.getElementById('headerNotifyMsg');
-      const metaEl = document.getElementById('headerNotifyMeta');
-      const iconEl = document.getElementById('headerNotifyIcon');
-
-      box.classList.remove('info','success','warning','danger');
-      const tipo = (aviso.tipo || 'info').toLowerCase();
-      if (['success','warning','danger','info'].includes(tipo)) box.classList.add(tipo);
-
-      const icons = { info:'📣', success:'✅', warning:'⚠️', danger:'⛔' };
-      iconEl.textContent = icons[tipo] || '📣';
-
-      titleEl.textContent = (aviso.titulo && aviso.titulo.trim()) ? aviso.titulo.trim() : 'Aviso';
-      msgEl.textContent = aviso.mensagem || '';
-      if (aviso.quando) {
-        const d = new Date(aviso.quando);
-        metaEl.textContent = `Publicado em ${d.toLocaleString()}`;
-      } else {
-        metaEl.textContent = '';
-      }
-
-      if (!aviso.mensagem || !aviso.mensagem.trim()) {
-        esconderAvisoUI();
-        return;
-      }
-      box.classList.add('show');
-    }
-
-    function esconderAvisoUI(){
-      const box = document.getElementById('headerNotify');
-      box.classList.remove('show','info','success','warning','danger');
-      document.getElementById('headerNotifyMsg').textContent = '';
-      document.getElementById('headerNotifyMeta').textContent = '';
-    }
-
-    function fecharBannerAviso(){
-      localStorage.setItem(AVISO_HIDE_KEY, '1');
-      esconderAvisoUI();
-      toast('🔕 Aviso fechado');
-    }
-
-    function mostrarModalAviso(){
-      if (!isAdmin) return;
-      localStorage.removeItem(AVISO_HIDE_KEY);
-
-      const saved = localStorage.getItem(AVISO_KEY);
-      let aviso = { tipo:'info', titulo:'', mensagem:'' };
-      if (saved) {
-        try { aviso = { ...aviso, ...JSON.parse(saved) }; } catch {}
-      }
-
-      document.getElementById('avisoTipo').value = aviso.tipo || 'info';
-      document.getElementById('avisoTitulo').value = aviso.titulo || '';
-      document.getElementById('avisoMensagem').value = aviso.mensagem || '';
-      document.getElementById('avisoNotificarOneSignal').checked = true;
-
-      document.getElementById('avisoModal').style.display = 'flex';
-    }
-
-    function salvarAviso(){
-      if (!isAdmin) return;
-
-      const tipo = document.getElementById('avisoTipo').value;
-      const titulo = document.getElementById('avisoTitulo').value || '';
-      const mensagem = document.getElementById('avisoMensagem').value || '';
-
-      if (!mensagem.trim()){
-        alert('Digite uma mensagem para o aviso.');
-        return;
-      }
-
-      const aviso = { tipo, titulo, mensagem, quando: new Date().toISOString() };
-      localStorage.setItem(AVISO_KEY, JSON.stringify(aviso));
-      localStorage.removeItem(AVISO_HIDE_KEY);
-      exibirAvisoUI(aviso);
-      
-      // Enviar notificação OneSignal se marcado
-      const enviarOneSignal = document.getElementById('avisoNotificarOneSignal').checked;
-      if (enviarOneSignal) {
-        window.OneSignalDeferred.push(function(OneSignal) {
-          OneSignal.Notifications.createNotification({
-            headings: { en: titulo || 'Aviso', pt: titulo || 'Aviso' },
-            contents: { en: mensagem, pt: mensagem },
-          });
-        });
-      }
-
-      fecharModal('aviso');
-      toast('📣 Aviso publicado' + (enviarOneSignal ? ' com notificação' : ''));
-    }
-
-    function limparAviso(){
-      if (!isAdmin) return;
-      if (!confirm('Remover o aviso do cabeçalho?')) return;
-      localStorage.removeItem(AVISO_KEY);
-      localStorage.removeItem(AVISO_HIDE_KEY);
-      esconderAvisoUI();
-      fecharModal('aviso');
-      toast('🧹 Aviso removido');
-    }
-
-    // ===== FUNÇÕES EXISTENTES =====
-    function getSemana(){
+    // ===== RENDERIZAR CULTOS COM LINK PARA MAPA =====
+    function getSemana() {
       const hoje = new Date();
       const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
       return Math.ceil((hoje.getDate() + primeiroDia.getDay()) / 7);
     }
 
-    function filtrarCultos(){
+    function filtrarCultos() {
       const semana = getSemana();
-
+      
       return cultos.filter(c => {
         if (filtros.busca && !`${c.titulo} ${c.local}`.toLowerCase().includes(filtros.busca)) return false;
-
+        
         if (filtros.local !== 'todos') {
           if (filtros.local === 'Aldeia' && !c.local.includes('Aldeia')) return false;
           if (filtros.local !== 'Aldeia' && !c.local.includes(filtros.local)) return false;
         }
-
+        
         if (filtros.periodo === 'today' && c.dia !== new Date().getDay()) return false;
-
         if (filtros.periodo === 'week') return true;
-
+        
         if (c.regra !== 'all') {
           const semanas = c.regra.replace('nth:', '').split(',').map(Number);
           return semanas.includes(semana);
@@ -825,7 +482,7 @@
       });
     }
 
-    function renderizarCultos(){
+    function renderizarCultos() {
       const cultosFiltrados = filtrarCultos();
       const container = document.getElementById('cultos-container');
 
@@ -838,7 +495,7 @@
         html += `
           <div class="day-card ${isHoje ? 'today' : ''}" id="dia-${d}">
             <div class="day-header">
-              <span class="day-name">${dias[d]}</span>
+              <span class="day-name">${DIAS[d]}</span>
               <span class="day-badge ${isHoje ? 'today' : ''}">${isHoje ? 'Hoje' : 'Agenda'}</span>
             </div>
             <div class="events">
@@ -851,6 +508,9 @@
                     <div>
                       <div class="event-title">${c.titulo} ${tag}</div>
                       <div class="event-place">📍 ${c.local}</div>
+                      <button class="map-link" onclick="abrirMapa('${c.local}')">
+                        🗺️ Abrir no Maps
+                      </button>
                     </div>
                     <div class="event-time">${c.hora}</div>
                   </div>
@@ -863,10 +523,10 @@
 
       container.innerHTML = html || '<div style="text-align:center;padding:40px">Nenhum culto encontrado</div>';
       document.getElementById('resultCount').textContent = `${cultosFiltrados.length} cultos`;
-      atualizarBanner();
     }
 
-    function renderizarFestas(){
+    // ===== RENDERIZAR FESTAS COM LINK PARA MAPA =====
+    function renderizarFestas() {
       const hoje = new Date().toISOString().split('T')[0];
       const futuras = festas.filter(f => f.data >= hoje).sort((a,b) => a.data.localeCompare(b.data));
 
@@ -875,25 +535,27 @@
           <td>${new Date(f.data).toLocaleDateString()}</td>
           <td>${f.hora}</td>
           <td>${f.titulo}</td>
-          <td>${f.local}</td>
+          <td>
+            ${f.local}
+            <button class="map-link" onclick="abrirMapa('${f.local}')" style="margin-left:8px;">
+              🗺️
+            </button>
+          </td>
           <td>Ir. ${f.irmao}</td>
-          ${isAdmin ? `<td>
-            <button class="action-btn" onclick="editarFesta(${f.id})">✏️</button>
-            <button class="action-btn" onclick="excluirFesta(${f.id})">🗑️</button>
-          </td>` : ''}
         </tr>
       `).join('');
     }
 
-    function atualizarBanner(){
+    // ===== ATUALIZAR BANNER =====
+    function atualizarBanner() {
       const agora = new Date();
       const dia = agora.getDay();
       const horaAtual = agora.getHours() * 60 + agora.getMinutes();
       const semana = getSemana();
 
       document.getElementById('clock').textContent = agora.toLocaleTimeString().slice(0,5);
-      document.getElementById('weekInfo').textContent = `Semana: ${semana}ª (${dias[dia]})`;
-      document.getElementById('bannerTitle').textContent = `HOJE — ${dias[dia]}`;
+      document.getElementById('weekInfo').textContent = `Semana: ${semana}ª (${DIAS[dia]})`;
+      document.getElementById('bannerTitle').textContent = `HOJE — ${DIAS[dia]}`;
 
       const eventosHoje = cultos.filter(c => c.dia === dia).filter(c => {
         if (c.regra === 'all') return true;
@@ -919,150 +581,71 @@
         const [h, m] = proximo.hora.split(':').map(Number);
         const diff = (h * 60 + m) - horaAtual;
         document.getElementById('nextEvent').textContent = `Falta: ${Math.floor(diff/60)}h${diff%60}min`;
-      } else {
-        document.getElementById('nextEvent').textContent = `Falta: --`;
       }
     }
 
-    function atualizarRelogio(){ atualizarBanner(); }
-
-    function setFilter(tipo){
+    // ===== FILTROS =====
+    function setFilter(tipo) {
       filtros.periodo = tipo;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(`filter${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).classList.add('active');
       renderizarCultos();
     }
 
-    function filtrarLocal(local){
+    function filtrarLocal(local) {
       filtros.local = local;
       document.querySelectorAll('.location').forEach(b => b.classList.remove('active'));
-      if (window.event && window.event.target) window.event.target.classList.add('active');
+      event.target.classList.add('active');
       renderizarCultos();
     }
 
-    function limparLocal(){
+    function limparLocal() {
       filtros.local = 'todos';
       document.querySelectorAll('.location').forEach(b => b.classList.remove('active'));
       document.getElementById('localTodos').classList.add('active');
       renderizarCultos();
     }
 
-    function aplicarFiltros(){
+    function aplicarFiltros() {
       filtros.busca = document.getElementById('search').value.toLowerCase();
       renderizarCultos();
     }
 
-    function irParaHoje(){
+    // ===== UTILITÁRIOS =====
+    function irParaHoje() {
       const el = document.getElementById(`dia-${new Date().getDay()}`);
       if (el) el.scrollIntoView({ behavior:'smooth' });
     }
 
-    function mostrarLogin(){
-      document.getElementById('loginModal').style.display = 'flex';
-    }
-
-    function fecharModal(tipo){
-      if (tipo === 'login') document.getElementById('loginModal').style.display = 'none';
-      if (tipo === 'aviso') document.getElementById('avisoModal').style.display = 'none';
-      if (tipo === 'festa') document.getElementById('festaModal').style.display = 'none';
-    }
-
-    function fazerLogin(){
-      if (document.getElementById('senhaInput').value === ADMIN_SENHA) {
-        isAdmin = true;
-        document.getElementById('adminBtn').style.display = 'none';
-        document.getElementById('logoutBtn').style.display = 'inline-block';
-        document.getElementById('notifyAdminBtn').style.display = 'inline-block';
-        document.getElementById('novaFestaBtn').style.display = 'inline-block';
-        document.getElementById('acoesHeader').style.display = 'table-cell';
-        fecharModal('login');
-        renderizarFestas();
-        toast('✅ Modo admin ativado');
+    function compartilhar() {
+      const url = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: 'CCB - Amambai', url: url });
       } else {
-        alert('Senha incorreta!');
+        navigator.clipboard.writeText(url);
+        toast('🔗 Link copiado!');
       }
     }
 
-    function logoutAdmin(){
-      isAdmin = false;
-      document.getElementById('adminBtn').style.display = 'inline-block';
-      document.getElementById('logoutBtn').style.display = 'none';
-      document.getElementById('notifyAdminBtn').style.display = 'none';
-      document.getElementById('novaFestaBtn').style.display = 'none';
-      document.getElementById('acoesHeader').style.display = 'none';
-      renderizarFestas();
-      toast('🔓 Modo admin desativado');
+    function recarregarDados() {
+      carregarDados();
     }
 
-    function mostrarModalFesta(){
-      if (!isAdmin) return;
-      document.getElementById('modalTitle').textContent = 'Nova Festa';
-      document.getElementById('festaTipo').value = 'culto-mocidade';
-      document.getElementById('festaTitulo').value = '';
-
-      const hoje = new Date();
-      hoje.setDate(hoje.getDate() + 7);
-      document.getElementById('festaData').value = hoje.toISOString().split('T')[0];
-      document.getElementById('festaHora').value = '19:30';
-      document.getElementById('festaLocal').value = '';
-      document.getElementById('festaIrmao').value = '';
-
-      document.getElementById('festaModal').style.display = 'flex';
-    }
-
-    function salvarFesta(){
-      const tipo = document.getElementById('festaTipo').value;
-      let titulo = document.getElementById('festaTitulo').value;
-      const data = document.getElementById('festaData').value;
-      const hora = document.getElementById('festaHora').value;
-      const local = document.getElementById('festaLocal').value;
-      const irmao = document.getElementById('festaIrmao').value;
-
-      if (!data || !hora || !local || !irmao) { alert('Preencha todos os campos!'); return; }
-      if (tipo === 'outro' && !titulo) { alert('Digite o título da festa!'); return; }
-
-      const titulos = {
-        'culto-mocidade': 'Culto para Mocidade',
-        'reuniao-mocidade': 'Reunião para Mocidade',
-        'batismo': 'Batismo',
-        'santa-ceia': 'Santa Ceia',
-        'ensaio-regional': 'Ensaio Regional'
-      };
-
-      const novaFesta = { id: Date.now(), titulo: titulos[tipo] || titulo, data, hora, local, irmao };
-      festas.push(novaFesta);
-      salvarFestas();
-      renderizarFestas();
-      fecharModal('festa');
-      toast('✅ Festa adicionada');
-    }
-
-    function editarFesta(id){ toast('✏️ Editar festa'); }
-
-    function excluirFesta(id){
-      if (confirm('Excluir festa?')) {
-        festas = festas.filter(f => f.id !== id);
-        salvarFestas();
-        renderizarFestas();
-        toast('✅ Festa excluída');
-      }
-    }
-
-    function toggleTheme(){
+    function toggleTheme() {
       const atual = document.documentElement.getAttribute('data-theme') || 'dark';
-      const novo = atual === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', novo);
-      localStorage.setItem('ccb_theme', novo);
+      document.documentElement.setAttribute('data-theme', atual === 'dark' ? 'light' : 'dark');
     }
 
-    function toast(msg){
+    function toast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.style.display = 'block';
       setTimeout(() => t.style.display = 'none', 3000);
     }
 
-    init();
+    // ===== INICIAR =====
+    carregarDados();
+    setInterval(atualizarBanner, 60000);
   </script>
 </body>
 </html>
